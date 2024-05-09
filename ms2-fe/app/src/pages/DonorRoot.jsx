@@ -206,7 +206,7 @@ const medicalCases = [
             </ListItemIcon>
             <ListItemText primary="Clothes" />
             </ListItem>
-              <ListItem button onClick={toggleDrawer}>
+              <ListItem button onClick={toggleDrawer} component={Link} to="/toys">
                 <ListItemIcon>
                   <Toys />
                 </ListItemIcon>
