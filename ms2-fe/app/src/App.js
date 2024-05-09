@@ -4,6 +4,8 @@ import Clothes from "./pages/DonorClothes";
 import Toys from "./pages/DonorToys";
 import Food from "./pages/DonorFood";
 import SchoolSupplies from "./pages/DonorSchoolSupplies";
+import MedicalSupplies from "./pages/DonorMedicalSupplies";
+
 
 import {
   createBrowserRouter,
@@ -20,6 +22,8 @@ const router = createBrowserRouter(
       <Route path="/toys" element={<Toys />} />
       <Route path="/food" element={<Food />} />
       <Route path="/schoolsupplies" element={<SchoolSupplies />} />
+      <Route path="/medicalsupplies" element={<MedicalSupplies />} />
+
 
     </Route>
   )

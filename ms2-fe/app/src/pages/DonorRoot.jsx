@@ -92,6 +92,7 @@ const medicalSupplies = [
     ["Stethoscope", "Listen to sounds within the body", "https://example.com/medical5.jpg", 40]
 ];
 
+
 const bloodDonation = [
     // [name of patient, blood type, hospital name, hospital area, governorate, address]
     ["John Doe", "O+", "City Hospital", "Downtown", "Example Governorate", "123 Main Street"],
@@ -239,7 +240,7 @@ const medicalCases = [
                 </ListItemIcon>
               <ListItemText primary="Food" />
               </ListItem>
-              <ListItem button onClick={toggleDrawer}>
+              <ListItem button onClick={toggleDrawer} component={Link} to="/medicalsupplies">
                 <ListItemIcon>
                   <Vaccines />
                 </ListItemIcon>
