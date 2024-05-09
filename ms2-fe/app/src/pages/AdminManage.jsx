@@ -8,14 +8,26 @@ import Button from "@mui/material/Button";
 import DownloadIcon from '@mui/icons-material/Download';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
-
+import CloudDoneIcon from '@mui/icons-material/CloudDone';
+import styled from "styled-components";
+const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+});
 const AdminManage = () => {
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardMedia
                 sx={{ height: 140 }}
                 image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
-                title="green iguana"
+                title="Array Test"
             />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
@@ -26,9 +38,19 @@ const AdminManage = () => {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button variant="contained" size="medium" endIcon={<DownloadIcon />} color="primary">Download</Button>
-                <Button variant="contained" size="medium" endIcon={<CheckIcon />} color="primary">Accept</Button>
-                <Button variant="contained" size="medium" endIcon={<ClearIcon />} color="secondary">Reject</Button>
+                <Button
+                    component="label"
+                    role={undefined}
+                    variant="contained"
+                    tabIndex={-1}
+                    startIcon={<CloudDoneIcon />}
+                >
+                    Upload file
+                    <VisuallyHiddenInput type="file" />
+                </Button>
+
+                <Button variant="contained" size="medium" endIcon={<CheckIcon />} color="success">Accept</Button>
+                <Button variant="contained" size="medium" endIcon={<ClearIcon />} color="error">Reject</Button>
             </CardActions>
         </Card>
     );

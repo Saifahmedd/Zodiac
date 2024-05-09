@@ -27,7 +27,7 @@ const AdminDelete = () => {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button variant="contained" size="medium" endIcon={<DeleteIcon />} color="secondary">Delete</Button>
+                <Button variant="contained" size="medium" endIcon={<DeleteIcon />} color="error">Delete</Button>
             </CardActions>
         </Card>
     );

@@ -10,8 +10,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Tooltip, Menu, Avatar, MenuItem, ListItemButton } from '@mui/material';
 import { AccessTime, AccountCircle, Bloodtype, Category, Checkroom, Edit, EventNote, ExpandLess, ExpandMore, Fastfood, Groups, Home, Mail, Masks, MenuBook, School, Toys, Vaccines, FavoriteBorder } from '@mui/icons-material';
 import Logo from 'logo.jpeg';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-const settings = ['Profile', 'Change Password', 'Logout'];
+const settings = ['Change Password', 'Logout'];
 
 const AdminHome = () => {
     const [drawerOpen, setDrawerOpen] = useState(false); // State to manage drawer open/close
@@ -145,11 +146,13 @@ const AdminHome = () => {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Care Charity
                     </Typography>
-
+                    <IconButton size="large" component={Link} to="/profile" sx={{ p: 0 }}>
+                        <Avatar alt="Travis Howard" src="https://mui.com/static/images/avatar/2.jpg" />
+                    </IconButton>
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="https://mui.com/static/images/avatar/2.jpg" />
+                            <IconButton size="large" onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                <ArrowDropDownIcon />
                             </IconButton>
                         </Tooltip>
                         <Menu
@@ -191,27 +194,27 @@ const AdminHome = () => {
                 }}
             >
                 <List>
-                        <ListItem disablePadding>
-                            <ListItemButton component={Link} to ="/view">
-                                <ListItemText primary="View List of Registrations" />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding>
-                            <ListItemButton component={Link} to ="/manage">
-                                <ListItemText primary="Manage Requests" />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding>
-                            <ListItemButton component={Link} to ="/search">
-                                <ListItemText primary="Search Oragnizations" />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding>
-                            <ListItemButton component={Link} to ="/delete">
-                                <ListItemText primary="Delete Accounts" />
-                            </ListItemButton>
-                        </ListItem>
-                    </List>
+                    <ListItem disablePadding>
+                        <ListItemButton component={Link} to="/view">
+                            <ListItemText primary="View List of Registrations" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton component={Link} to="/manage">
+                            <ListItemText primary="Manage Requests" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton component={Link} to="/search">
+                            <ListItemText primary="Search Oragnizations" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton component={Link} to="/delete">
+                            <ListItemText primary="Delete Accounts" />
+                        </ListItemButton>
+                    </ListItem>
+                </List>
             </Drawer>
 
             <Outlet />
