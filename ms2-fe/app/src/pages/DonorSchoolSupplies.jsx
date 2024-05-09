@@ -31,7 +31,7 @@ const DonorSchoolSupplies = () => {
     const [dateTimeOpen, setDateTimeOpen] = useState(false);
     const [successAlertOpen, setSuccessAlertOpen] = useState(false);
     const [selectedSupply, setSelectedSupply] = useState(null);
-    const [schoolSupplies, setSchoolSupplies] = useState([
+    const [supplies, setSupplies] = useState([
         ["To Kill a Mockingbird", "Harper Lee", "English", "First", "A classic novel about racial injustice and moral growth.", "https://example.com/book1.jpg"],
         ["1984", "George Orwell", "English", "Nineteen Eighty-Four", "A dystopian novel about totalitarianism and surveillance.", "https://example.com/book2.jpg"],
         ["The Great Gatsby", "F. Scott Fitzgerald", "English", "Reprint", "A story of the American Dream and its corruption in the Jazz Age.", "https://example.com/book3.jpg"],
@@ -44,12 +44,22 @@ const DonorSchoolSupplies = () => {
         ["Markers", 150]
     ]);
     const [searchInput, setSearchInput] = useState('');
-
     const [selectedQuantities, setSelectedQuantities] = useState([]);
+    const [detailOpen, setDetailOpen] = useState(false);
+    const [selectedSupplyDetails, setSelectedSupplyDetails] = useState(null);
 
     useState(() => {
-        setSelectedQuantities(new Array(schoolSupplies.length).fill(1));
-    }, [schoolSupplies]);
+        setSelectedQuantities(new Array(supplies.length).fill(1));
+    }, [supplies]);
+
+    const handleDetailOpen = (supply) => {
+        setSelectedSupplyDetails(supply);
+        setDetailOpen(true);
+    };
+
+    const handleDetailClose = () => {
+        setDetailOpen(false);
+    };
 
     const handleQuantityChange = (index, page) => {
         setSelectedQuantities(prevQuantities => {
@@ -100,32 +110,37 @@ const DonorSchoolSupplies = () => {
             setOpen(true);
             return;
         }
-
+    
         const pickupDateTime = document.getElementById('datetime-local').value;
         if (!pickupDateTime) {
             setOpen(true);
             return;
         }
-
-        const updatedSupplies = schoolSupplies.map((supply, index) => {
+    
+        const updatedSupplies = supplies.map((supply, index) => {
             if (supply === selectedSupply) {
-                const updatedQuantity = supply[1] - selectedQuantities[index];
-                return updatedQuantity > 0 ? [supply[0], updatedQuantity] : null;
+                const updatedQuantity = supply.length === 6 ? supply[1] - selectedQuantities[index] : null;
+                return updatedQuantity !== null ? [supply[0], updatedQuantity] : null;
             }
             return supply;
         }).filter(Boolean);
-
-        setSchoolSupplies(updatedSupplies);
-
+    
+        setSupplies(updatedSupplies);
+    
         setDonationOpen(false);
         setSelectedVehicle(null);
         setSelectedSupply(null);
         setSuccessAlertOpen(true);
     };
 
-    const filteredSupplies = schoolSupplies.filter(supply => {
-        const [name] = supply;
-        return name.toLowerCase().includes(searchInput.toLowerCase());
+    const filteredSupplies = supplies.filter(supply => {
+        if (supply.length === 6) {
+            const [name] = supply;
+            return name.toLowerCase().includes(searchInput.toLowerCase());
+        } else {
+            const [name] = supply;
+            return name;
+        }
     });
 
     return (
@@ -144,30 +159,26 @@ const DonorSchoolSupplies = () => {
                         <Card sx={{ maxWidth: 250, height: '100%' }}>
                             <CardMedia
                                 component="img"
-                                alt="School Supplies"
+                                alt="Supply"
                                 image={supply[5]}
                                 style={{ width: '100%', objectFit: 'cover' }}
                             />
                             <CardContent sx={{ height: '180px', overflow: 'auto' }}>
                                 <Typography gutterBottom variant="h5" component="div">
-                                    {supply[0]}
+                                    {supply.length !== 6 ? supply[0] : supply[0] }
                                 </Typography>
-                                <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'right' }}>
-                                    {supply.length === 6 ? `The Author: ${supply[1]}` : `Quantity available: ${supply[1]}`}
-                                </Typography>
-                                {supply.length !== 6 && (
-                                <div>
-                                    <p>Select Quantity: </p>
-                                    <Pagination
-                                        count={supply[1]}
-                                        color="primary"
-                                        onChange={(event, page) => handleQuantityChange(index, page)}
-                                    />
-                                </div>
-                            )}
+                                {supply.length !== 6 ? (
+                                    <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'right' }}>
+                                        Quantity available: {supply[1]}
+                                    </Typography>
+                                ) : (
+                                    <>
+                                        <Typography>The Author: {supply[1]}</Typography>
+                                    </>
+                                )}
                             </CardContent>
                             <CardActions>
-                                <Button size="small" onClick={handleClickOpen}>Details</Button>
+                                <Button size="small" onClick={() => handleDetailOpen(supply)}>Details</Button>
                                 <Button size="small" onClick={() => handleDonationOpen(supply)}>Donate</Button>
                                 <Tooltip title="Favorite">
                                     <IconButton
@@ -298,6 +309,32 @@ const DonorSchoolSupplies = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleSuccessAlertClose}>Close</Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                open={detailOpen}
+                onClose={handleDetailClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">Supply Details</DialogTitle>
+                <DialogContent>
+                    {selectedSupplyDetails && (
+                        <div>
+                            <Typography variant="h6">{selectedSupplyDetails[0]}</Typography>
+                            {selectedSupplyDetails.length === 6 ? (
+                                <>
+                                    <Typography>Author: {selectedSupplyDetails[1]}</Typography>
+                                    <Typography>Language: {selectedSupplyDetails[2]}</Typography>
+                                    <Typography>Edition: {selectedSupplyDetails[3]}</Typography>
+                                    <Typography>Summary: {selectedSupplyDetails[4]}</Typography>
+                                </>
+                            ) : null}
+                        </div>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDetailClose}>Close</Button>
                 </DialogActions>
             </Dialog>
         </div>

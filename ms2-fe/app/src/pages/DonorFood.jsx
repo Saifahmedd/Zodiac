@@ -40,6 +40,7 @@ const DonorFood = () => {
         ["Chicken", "30 kg"]
     ]);
     const [searchInput, setSearchInput] = useState('');
+    const [selectedDetails, setSelectedDetails] = useState(null); 
 
     const [selectedQuantities, setSelectedQuantities] = useState([]);
 
@@ -55,7 +56,8 @@ const DonorFood = () => {
         });
     };
 
-    const handleClickOpen = () => {
+    const handleClickOpen = (item) => {
+        setSelectedDetails(item);
         setOpen(true);
     };
 
@@ -92,37 +94,33 @@ const DonorFood = () => {
     };
 
     const handleSubmit = () => {
-      if (!selectedFood || !selectedVehicle || !dateTimeOpen) {
-          setOpen(true);
-          return;
-      }
-  
-      const pickupDateTime = document.getElementById('datetime-local').value;
-      if (!pickupDateTime) {
-          setOpen(true);
-          return;
-      }
-  
-      const updatedFood = food.map((item, index) => {
-        if (item === selectedFood) {
-            // Splitting the quantity string to extract the numeric part and the unit
-            const [quantity, unit] = item[1].split(" ");
-            // Updating the quantity by subtracting the selected quantity
-            const updatedQuantity = parseInt(quantity) - selectedQuantities[index];
-            // Constructing the updated item array with the original unit
-            return [item[0], `${updatedQuantity} ${unit}`];
+        if (!selectedFood || !selectedVehicle || !dateTimeOpen) {
+            setOpen(true);
+            return;
         }
-        return item;
-    });    
-  
-      setFood(updatedFood);
-  
-      setDonationOpen(false);
-      setSelectedVehicle(null);
-      setSelectedFood(null);
-      setSuccessAlertOpen(true);
-  };
-  
+
+        const pickupDateTime = document.getElementById('datetime-local').value;
+        if (!pickupDateTime) {
+            setOpen(true);
+            return;
+        }
+
+        const updatedFood = food.map((item, index) => {
+            if (item === selectedFood) {
+                const [quantity, unit] = item[1].split(" ");
+                const updatedQuantity = parseInt(quantity) - selectedQuantities[index];
+                return [item[0], `${updatedQuantity} ${unit}`];
+            }
+            return item;
+        });
+
+        setFood(updatedFood);
+
+        setDonationOpen(false);
+        setSelectedVehicle(null);
+        setSelectedFood(null);
+        setSuccessAlertOpen(true);
+    };
 
     const filteredFood = food.filter(item => {
         const [name] = item;
@@ -158,13 +156,13 @@ const DonorFood = () => {
                                 </Typography>
                                 <p>Select Quantity: </p>
                                 <Pagination
-                                    count={parseInt(food[index][1])} // Assuming you want to donate a single unit at a time
+                                    count={parseInt(food[index][1])} 
                                     color="primary"
                                     onChange={(event, page) => handleQuantityChange(index, page)}
                                 />
                             </CardContent>
                             <CardActions>
-                                <Button size="small" onClick={handleClickOpen}>Details</Button>
+                                <Button size="small" onClick={() => handleClickOpen(item)}>Details</Button>
                                 <Button size="small" onClick={() => handleDonationOpen(item)}>Donate</Button>
                                 <Tooltip title="Favorite">
                                     <IconButton
@@ -182,6 +180,30 @@ const DonorFood = () => {
                     </div>
                 ))}
             </div>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">Details</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        {selectedDetails && (
+                            <>
+                                <Typography variant="body1">Name: {selectedDetails[0]}</Typography>
+                                <Typography variant="body1">Quantity available: {selectedDetails[1]}</Typography>
+                            </>
+                        )}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} autoFocus>
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
             <Dialog
                 open={donationOpen}
                 onClose={handleDonationClose}
@@ -257,25 +279,6 @@ const DonorFood = () => {
                     </Button>
                     <Button onClick={handleSubmit} autoFocus>
                         Submit
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">Missing Information</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Please select both the transportation type and the pickup date/time before submitting.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} autoFocus>
-                        OK
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -15,7 +15,6 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 
@@ -23,13 +22,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DonorMedicalSupplies = () => {
+const DonorSchoolSupplies = () => {
     const [open, setOpen] = useState(false);
     const [donationOpen, setDonationOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
     const [dateTimeOpen, setDateTimeOpen] = useState(false);
-    const [successAlertOpen, setSuccessAlertOpen] = useState(false); // State for success alert
-    const [selectedSupply, setSelectedSupply] = useState(null); // State to store selected supply for donation
+    const [successAlertOpen, setSuccessAlertOpen] = useState(false);
+    const [selectedSupply, setSelectedSupply] = useState(null);
     const [medicalSupplies, setMedicalSupplies] = useState([
         ["Thermometer", "Measure body temperature", "https://example.com/medical1.jpg", 50],
         ["First Aid Kit", "Provide initial medical treatment", "https://example.com/medical2.jpg", 30],
@@ -37,9 +36,7 @@ const DonorMedicalSupplies = () => {
         ["Nebulizer", "Deliver medication as a mist to be inhaled into the lungs", "https://example.com/medical4.jpg", 10],
         ["Stethoscope", "Listen to sounds within the body", "https://example.com/medical5.jpg", 40]
     ]);
-    const [searchInput, setSearchInput] = useState(''); // Define searchInput state variable
-
-    // Initialization of the selectedQuantities array based on the number of medical supplies items
+    const [searchInput, setSearchInput] = useState('');
     const [selectedQuantities, setSelectedQuantities] = useState([]);
 
     useState(() => {
@@ -49,7 +46,7 @@ const DonorMedicalSupplies = () => {
     const handleQuantityChange = (index, page) => {
         setSelectedQuantities(prevQuantities => {
             const newQuantities = [...prevQuantities];
-            newQuantities[index] = page; // Update the selected quantity for the specific card
+            newQuantities[index] = page;
             return newQuantities;
         });
     };
@@ -74,7 +71,7 @@ const DonorMedicalSupplies = () => {
     const handleDonationClose = () => {
         setDonationOpen(false);
         setSelectedVehicle(null);
-        setSelectedSupply(null); // Reset selected supply
+        setSelectedSupply(null);
     };
 
     const handleSelectVehicle = (vehicle) => {
@@ -92,30 +89,26 @@ const DonorMedicalSupplies = () => {
 
     const handleSubmit = () => {
         if (!selectedSupply || !selectedVehicle || !dateTimeOpen) {
-            setOpen(true); // Open dialog if any essential data is missing
+            setOpen(true);
             return;
         }
     
-        // Check if pickup date and time are selected
         const pickupDateTime = document.getElementById('datetime-local').value;
         if (!pickupDateTime) {
-            setOpen(true); // Open dialog if pickup date/time is missing
+            setOpen(true);
             return;
         }
     
-        // Calculate new quantities after donation for the selected supply only
         const updatedSupplies = medicalSupplies.map((supply, index) => {
             if (supply === selectedSupply) {
                 const updatedQuantity = supply[3] - selectedQuantities[index];
-                return updatedQuantity > 0 ? [...supply.slice(0, 3), updatedQuantity] : null; // Return null if quantity is zero or negative
+                return updatedQuantity > 0 ? [...supply.slice(0, 3), updatedQuantity] : null;
             }
             return supply;
-        }).filter(Boolean); // Filter out null values
+        }).filter(Boolean);
     
-        // Update medical supplies array with new quantities
         setMedicalSupplies(updatedSupplies);
     
-        // Reset states
         setDonationOpen(false);
         setSelectedVehicle(null);
         setSelectedSupply(null);
@@ -127,24 +120,35 @@ const DonorMedicalSupplies = () => {
         return name.toLowerCase().includes(searchInput.toLowerCase());
     });
 
+    // Details Dialog
+    const [detailsOpen, setDetailsOpen] = useState(false);
+    const [selectedDetailsSupply, setSelectedDetailsSupply] = useState(null);
+
+    const handleDetailsOpen = (supply) => {
+        setSelectedDetailsSupply(supply);
+        setDetailsOpen(true);
+    };
+
+    const handleDetailsClose = () => {
+        setDetailsOpen(false);
+    };
+
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
-            {/* Search and filter */}
             <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
                 <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
             </div>
-            {/* Medical supplies */}
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', width: '100%', marginTop: '30px' }}>
                 {filteredSupplies.map((supply, index) => (
                     <div key={index} style={{ margin: '10px' }}>
-                        <Card sx={{ maxWidth: 250, height: '100%' }}> {/* Set max width and fixed height */}
+                        <Card sx={{ maxWidth: 250, height: '100%' }}>
                             <CardMedia
                                 component="img"
                                 alt="Medical Supply"
                                 image={supply[2]}
                                 style={{ width: '100%', objectFit: 'cover' }}
                             />
-                            <CardContent sx={{ height: '180px', overflow: 'auto' }}> {/* Set fixed height and allow overflow */}
+                            <CardContent sx={{ height: '180px', overflow: 'auto' }}>
                                 <Typography gutterBottom variant="h5" component="div">
                                     {supply[0]}
                                 </Typography>
@@ -159,8 +163,8 @@ const DonorMedicalSupplies = () => {
                                 />
                             </CardContent>
                             <CardActions>
-                                <Button size="small" onClick={handleClickOpen}>Details</Button>
-                                <Button size="small" onClick={() => handleDonationOpen(supply)}>Donate</Button> {/* Pass supply data to handleDonationOpen */}
+                                <Button size="small" onClick={() => handleDetailsOpen(supply)}>Details</Button>
+                                <Button size="small" onClick={() => handleDonationOpen(supply)}>Donate</Button>
                                 <Tooltip title="Favorite">
                                     <IconButton
                                         size="large"
@@ -295,8 +299,37 @@ const DonorMedicalSupplies = () => {
                     <Button onClick={handleSuccessAlertClose}>Close</Button>
                 </DialogActions>
             </Dialog>
+
+            {/* Details Dialog */}
+            <Dialog
+                open={detailsOpen}
+                onClose={handleDetailsClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{selectedDetailsSupply && selectedDetailsSupply[0]}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        {selectedDetailsSupply && (
+                            <>
+                                <Typography variant="body1" gutterBottom>
+                                    Description: {selectedDetailsSupply[1]}
+                                </Typography>
+                                <Typography variant="body1" gutterBottom>
+                                    Quantity available: {selectedDetailsSupply[3]}
+                                </Typography>
+                            </>
+                        )}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDetailsClose} autoFocus>
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }
 
-export default DonorMedicalSupplies;
+export default DonorSchoolSupplies;

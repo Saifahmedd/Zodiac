@@ -43,6 +43,19 @@ const DonorClothes = () => {
 
     // Array of state variables for selected quantities, one for each card
     const [selectedQuantities, setSelectedQuantities] = useState([]);
+    const [detailOpen, setDetailOpen] = useState(false); // State to control visibility of detail dialog
+    const [selectedClothDetails, setSelectedClothDetails] = useState(null); // State to store details of selected cloth
+    
+    // Function to open detail dialog and set selected cloth details
+    const handleDetailOpen = (cloth) => {
+        setSelectedClothDetails(cloth);
+        setDetailOpen(true);
+    };
+    
+    // Function to close detail dialog
+    const handleDetailClose = () => {
+        setDetailOpen(false);
+    };
 
     // Initialization of the selectedQuantities array based on the number of clothes items
     useState(() => {
@@ -169,7 +182,7 @@ const DonorClothes = () => {
                                 />
                             </CardContent>
                             <CardActions>
-                                <Button size="small" onClick={handleClickOpen}>Details</Button>
+                            <Button size="small" onClick={() => handleDetailOpen(cloth)}>Details</Button>
                                 <Button size="small" onClick={() => handleDonationOpen(cloth)}>Donate</Button> {/* Pass cloth data to handleDonationOpen */}
                                 <Tooltip title="Favorite">
                                     <IconButton
@@ -305,8 +318,32 @@ const DonorClothes = () => {
                     <Button onClick={handleSuccessAlertClose}>Close</Button>
                 </DialogActions>
             </Dialog>
+            <Dialog
+                open={detailOpen}
+                onClose={handleDetailClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">Clothing Item Details</DialogTitle>
+                <DialogContent>
+                    {selectedClothDetails && (
+                        <div>
+                            <Typography variant="h6">{selectedClothDetails[0]}</Typography>
+                            <Typography>Category: {selectedClothDetails[1]}</Typography>
+                            <Typography>Gender: {selectedClothDetails[2]}</Typography>
+                            <Typography>Season: {selectedClothDetails[3]}</Typography>
+                            <Typography>Material: {selectedClothDetails[4]}</Typography>
+                            <Typography>Quantity required: {selectedClothDetails[5]}</Typography>
+                        </div>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDetailClose}>Close</Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }
 
 export default DonorClothes;
+

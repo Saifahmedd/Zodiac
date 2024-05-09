@@ -246,7 +246,7 @@ const medicalCases = [
                 </ListItemIcon>
               <ListItemText primary="Medical Supplies" />
               </ListItem>
-              <ListItem button onClick={toggleDrawer}>
+              <ListItem button onClick={toggleDrawer} component={Link} to="/blooddonation">
                 <ListItemIcon>
                   <Bloodtype />
                 </ListItemIcon>

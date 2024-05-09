@@ -16,7 +16,6 @@ import IconButton from '@mui/material/IconButton';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Tooltip from '@mui/material/Tooltip';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 
@@ -29,8 +28,8 @@ const DonorToys = () => {
     const [donationOpen, setDonationOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
     const [dateTimeOpen, setDateTimeOpen] = useState(false);
-    const [successAlertOpen, setSuccessAlertOpen] = useState(false); // State for success alert
-    const [selectedToy, setSelectedToy] = useState(null); // State to store selected toy for donation
+    const [successAlertOpen, setSuccessAlertOpen] = useState(false);
+    const [selectedToy, setSelectedToy] = useState(null);
     const [toys, setToys] = useState([
         ["LEGO Set", "5-12", "Unisex", "Building", "https://example.com/toy1.jpg", 80],
         ["Barbie Doll", "3-10", "Female", "Dolls", "https://example.com/toy2.jpg", 60],
@@ -38,20 +37,28 @@ const DonorToys = () => {
         ["Puzzle", "6-10", "Unisex", "Educational", "https://example.com/toy4.jpg", 100],
         ["Action Figure", "5-12", "Male", "Action", "https://example.com/toy5.jpg", 70]
     ]);
-    const [searchInput, setSearchInput] = useState(''); // Define searchInput state variable
-
-    // Array of state variables for selected quantities, one for each card
+    const [searchInput, setSearchInput] = useState('');
     const [selectedQuantities, setSelectedQuantities] = useState([]);
-
-    // Initialization of the selectedQuantities array based on the number of toy items
+    const [detailOpen, setDetailOpen] = useState(false);
+    const [selectedToyDetails, setSelectedToyDetails] = useState(null);
+    
     useState(() => {
         setSelectedQuantities(new Array(toys.length).fill(1));
     }, [toys]);
 
+    const handleDetailOpen = (toy) => {
+        setSelectedToyDetails(toy);
+        setDetailOpen(true);
+    };
+    
+    const handleDetailClose = () => {
+        setDetailOpen(false);
+    };
+
     const handleQuantityChange = (index, page) => {
         setSelectedQuantities(prevQuantities => {
             const newQuantities = [...prevQuantities];
-            newQuantities[index] = page; // Update the selected quantity for the specific card
+            newQuantities[index] = page;
             return newQuantities;
         });
     };
@@ -76,7 +83,7 @@ const DonorToys = () => {
     const handleDonationClose = () => {
         setDonationOpen(false);
         setSelectedVehicle(null);
-        setSelectedToy(null); // Reset selected toy
+        setSelectedToy(null);
     };
 
     const handleSelectVehicle = (vehicle) => {
@@ -94,36 +101,31 @@ const DonorToys = () => {
 
     const handleSubmit = () => {
         if (!selectedToy || !selectedVehicle || !dateTimeOpen) {
-            setOpen(true); // Open dialog if any essential data is missing
+            setOpen(true);
             return;
         }
     
-        // Check if pickup date and time are selected
         const pickupDateTime = document.getElementById('datetime-local').value;
         if (!pickupDateTime) {
-            setOpen(true); // Open dialog if pickup date/time is missing
+            setOpen(true);
             return;
         }
     
-        // Calculate new quantities after donation for the selected toy only
         const updatedToys = toys.map((toy, index) => {
             if (toy === selectedToy) {
                 const updatedQuantity = toy[5] - selectedQuantities[index];
-                return updatedQuantity > 0 ? [...toy.slice(0, 5), updatedQuantity] : null; // Return null if quantity is zero or negative
+                return updatedQuantity > 0 ? [...toy.slice(0, 5), updatedQuantity] : null;
             }
             return toy;
-        }).filter(Boolean); // Filter out null values
+        }).filter(Boolean);
     
-        // Update toys array with new quantities
         setToys(updatedToys);
     
-        // Reset states
         setDonationOpen(false);
         setSelectedVehicle(null);
         setSelectedToy(null);
         setSuccessAlertOpen(true);
     };
-    
 
     const filteredToys = toys.filter(toy => {
         const [name] = toy;
@@ -132,7 +134,6 @@ const DonorToys = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
-            {/* Search and filter */}
             <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
                 <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
             </div>
@@ -141,18 +142,17 @@ const DonorToys = () => {
                     <FilterAltIcon />
                 </IconButton>
             </div>
-            {/* Toy items */}
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', width: '100%', marginTop: '30px' }}>
                 {filteredToys.map((toy, index) => (
                     <div key={index} style={{ margin: '10px' }}>
-                        <Card sx={{ maxWidth: 250, height: '100%' }}> {/* Set max width and fixed height */}
+                        <Card sx={{ maxWidth: 250, height: '100%' }}>
                             <CardMedia
                                 component="img"
                                 alt="Toy"
                                 image={toy[4]}
                                 style={{ width: '100%', objectFit: 'cover' }}
                             />
-                            <CardContent sx={{ height: '180px', overflow: 'auto' }}> {/* Set fixed height and allow overflow */}
+                            <CardContent sx={{ height: '180px', overflow: 'auto' }}>
                                 <Typography gutterBottom variant="h5" component="div">
                                     {toy[0]}
                                 </Typography>
@@ -164,12 +164,11 @@ const DonorToys = () => {
                                     count={toy[5]}
                                     color="primary"
                                     onChange={(event, page) => handleQuantityChange(index, page)}
-                                    // Set the onChange event handler
                                 />
                             </CardContent>
                             <CardActions>
-                                <Button size="small" onClick={handleClickOpen}>Details</Button>
-                                <Button size="small" onClick={() => handleDonationOpen(toy)}>Donate</Button> {/* Pass toy data to handleDonationOpen */}
+                                <Button size="small" onClick={() => handleDetailOpen(toy)}>Details</Button>
+                                <Button size="small" onClick={() => handleDonationOpen(toy)}>Donate</Button>
                                 <Tooltip title="Favorite">
                                     <IconButton
                                         size="large"
@@ -186,7 +185,6 @@ const DonorToys = () => {
                     </div>
                 ))}
             </div>
-            {/* Donation Selection Paper */}
             <Dialog
                 open={donationOpen}
                 onClose={handleDonationClose}
@@ -266,7 +264,6 @@ const DonorToys = () => {
                 </DialogActions>
             </Dialog>
 
-            {/* Missing Data Alert */}
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -286,7 +283,6 @@ const DonorToys = () => {
                 </DialogActions>
             </Dialog>
 
-            {/* Success Alert */}
             <Dialog
                 open={successAlertOpen}
                 TransitionComponent={Transition}
@@ -302,6 +298,28 @@ const DonorToys = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleSuccessAlertClose}>Close</Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                open={detailOpen}
+                onClose={handleDetailClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">Toy Details</DialogTitle>
+                <DialogContent>
+                    {selectedToyDetails && (
+                        <div>
+                            <Typography variant="h6">{selectedToyDetails[0]}</Typography>
+                            <Typography>Age: {selectedToyDetails[1]}</Typography>
+                            <Typography>Gender: {selectedToyDetails[2]}</Typography>
+                            <Typography>Category: {selectedToyDetails[3]}</Typography>
+                            <Typography>Quantity required: {selectedToyDetails[5]}</Typography>
+                        </div>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDetailClose}>Close</Button>
                 </DialogActions>
             </Dialog>
         </div>
