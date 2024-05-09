@@ -32,6 +32,21 @@ const Root = () => {
     ["Sweater", "Kids", "Unisex", "Winter", "Acrylic", 70]
 ];
 
+const schoolSupplies = [
+       // [book name, author, language, edition, short summary, link of an image]
+       ["To Kill a Mockingbird", "Harper Lee", "English", "First", "A classic novel about racial injustice and moral growth.", "https://example.com/book1.jpg"],
+       ["1984", "George Orwell", "English", "Nineteen Eighty-Four", "A dystopian novel about totalitarianism and surveillance.", "https://example.com/book2.jpg"],
+       ["The Great Gatsby", "F. Scott Fitzgerald", "English", "Reprint", "A story of the American Dream and its corruption in the Jazz Age.", "https://example.com/book3.jpg"],
+       ["Pride and Prejudice", "Jane Austen", "English", "Revised", "A romantic novel of manners set in early 19th-century England.", "https://example.com/book4.jpg"],
+       ["Harry Potter and the Philosopher's Stone", "J.K. Rowling", "English", "First", "The first book in the Harry Potter series.", "https://example.com/book5.jpg"]
+        // [type, quantity]
+        ["Pens", 500],
+        ["Notebooks", 300],
+        ["Pencils", 400],
+        ["Erasers", 200],
+        ["Markers", 150]    
+]
+
 const bookSupplies = [
     // [book name, author, language, edition, short summary, link of an image]
     ["To Kill a Mockingbird", "Harper Lee", "English", "First", "A classic novel about racial injustice and moral growth.", "https://example.com/book1.jpg"],
@@ -212,7 +227,7 @@ const medicalCases = [
                 </ListItemIcon>
               <ListItemText primary="Toys" />
               </ListItem>
-              <ListItem button onClick={toggleDrawer}>
+              <ListItem button onClick={toggleDrawer} component={Link} to="/schoolsupplies">
                 <ListItemIcon>
                   <MenuBook />
                 </ListItemIcon>

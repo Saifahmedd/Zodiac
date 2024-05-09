@@ -3,6 +3,8 @@ import Home from "./pages/DonorHome";
 import Clothes from "./pages/DonorClothes";
 import Toys from "./pages/DonorToys";
 import Food from "./pages/DonorFood";
+import SchoolSupplies from "./pages/DonorSchoolSupplies";
+
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -17,7 +19,7 @@ const router = createBrowserRouter(
       <Route path="/clothes" element={<Clothes />} />
       <Route path="/toys" element={<Toys />} />
       <Route path="/food" element={<Food />} />
-
+      <Route path="/schoolsupplies" element={<SchoolSupplies />} />
 
     </Route>
   )
