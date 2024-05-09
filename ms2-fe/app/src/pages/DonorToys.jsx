@@ -14,8 +14,7 @@ import Slide from '@mui/material/Slide';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import Tooltip from '@mui/material/Tooltip';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import MenuItem from '@mui/material/MenuItem';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 
@@ -38,19 +37,26 @@ const DonorToys = () => {
         ["Action Figure", "5-12", "Male", "Action", "https://example.com/toy5.jpg", 70]
     ]);
     const [searchInput, setSearchInput] = useState('');
+    const [filterOptions, setFilterOptions] = useState({
+        age: '',
+        gender: '',
+        category: ''
+    });
     const [selectedQuantities, setSelectedQuantities] = useState([]);
     const [detailOpen, setDetailOpen] = useState(false);
     const [selectedToyDetails, setSelectedToyDetails] = useState(null);
-    
+    const [filterDialogOpen, setFilterDialogOpen] = useState(false);
+
     useState(() => {
         setSelectedQuantities(new Array(toys.length).fill(1));
     }, [toys]);
 
+    
     const handleDetailOpen = (toy) => {
         setSelectedToyDetails(toy);
         setDetailOpen(true);
     };
-    
+
     const handleDetailClose = () => {
         setDetailOpen(false);
     };
@@ -64,15 +70,23 @@ const DonorToys = () => {
     };
 
     const handleClickOpen = () => {
-        setOpen(true);
+        setFilterDialogOpen(true);
     };
 
     const handleClose = () => {
-        setOpen(false);
+        setFilterDialogOpen(false);
     };
 
     const handleSearchChange = (event) => {
         setSearchInput(event.target.value);
+    };
+
+    const handleFilterChange = (event) => {
+        const { name, value } = event.target;
+        setFilterOptions(prevOptions => ({
+            ...prevOptions,
+            [name]: value
+        }));
     };
 
     const handleDonationOpen = (toy) => {
@@ -104,13 +118,13 @@ const DonorToys = () => {
             setOpen(true);
             return;
         }
-    
+
         const pickupDateTime = document.getElementById('datetime-local').value;
         if (!pickupDateTime) {
             setOpen(true);
             return;
         }
-    
+
         const updatedToys = toys.map((toy, index) => {
             if (toy === selectedToy) {
                 const updatedQuantity = toy[5] - selectedQuantities[index];
@@ -118,9 +132,9 @@ const DonorToys = () => {
             }
             return toy;
         }).filter(Boolean);
-    
+
         setToys(updatedToys);
-    
+
         setDonationOpen(false);
         setSelectedVehicle(null);
         setSelectedToy(null);
@@ -128,8 +142,13 @@ const DonorToys = () => {
     };
 
     const filteredToys = toys.filter(toy => {
-        const [name] = toy;
-        return name.toLowerCase().includes(searchInput.toLowerCase());
+        const [name, age, gender, category] = toy;
+        return (
+            name.toLowerCase().includes(searchInput.toLowerCase()) &&
+            (filterOptions.age === '' || age.includes(filterOptions.age)) &&
+            (filterOptions.gender === '' || gender === filterOptions.gender) &&
+            (filterOptions.category === '' || category === filterOptions.category)
+        );
     });
 
     return (
@@ -138,9 +157,66 @@ const DonorToys = () => {
                 <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
             </div>
             <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
-                <IconButton>
+                <IconButton onClick={handleClickOpen}>
                     <FilterAltIcon />
                 </IconButton>
+            </div>
+            <div>
+                <Dialog open={filterDialogOpen} onClose={handleClose}>
+                    <DialogTitle>Filter Toys</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            id="age"
+                            select
+                            label="Age"
+                            variant="outlined"
+                            name="age"
+                            value={filterOptions.age}
+                            onChange={handleFilterChange}
+                            style={{ marginRight: '10px', width: '80px' }}
+                        >
+                            <MenuItem value="">All</MenuItem>
+                            <MenuItem value="3-5">3-5</MenuItem>
+                            <MenuItem value="6-10">6-10</MenuItem>
+                            <MenuItem value="11-14">11-14</MenuItem>
+                        </TextField>
+                        <TextField
+                            id="gender"
+                            select
+                            label="Gender"
+                            variant="outlined"
+                            name="gender"
+                            value={filterOptions.gender}
+                            onChange={handleFilterChange}
+                            style={{ marginRight: '10px', width: '100px' }}
+                        >
+                            <MenuItem value="">All</MenuItem>
+                            <MenuItem value="Male">Male</MenuItem>
+                            <MenuItem value="Female">Female</MenuItem>
+                            <MenuItem value="Unisex">Unisex</MenuItem>
+                        </TextField>
+                        <TextField
+                            id="category"
+                            select
+                            label="Category"
+                            variant="outlined"
+                            name="category"
+                            value={filterOptions.category}
+                            onChange={handleFilterChange}
+                            style={{ width: '120px' }}
+                        >
+                            <MenuItem value="">All</MenuItem>
+                            <MenuItem value="Building">Building</MenuItem>
+                            <MenuItem value="Dolls">Dolls</MenuItem>
+                            <MenuItem value="Vehicles">Vehicles</MenuItem>
+                            <MenuItem value="Educational">Educational</MenuItem>
+                            <MenuItem value="Action">Action</MenuItem>
+                        </TextField>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>Close</Button>
+                    </DialogActions>
+                </Dialog>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', width: '100%', marginTop: '30px' }}>
                 {filteredToys.map((toy, index) => (
@@ -180,7 +256,7 @@ const DonorToys = () => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{"Select Donation Type and Schedule"}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">Select Donation Type and Schedule</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description" style={{ marginBottom: '10px' }}>
                         Please select the type of vehicle you want to donate and schedule the pickup:
