@@ -1,20 +1,11 @@
 import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Tooltip, Grid, FormControl, InputLabel, Select, MenuItem, FormHelperText, TextField, Radio, RadioGroup, FormControlLabel,FormLabel } from '@mui/material';
-import { AccessTime, AccountCircle, Bloodtype, Category, Checkroom, Edit, EventNote, ExpandLess, ExpandMore, Fastfood, Groups, Home, Mail, Masks, MenuBook, School, Toys, Vaccines,FavoriteBorder } from '@mui/icons-material';
-import Logo from './Logo_Main.jpg';
 import Box from '@mui/material/Box';
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import NavigationIcon from '@mui/icons-material/Navigation';
+import { styled } from '@mui/material/styles';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import Button from '@mui/material/Button';
+
+
 
 const Post = () =>{
 
@@ -23,6 +14,7 @@ const Post = () =>{
     const [showSchoolSuppliesSelect, setShowSchoolSuppliesSelect] = useState(false); // State to manage the visibility of the school supplies select component
     const [selectedSchoolSupply, setSelectedSchoolSupply] = useState(""); // State to store the selected school supply
     const [showClothesTextboxes, setShowClothesTextboxes] = useState(false);
+    const [showToysTextboxes, setShowToysTextboxes] = useState(false);
     const [showSelect, setShowSelect] = useState(false);
     const [age, setAge] = useState('');
     const [gender, setGender] = useState('');
@@ -31,6 +23,7 @@ const Post = () =>{
     const [type, setType] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [quantity, setQuantity] = useState(''); // Add quantity state
+    
   
   
   
@@ -61,7 +54,21 @@ const Post = () =>{
       setSelectedCategory(category);
       setShowSchoolSuppliesSelect(category === "School Supplies"); // Show the school supplies select if the category is "School Supplies"
       setShowClothesTextboxes(category === "Clothes"); // Show the clothes textboxes if the category is "Clothes"
+      setShowToysTextboxes(category === "Toys");
     };
+
+    const VisuallyHiddenInput = styled('input')({
+        clip: 'rect(0 0 0 0)',
+        clipPath: 'inset(50%)',
+        height: 1,
+        overflow: 'hidden',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        whiteSpace: 'nowrap',
+        width: 1,
+      });
+
     
   
   
@@ -118,16 +125,17 @@ const Post = () =>{
               <Box sx={{ marginTop: 2 }}>
                 <FormControl sx={{ minWidth: 200, marginBottom: 1 }}>
                   <InputLabel id="age-label">Age</InputLabel>
-                  <Select
-                    labelId="age-label"
-                    id="age-select"
+                  <TextField
+                    label="Age"
                     value={age}
-                    onChange={(e) => setAge(e.target.value)}
-                  >
-                    {Array.from({ length: 100 }, (_, i) => i + 1).map((num) => (
-                      <MenuItem key={num} value={num}>{num}</MenuItem>
-                    ))}
-                  </Select>
+                    onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                        setAge(value);
+                    }}
+                    fullWidth
+                    type="number"
+                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
+                    />
                 </FormControl>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <FormControl component="fieldset" style={{ marginBottom: 10 }}>
@@ -155,14 +163,87 @@ const Post = () =>{
                   sx={{ marginBottom: 1 }}
                 />
                 <TextField
-                  label="Quantity"
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
-                  fullWidth
-                />
+                    label="Quantity"
+                    value={quantity}
+                    onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                        setQuantity(value);
+                    }}
+                    fullWidth
+                    type="number"
+                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
+                    />
               </Box>
             )}
           </div>
+          <div>
+            {showToysTextboxes && selectedCategory === 'Toys' && (
+              <Box sx={{ marginTop: 2 }}>
+                <FormControl sx={{ minWidth: 200, marginBottom: 1 }}>
+                  <InputLabel id="age-label">Age</InputLabel>
+                  <TextField
+                    label="Age"
+                    value={age}
+                    onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                        setAge(value);
+                    }}
+                    fullWidth
+                    type="number"
+                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
+                    />
+                </FormControl>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <FormControl component="fieldset" style={{ marginBottom: 10 }}>
+                        <FormLabel component="legend">Gender</FormLabel>
+                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                        <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                        <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                        </div>
+                    </FormControl>
+                    </div>
+                <TextField
+                  label="Category"
+                  value={material}
+                  onChange={(e) => setMaterial(e.target.value)}
+                  fullWidth
+                  sx={{ marginBottom: 1 }}
+                />
+                <TextField
+                    label="Quantity"
+                    value={quantity}
+                    onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                        setQuantity(value);
+                    }}
+                    fullWidth
+                    type="number"
+                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
+                    />
+
+               <Grid container spacing={2} alignItems="center">
+                    <Grid item>
+                        <FormLabel>Picture</FormLabel>
+                    </Grid>
+                    <Grid item>
+                        <Button
+                        component="label"
+                        role={undefined}
+                        variant="contained"
+                        startIcon={<CloudUploadIcon />}
+                        >
+                        Upload Photo
+                        <VisuallyHiddenInput type="file" />
+                        </Button>
+                    </Grid>
+                </Grid>
+
+
+
+              </Box>
+            )}
+          </div>
+
         </div>
       );
       
