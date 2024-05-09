@@ -157,7 +157,7 @@ const DonorToys = () => {
                                     {toy[0]}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'right' }}>
-                                    Quantity required: {toy[5]}
+                                    Quantity available: {toy[5]}
                                 </Typography>
                                 <p>Select Quantity: </p>
                                 <Pagination

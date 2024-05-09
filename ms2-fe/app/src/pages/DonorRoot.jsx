@@ -152,19 +152,7 @@ const medicalCases = [
             <Mail />
           </IconButton>
           </Tooltip>
-
-          <Tooltip title="Likes">
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2}}
-          >
-            <FavoriteBorder />
-          </IconButton>
-          </Tooltip>
-
+          
           <Tooltip title="Profile">
           <IconButton
             size="large"

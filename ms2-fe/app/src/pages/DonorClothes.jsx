@@ -30,8 +30,8 @@ const DonorClothes = () => {
     const [donationOpen, setDonationOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
     const [dateTimeOpen, setDateTimeOpen] = useState(false);
-    const [successAlertOpen, setSuccessAlertOpen] = useState(false); // State for success alert
-    const [selectedCloth, setSelectedCloth] = useState(null); // State to store selected cloth for donation
+    const [successAlertOpen, setSuccessAlertOpen] = useState(false);
+    const [selectedCloth, setSelectedCloth] = useState(null);
     const [clothes, setClothes] = useState([
         ["T-shirt", "Kids", "Unisex", "Summer", "Cotton", 10],
         ["Coat", "Adult", "Male", "Winter", "Wool", 5],
@@ -39,33 +39,34 @@ const DonorClothes = () => {
         ["Jeans", "Adult", "Female", "Fall", "Denim", 6],
         ["Sweater", "Kids", "Unisex", "Winter", "Acrylic", 7]
     ]);
-    const [searchInput, setSearchInput] = useState(''); // Define searchInput state variable
-
-    // Array of state variables for selected quantities, one for each card
+    const [searchInput, setSearchInput] = useState('');
     const [selectedQuantities, setSelectedQuantities] = useState([]);
-    const [detailOpen, setDetailOpen] = useState(false); // State to control visibility of detail dialog
-    const [selectedClothDetails, setSelectedClothDetails] = useState(null); // State to store details of selected cloth
-    
-    // Function to open detail dialog and set selected cloth details
-    const handleDetailOpen = (cloth) => {
-        setSelectedClothDetails(cloth);
-        setDetailOpen(true);
-    };
-    
-    // Function to close detail dialog
-    const handleDetailClose = () => {
-        setDetailOpen(false);
-    };
+    const [detailOpen, setDetailOpen] = useState(false);
+    const [selectedClothDetails, setSelectedClothDetails] = useState(null);
+    const [filterDialogOpen, setFilterDialogOpen] = useState(false);
+    const [filterCriteria, setFilterCriteria] = useState({
+        age: '',
+        gender: '',
+        season: ''
+    });
 
-    // Initialization of the selectedQuantities array based on the number of clothes items
     useState(() => {
         setSelectedQuantities(new Array(clothes.length).fill(1));
     }, [clothes]);
 
+    const handleDetailOpen = (cloth) => {
+        setSelectedClothDetails(cloth);
+        setDetailOpen(true);
+    };
+
+    const handleDetailClose = () => {
+        setDetailOpen(false);
+    };
+
     const handleQuantityChange = (index, page) => {
         setSelectedQuantities(prevQuantities => {
             const newQuantities = [...prevQuantities];
-            newQuantities[index] = page; // Update the selected quantity for the specific card
+            newQuantities[index] = page;
             return newQuantities;
         });
     };
@@ -90,7 +91,7 @@ const DonorClothes = () => {
     const handleDonationClose = () => {
         setDonationOpen(false);
         setSelectedVehicle(null);
-        setSelectedCloth(null); // Reset selected cloth
+        setSelectedCloth(null);
     };
 
     const handleSelectVehicle = (vehicle) => {
@@ -108,231 +109,290 @@ const DonorClothes = () => {
 
     const handleSubmit = () => {
         if (!selectedCloth || !selectedVehicle || !dateTimeOpen) {
-            setOpen(true); // Open dialog if any essential data is missing
+            setOpen(true);
             return;
         }
     
-        // Check if pickup date and time are selected
         const pickupDateTime = document.getElementById('datetime-local').value;
         if (!pickupDateTime) {
-            setOpen(true); // Open dialog if pickup date/time is missing
+            setOpen(true);
             return;
         }
     
-        // Calculate new quantities after donation for the selected cloth only
         const updatedClothes = clothes.map((cloth, index) => {
             if (cloth === selectedCloth) {
                 const updatedQuantity = cloth[5] - selectedQuantities[index];
-                return updatedQuantity > 0 ? [...cloth.slice(0, 5), updatedQuantity] : null; // Return null if quantity is zero or negative
+                return updatedQuantity > 0 ? [...cloth.slice(0, 5), updatedQuantity] : null;
             }
             return cloth;
-        }).filter(Boolean); // Filter out null values
+        }).filter(Boolean);
     
-        // Update clothes array with new quantities
         setClothes(updatedClothes);
     
-        // Reset states
         setDonationOpen(false);
         setSelectedVehicle(null);
         setSelectedCloth(null);
         setSuccessAlertOpen(true);
     };
-    
+
+    const handleFilterDialogOpen = () => {
+        setFilterDialogOpen(true);
+    };
+
+    const handleFilterDialogClose = () => {
+        setFilterDialogOpen(false);
+    };
+
+    const handleFilterChange = (event) => {
+        const { name, value } = event.target;
+        setFilterCriteria(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const applyFilters = () => {
+        setFilterDialogOpen(false);
+    };
 
     const filteredClothes = clothes.filter(cloth => {
-        const [name] = cloth;
-        return name.toLowerCase().includes(searchInput.toLowerCase());
+        const [name, age, gender, season] = cloth;
+        return name.toLowerCase().includes(searchInput.toLowerCase()) &&
+               (filterCriteria.age === '' || age.toLowerCase() === filterCriteria.age.toLowerCase()) &&
+               (filterCriteria.gender === '' || gender.toLowerCase() === filterCriteria.gender.toLowerCase()) &&
+               (filterCriteria.season === '' || season.toLowerCase() === filterCriteria.season.toLowerCase());
     });
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
-            {/* Search and filter */}
             <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
                 <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
             </div>
             <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
-                <IconButton>
-                    <FilterAltIcon />
-                </IconButton>
+                <Tooltip title="Filter">
+                    <IconButton onClick={handleFilterDialogOpen}>
+                        <FilterAltIcon />
+                    </IconButton>
+                </Tooltip>
             </div>
-            {/* Clothing items */}
+            <Dialog
+                open={filterDialogOpen}
+                onClose={handleFilterDialogClose}
+                aria-labelledby="form-dialog-title"
+            >
+                <DialogTitle id="form-dialog-title">Filter Clothes</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="age"
+                        name="age"
+                        label="Age"
+                        type="text"
+                        fullWidth
+                        onChange={handleFilterChange}
+                    />
+                    <TextField
+                        margin="dense"
+                        id="gender"
+                        name="gender"
+                        label="Gender"
+                        type="text"
+                        fullWidth
+                        onChange={handleFilterChange}
+                    />
+                    <TextField
+                        margin="dense"
+                        id="season"
+                        name="season"
+                        label="Season"
+                        type="text"
+                        fullWidth
+                        onChange={handleFilterChange}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleFilterDialogClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={applyFilters} color="primary">
+                        Done
+                    </Button>
+                </DialogActions>
+            </Dialog>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', width: '100%', marginTop: '30px' }}>
                 {filteredClothes.map((cloth, index) => (
                     <div key={index} style={{ margin: '10px' }}>
-                        <Card sx={{ maxWidth: 250, height: '100%' }}> {/* Set max width and fixed height */}
+                        <Card sx={{ maxWidth: 250, height: '100%' }}>
                             <CardMedia
                                 component="img"
                                 alt="Clothes"
                                 image={Clothes}
                                 style={{ width: '100%', objectFit: 'cover' }}
                             />
-                            <CardContent sx={{ height: '180px', overflow: 'auto' }}> {/* Set fixed height and allow overflow */}
+                            <CardContent sx={{ height: '180px', overflow: 'auto' }}>
                                 <Typography gutterBottom variant="h5" component="div">
                                     {cloth[0]}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'right' }}>
-                                    Quantity required: {cloth[5]}
+                                    Quantity available: {cloth[5]}
                                 </Typography>
                                 <p>Select Quantity: </p>
                                 <Pagination
                                     count={cloth[5]}
                                     color="primary"
                                     onChange={(event, page) => handleQuantityChange(index, page)}
-                                    // Set the onChange event handler
                                 />
                             </CardContent>
                             <CardActions>
-                            <Button size="small" onClick={() => handleDetailOpen(cloth)}>Details</Button>
-                                <Button size="small" onClick={() => handleDonationOpen(cloth)}>Donate</Button> {/* Pass cloth data to handleDonationOpen */}
+                                <Button size="small" onClick={() => handleDetailOpen(cloth)}>Details</Button>
+                                <Button size="small" onClick={() => handleDonationOpen(cloth)}>Donate</Button>
                             </CardActions>
                         </Card>
                     </div>
                 ))}
             </div>
-            {/* Donation Selection Paper */}
             <Dialog
-                open={donationOpen}
-                onClose={handleDonationClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">{"Select Donation Type and Schedule"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description" style={{ marginBottom: '10px' }}>
-                        Please select the type of vehicle you want to donate and schedule the pickup:
-                    </DialogContentText>
-                    <Grid container spacing={2}>
-                        <Grid item>
-                            <Button
-                                onClick={() => handleSelectVehicle("Car")}
-                                className="paper"
-                                style={{
-                                    padding: '10px',
-                                    textAlign: 'center',
-                                    marginBottom: '10px',
-                                    color: selectedVehicle === "Car" ? '#ffffff' : '#000000',
-                                    backgroundColor: selectedVehicle === "Car" ? '#007bff' : 'transparent',
-                                }}
-                            >
-                                Car
-                            </Button>
-                        </Grid>
-                        <Grid item>
-                            <Button
-                                onClick={() => handleSelectVehicle("Truck")}
-                                className="paper"
-                                style={{
-                                    padding: '10px',
-                                    textAlign: 'center',
-                                    marginBottom: '10px',
-                                    color: selectedVehicle === "Truck" ? '#ffffff' : '#000000',
-                                    backgroundColor: selectedVehicle === "Truck" ? '#007bff' : 'transparent',
-                                }}
-                            >
-                                Truck
-                            </Button>
-                        </Grid>
-                        <Grid item>
-                            <Button
-                                onClick={() => handleSelectVehicle("Motorcycle")}
-                                className="paper"
-                                style={{
-                                    padding: '10px',
-                                    textAlign: 'center',
-                                    marginBottom: '10px',
-                                    color: selectedVehicle === "Motorcycle" ? '#ffffff' : '#000000',
-                                    backgroundColor: selectedVehicle === "Motorcycle" ? '#007bff' : 'transparent',
-                                }}
-                            >
-                                Motorcycle
-                            </Button>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                id="datetime-local"
-                                label="Pickup Date and Time"
-                                type="datetime-local"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                        </Grid>
-                    </Grid>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleDonationClose} autoFocus>
-                        Cancel
-                    </Button>
-                    <Button onClick={handleSubmit} autoFocus>
-                        Submit
-                    </Button>
-                </DialogActions>
-            </Dialog>
+    open={donationOpen}
+    onClose={handleDonationClose}
+    aria-labelledby="alert-dialog-title"
+    aria-describedby="alert-dialog-description"
+>
+    <DialogTitle id="alert-dialog-title">Select Donation Type and Schedule</DialogTitle>
+    <DialogContent>
+        <DialogContentText id="alert-dialog-description" style={{ marginBottom: '10px' }}>
+            Please select the type of vehicle you want to donate and schedule the pickup:
+        </DialogContentText>
+        <Grid container spacing={2}>
+            <Grid item>
+                <Button
+                    onClick={() => handleSelectVehicle("Car")}
+                    className="paper"
+                    style={{
+                        padding: '10px',
+                        textAlign: 'center',
+                        marginBottom: '10px',
+                        color: selectedVehicle === "Car" ? '#ffffff' : '#000000',
+                        backgroundColor: selectedVehicle === "Car" ? '#007bff' : 'transparent',
+                    }}
+                >
+                    Car
+                </Button>
+            </Grid>
+            <Grid item>
+                <Button
+                    onClick={() => handleSelectVehicle("Truck")}
+                    className="paper"
+                    style={{
+                        padding: '10px',
+                        textAlign: 'center',
+                        marginBottom: '10px',
+                        color: selectedVehicle === "Truck" ? '#ffffff' : '#000000',
+                        backgroundColor: selectedVehicle === "Truck" ? '#007bff' : 'transparent',
+                    }}
+                >
+                    Truck
+                </Button>
+            </Grid>
+            <Grid item>
+                <Button
+                    onClick={() => handleSelectVehicle("Motorcycle")}
+                    className="paper"
+                    style={{
+                        padding: '10px',
+                        textAlign: 'center',
+                        marginBottom: '10px',
+                        color: selectedVehicle === "Motorcycle" ? '#ffffff' : '#000000',
+                        backgroundColor: selectedVehicle === "Motorcycle" ? '#007bff' : 'transparent',
+                    }}
+                >
+                    Motorcycle
+                </Button>
+            </Grid>
+            <Grid item xs={12}>
+                <TextField
+                    id="datetime-local"
+                    label="Pickup Date and Time"
+                    type="datetime-local"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                />
+            </Grid>
+        </Grid>
+    </DialogContent>
+    <DialogActions>
+        <Button onClick={handleDonationClose} autoFocus>
+            Cancel
+        </Button>
+        <Button onClick={handleSubmit} autoFocus>
+            Submit
+        </Button>
+    </DialogActions>
+</Dialog>
 
-            {/* Missing Data Alert */}
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">Missing Information</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Please select both the transportation type and the pickup date/time before submitting.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} autoFocus>
-                        OK
-                    </Button>
-                </DialogActions>
-            </Dialog>
+<Dialog
+    open={open}
+    onClose={handleClose}
+    aria-labelledby="alert-dialog-title"
+    aria-describedby="alert-dialog-description"
+>
+    <DialogTitle id="alert-dialog-title">Missing Information</DialogTitle>
+    <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+            Please select both the transportation type and the pickup date/time before submitting.
+        </DialogContentText>
+    </DialogContent>
+    <DialogActions>
+        <Button onClick={handleClose} autoFocus>
+            OK
+        </Button>
+    </DialogActions>
+</Dialog>
 
-            {/* Success Alert */}
-            <Dialog
-                open={successAlertOpen}
-                TransitionComponent={Transition}
-                keepMounted
-                onClose={handleSuccessAlertClose}
-                aria-describedby="alert-dialog-slide-description"
-            >
-                <DialogTitle>{"Success"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
-                        Your donation has been successfully submitted.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleSuccessAlertClose}>Close</Button>
-                </DialogActions>
-            </Dialog>
-            <Dialog
-                open={detailOpen}
-                onClose={handleDetailClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">Clothing Item Details</DialogTitle>
-                <DialogContent>
-                    {selectedClothDetails && (
-                        <div>
-                            <Typography variant="h6">{selectedClothDetails[0]}</Typography>
-                            <Typography>Category: {selectedClothDetails[1]}</Typography>
-                            <Typography>Gender: {selectedClothDetails[2]}</Typography>
-                            <Typography>Season: {selectedClothDetails[3]}</Typography>
-                            <Typography>Material: {selectedClothDetails[4]}</Typography>
-                            <Typography>Quantity required: {selectedClothDetails[5]}</Typography>
-                        </div>
-                    )}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleDetailClose}>Close</Button>
-                </DialogActions>
-            </Dialog>
+<Dialog
+    open={successAlertOpen}
+    TransitionComponent={Transition}
+    keepMounted
+    onClose={handleSuccessAlertClose}
+    aria-describedby="alert-dialog-slide-description"
+>
+    <DialogTitle>{"Success"}</DialogTitle>
+    <DialogContent>
+        <DialogContentText id="alert-dialog-slide-description">
+            Your donation has been successfully submitted.
+        </DialogContentText>
+    </DialogContent>
+    <DialogActions>
+        <Button onClick={handleSuccessAlertClose}>Close</Button>
+    </DialogActions>
+</Dialog>
+<Dialog
+    open={detailOpen}
+    onClose={handleDetailClose}
+    aria-labelledby="alert-dialog-title"
+    aria-describedby="alert-dialog-description"
+>
+    <DialogTitle id="alert-dialog-title">Clothing Item Details</DialogTitle>
+    <DialogContent>
+        {selectedClothDetails && (
+            <div>
+                <Typography variant="h6">{selectedClothDetails[0]}</Typography>
+                <Typography>Category: {selectedClothDetails[1]}</Typography>
+                <Typography>Gender: {selectedClothDetails[2]}</Typography>
+                <Typography>Season: {selectedClothDetails[3]}</Typography>
+                <Typography>Material: {selectedClothDetails[4]}</Typography>
+                <Typography>Quantity required: {selectedClothDetails[5]}</Typography>
+            </div>
+        )}
+    </DialogContent>
+    <DialogActions>
+        <Button onClick={handleDetailClose}>Close</Button>
+    </DialogActions>
+</Dialog>
+
         </div>
     );
 }
 
 export default DonorClothes;
-
