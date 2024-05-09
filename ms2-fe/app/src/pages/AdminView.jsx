@@ -24,7 +24,7 @@ const AdminView = () => {
             <CardMedia
                 sx={{ height: 140 }}
                 image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
-                title="green iguana"
+                title="Array Test"
             />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">

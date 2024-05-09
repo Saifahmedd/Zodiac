@@ -1,41 +1,30 @@
-import React, { useState } from 'react';
-import { Outlet, Link } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Tooltip, Menu, Avatar, MenuItem, ListItemButton, Stack, styled, Paper } from '@mui/material';
-import { AccessTime, AccountCircle, Bloodtype, Category, Checkroom, Edit, EventNote, ExpandLess, ExpandMore, Fastfood, Groups, Home, Mail, Masks, MenuBook, School, Toys, Vaccines, FavoriteBorder } from '@mui/icons-material';
-import Logo from 'logo.jpeg';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import React from 'react';
+import { Box, Stack, Typography, Avatar, Divider } from '@mui/material';
+import { Person, Email, Phone } from '@mui/icons-material';
 
-const settings = ['Change Password', 'Logout'];
-const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  }));
+export default function AdminProfile() {
+  return (
+    <Box sx={{ maxWidth: 400, mx: 'auto', p: 3, borderRadius: 4, boxShadow: 1 }}>
+      <Avatar sx={{ width: 100, height: 100, mx: 'auto', mb: 2 }} src="path/to/avatar.jpg" alt="Profile Picture" />
+      <Typography variant="h5" align="center" gutterBottom>
+        Saif Ali
+      </Typography>
+      <Divider sx={{ mb: 2 }} />
+      <Stack spacing={5}>
+        <InfoItem icon={<Person />} label="Name" value="Saif Ali" />
+        <InfoItem icon={<Email />} label="Email" value="saif.ali@gmail.com" />
+        <InfoItem icon={<Phone />} label="Mobile Number" value="0100-876-9261" />
+      </Stack>
+    </Box>
+  );
+}
 
-  
-  export default function AdminProfile() {
-    return (
-      <Box sx={{ width: '100%' }}>
-        <Stack spacing={2}>
-          <Item>Name : Saif</Item>
-          <Item>Email : Saif.Ali@gmail.com</Item>
-          <Item>Mobile Number : 01008769261 </Item>
-        </Stack>
-      </Box>
-    );
-  }
-
-
-
-
-
-
+function InfoItem({ icon, label, value }) {
+  return (
+    <Stack direction="row" alignItems="center" spacing={1}>
+      {icon}
+      <Typography variant="body1" fontWeight="bold">{label}:</Typography>
+      <Typography variant="body1">{value}</Typography>
+    </Stack>
+  );
+}

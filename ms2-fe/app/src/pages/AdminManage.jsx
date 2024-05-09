@@ -10,6 +10,8 @@ import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import styled from "styled-components";
+
+
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -39,14 +41,15 @@ const AdminManage = () => {
             </CardContent>
             <CardActions>
                 <Button
-                    component="label"
+                    component="a"
+                    href="/path/to/your/file"
+                    download="filename.txt"
                     role={undefined}
                     variant="contained"
                     tabIndex={-1}
-                    startIcon={<CloudDoneIcon />}
+                    startIcon={<DownloadIcon />}
                 >
-                    Upload file
-                    <VisuallyHiddenInput type="file" />
+                    Download
                 </Button>
 
                 <Button variant="contained" size="medium" endIcon={<CheckIcon />} color="success">Accept</Button>
