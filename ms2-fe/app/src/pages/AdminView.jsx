@@ -18,7 +18,6 @@ const organizations = [
   ];
   
 
-
 const AdminView = () => {
     return (
         <Card sx={{ maxWidth: 345 }}>

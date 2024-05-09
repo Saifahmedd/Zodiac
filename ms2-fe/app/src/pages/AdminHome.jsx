@@ -206,7 +206,7 @@ const AdminHome = () => {
                     </ListItem>
                     <ListItem disablePadding>
                         <ListItemButton component={Link} to="/search">
-                            <ListItemText primary="Search Oragnizations" />
+                            <ListItemText primary="Search Organizations" />
                         </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>
