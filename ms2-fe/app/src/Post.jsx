@@ -4,6 +4,9 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Button from '@mui/material/Button';
+import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
+import GoogleMap from './GoogleMap';
+
 
 const governments = [
     'Cairo',
@@ -614,10 +617,10 @@ const Post = () =>{
                   label="Address"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
+                  fullWidth
                   
                   sx={{ marginBottom: 1 }}
                 />
-
                 <TextField
                   label="Subjects"
                   value={subjects}
@@ -626,7 +629,9 @@ const Post = () =>{
                   sx={{ marginBottom: 1 }}
                 />
 
-
+                <div>
+                    <GoogleMap />
+                </div>
 
               </Box>
             )}
@@ -704,6 +709,11 @@ const Post = () =>{
                   fullWidth
                   sx={{ marginBottom: 1 }}
                 />
+
+                <div>
+                    <GoogleMap />
+                    
+                </div>
 
 
               </Box>
