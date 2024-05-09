@@ -15,6 +15,7 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import NavigationIcon from '@mui/icons-material/Navigation';
+import { Link } from 'react-router-dom';
 
 
 
@@ -248,134 +249,12 @@ const Root = () => {
   }}
 >
   <Tooltip title="New Post" arrow>
-    <Fab color="primary" aria-label="add" onClick={handleClick}>
+    <Fab color="primary" aria-label="add" component={Link} to="/post">
       <AddIcon />
     </Fab>
   </Tooltip>
-</Box>
+</Box> 
 
-{showSelect && (
-  <Box
-    sx={{
-      position: 'fixed',
-      top: '25%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      zIndex: 1000, // Ensure the select is above other content
-    }}
-  >
-    <FormControl sx={{ minWidth: 220 }}>
-      <InputLabel id="demo-simple-select-helper-label">Choose a Category</InputLabel>
-      <Select
-        labelId="demo-simple-select-helper-label"
-        id="demo-simple-select-helper"
-        label="Choose a Category"
-        value={selectedCategory}
-        onChange={handleCategoryChange}
-      >
-        <MenuItem value="">
-          <em>Choose a Category</em>
-        </MenuItem>
-        <MenuItem value="Clothes">Clothes</MenuItem>
-        <MenuItem value="Toys">Toys</MenuItem>
-        <MenuItem value="Food">Food</MenuItem>
-        <MenuItem value="Medical Supplies">Medical Supplies</MenuItem>
-        <MenuItem value="School Supplies">School Supplies</MenuItem>
-        <MenuItem value="Blood Donations">Blood Donations</MenuItem>
-        <MenuItem value="Teaching">Teaching</MenuItem>
-        <MenuItem value="Medical Cases">Medical Cases</MenuItem>
-      </Select>
-    </FormControl>
-
-    {showClothesTextboxes && selectedCategory === 'Clothes' && (
-      <Box sx={{ marginTop: 2 }}>
-        <FormControl sx={{ minWidth: 200, marginBottom: 1 }}>
-          <InputLabel id="age-label">Age</InputLabel>
-          <Select
-            labelId="age-label"
-            id="age-select"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-          >
-            {Array.from({ length: 100 }, (_, i) => i + 1).map((num) => (
-              <MenuItem key={num} value={num}>{num}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl component="fieldset">
-          <InputLabel component="legend">Gender</InputLabel>
-          <RadioGroup
-            row
-            aria-label="gender"
-            name="gender"
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-          >
-            <FormControlLabel value="Male" control={<Radio />} label="Male" />
-            <FormControlLabel value="Female" control={<Radio />} label="Female" />
-          </RadioGroup>
-        </FormControl>
-        <FormControl component="fieldset">
-          <InputLabel component="legend">Season</InputLabel>
-          <RadioGroup
-            row
-            aria-label="season"
-            name="season"
-            value={season}
-            onChange={(e) => setSeason(e.target.value)}
-          >
-            <FormControlLabel value="Summer" control={<Radio />} label="Summer" />
-            <FormControlLabel value="Winter" control={<Radio />} label="Winter" />
-            <FormControlLabel value="Autumn" control={<Radio />} label="Autumn" />
-            <FormControlLabel value="Spring" control={<Radio />} label="Spring" />
-          </RadioGroup>
-        </FormControl>
-        <TextField
-          label="Material"
-          value={material}
-          onChange={(e) => setMaterial(e.target.value)}
-          fullWidth
-          sx={{ marginBottom: 1 }}
-        />
-        <TextField
-          label="Type"
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-          fullWidth
-          sx={{ marginBottom: 1 }}
-        />
-        <TextField
-          label="Quantity"
-          value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
-          fullWidth
-        />
-      </Box>
-    )}
-
-    {showSchoolSuppliesSelect && (
-      <Box sx={{ marginTop: 2 }}>
-        <FormControl sx={{ minWidth: 220 }}>
-          <InputLabel id="school-supply-label">Choose a School Supply</InputLabel>
-          <Select
-            labelId="school-supply-label"
-            id="school-supply-select"
-            label="Choose a School Supply"
-            value={selectedSchoolSupply}
-            onChange={handleSchoolSupplyChange}
-          >
-            <MenuItem value="">
-              <em>Choose a School Supply</em>
-            </MenuItem>
-            <MenuItem value="Book">Book</MenuItem>
-            <MenuItem value="Stationary">Stationary</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
-    )}
-
-  </Box>
-)}
 
       <Outlet />
     </div>
