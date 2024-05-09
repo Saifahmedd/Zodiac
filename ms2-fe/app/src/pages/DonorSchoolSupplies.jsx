@@ -180,17 +180,6 @@ const DonorSchoolSupplies = () => {
                             <CardActions>
                                 <Button size="small" onClick={() => handleDetailOpen(supply)}>Details</Button>
                                 <Button size="small" onClick={() => handleDonationOpen(supply)}>Donate</Button>
-                                <Tooltip title="Favorite">
-                                    <IconButton
-                                        size="large"
-                                        edge="start"
-                                        color="inherit"
-                                        aria-label="menu"
-                                        sx={{ mr: 2 }}
-                                    >
-                                        <FavoriteBorderIcon />
-                                    </IconButton>
-                                </Tooltip>
                             </CardActions>
                         </Card>
                     </div>

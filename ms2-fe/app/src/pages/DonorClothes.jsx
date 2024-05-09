@@ -184,17 +184,6 @@ const DonorClothes = () => {
                             <CardActions>
                             <Button size="small" onClick={() => handleDetailOpen(cloth)}>Details</Button>
                                 <Button size="small" onClick={() => handleDonationOpen(cloth)}>Donate</Button> {/* Pass cloth data to handleDonationOpen */}
-                                <Tooltip title="Favorite">
-                                    <IconButton
-                                        size="large"
-                                        edge="start"
-                                        color="inherit"
-                                        aria-label="menu"
-                                        sx={{ mr: 2 }}
-                                    >
-                                        <FavoriteBorderIcon />
-                                    </IconButton>
-                                </Tooltip>
                             </CardActions>
                         </Card>
                     </div>

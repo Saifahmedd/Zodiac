@@ -164,17 +164,6 @@ const DonorFood = () => {
                             <CardActions>
                                 <Button size="small" onClick={() => handleClickOpen(item)}>Details</Button>
                                 <Button size="small" onClick={() => handleDonationOpen(item)}>Donate</Button>
-                                <Tooltip title="Favorite">
-                                    <IconButton
-                                        size="large"
-                                        edge="start"
-                                        color="inherit"
-                                        aria-label="menu"
-                                        sx={{ mr: 2 }}
-                                    >
-                                        <FavoriteBorderIcon />
-                                    </IconButton>
-                                </Tooltip>
                             </CardActions>
                         </Card>
                     </div>

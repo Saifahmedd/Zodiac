@@ -252,13 +252,13 @@ const medicalCases = [
                 </ListItemIcon>
               <ListItemText primary="Blood Donations" />
               </ListItem>
-              <ListItem button onClick={toggleDrawer}>
+              <ListItem button onClick={toggleDrawer} component={Link} to="/teaching">
                 <ListItemIcon>
                   <School />
                 </ListItemIcon>
               <ListItemText primary="Teaching" />
               </ListItem>
-              <ListItem button onClick={toggleDrawer}>
+              <ListItem button onClick={toggleDrawer} component={Link} to="/medicalcases">
                 <ListItemIcon>
                   <Masks />
                 </ListItemIcon>
