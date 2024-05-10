@@ -240,8 +240,8 @@ const filteredPatients = patients.filter(patient => {
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button size="small" onClick={() => handleDetailOpen(patient)}>Details</Button>
                                 <Button size="small">View Location</Button>
+                                <Button size="small" onClick={() => handleDetailOpen(patient)}>Details</Button>
                                 <Button size="small" onClick={() => handleDonationOpen(patient)}>Donate</Button>
                             </CardActions>
                         </Card>

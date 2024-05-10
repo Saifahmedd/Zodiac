@@ -138,8 +138,9 @@ const DonorMedicalCases = () => {
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button size="small" onClick={() => handleViewDetails(medicalCase)}>View Description</Button>
-                                <Button size="small" onClick={() => handleViewCase(medicalCase)}>View Case</Button>
+                                <Button size="small" onClick={() => handleViewDetails(medicalCase)}>View Location</Button>
+                                <Button size="small" onClick={() => handleViewDetails(medicalCase)}>View Details</Button>
+                                <Button size="small" onClick={() => handleViewCase(medicalCase)}>Fulfill</Button>
                             </CardActions>
                         </Card>
                     </div>

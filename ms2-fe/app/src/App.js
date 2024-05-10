@@ -9,7 +9,7 @@ import BloodDonation from "./pages/DonorBloodDonation";
 import Teaching from "./pages/DonorTeaching";
 import MedicalCases from "./pages/DonorMedicalCases";
 import ViewOrg from "./pages/DonorViewOrg";
-
+import TrackingOrder from "./pages/DonorTrackingOrder";
 
 import {
   createBrowserRouter,
@@ -31,9 +31,9 @@ const router = createBrowserRouter(
       <Route path="/teaching" element={<Teaching />} />
       <Route path="/medicalcases" element={<MedicalCases />} />
       <Route path="/viewOrg" element={<ViewOrg />} />
-
-
+      <Route path="/trackingorder" element ={<TrackingOrder />} />
     </Route>
+    
   )
 );
 

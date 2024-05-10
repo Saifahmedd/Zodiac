@@ -264,7 +264,7 @@ const organizations = [
               
             </List>
           </Collapse>
-          <ListItem button onClick={toggleDrawer}>
+          <ListItem button onClick={toggleDrawer} component={Link} to="/trackingorder">
             <ListItemIcon>
               <AccessTime />
             </ListItemIcon>
