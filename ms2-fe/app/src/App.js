@@ -1,6 +1,7 @@
 import Home from "./OrgHome";
 import Root from "./Root";
 import Post from "./Post";
+import AccountInfo from "./AccountInfo";
 
 import {
   createBrowserRouter,
@@ -16,6 +17,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<Root />}>
       <Route path="home" element={<Home />} />
       <Route path="post" element={<Post />} />
+      <Route path="account" element={<AccountInfo />} />
       
       {/* ... etc. */}
     </Route>
