@@ -119,6 +119,7 @@ const Root = () => {
             edge="start"
             color="inherit"
             aria-label="menu"
+            component={Link} to="/account"
             sx={{ mr: 2, ml: 2}}
           >
             <AccountCircle />
