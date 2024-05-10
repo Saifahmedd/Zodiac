@@ -64,7 +64,11 @@ const DonorSchoolSupplies = () => {
     const applyFilterLogic = () => {
         // Filter the medical supplies based on the selected category
         const filteredSupplies = medicalSupplies.filter(supply => {
-            return filterCategory === '' || supply[4].toLowerCase() === filterCategory.toLowerCase();
+            const [name, , , , category] = supply;
+            return (
+                name.toLowerCase().includes(searchInput.toLowerCase()) &&
+                (filterCategory === '' || category.toLowerCase() === filterCategory.toLowerCase())
+            );
         });
         
         // Update the state with the filtered supplies

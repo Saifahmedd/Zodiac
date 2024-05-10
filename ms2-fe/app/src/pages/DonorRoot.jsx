@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Tooltip } from '@mui/material';
+import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Tooltip, Menu, MenuItem } from '@mui/material';
 import { AccessTime, AccountCircle, Bloodtype, Category, Checkroom, Edit, EventNote, ExpandLess, ExpandMore, Fastfood, Groups, Home, Mail, Masks, MenuBook, School, Toys, Vaccines,FavoriteBorder } from '@mui/icons-material';
 import Logo from './images/logo_Main.png';
 
@@ -129,6 +129,17 @@ const organizations = [
     ["Blue Ocean Institute", "Non-profit", "654 Maple Ave, Beachside", "+5678901234", "Coastal", "City E"]
 ];
 
+const [anchorEl, setAnchorEl] = useState(null);
+
+const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+};
+
+const handleClose = () => {
+    setAnchorEl(null);
+};
+
+
   return (
     <div>
       <AppBar position="static">
@@ -163,16 +174,26 @@ const organizations = [
           </Tooltip>
 
           <Tooltip title="Profile">
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2, ml: 2}}
-          >
-            <AccountCircle />
-          </IconButton>
-          </Tooltip>
+            <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ mr: 2, ml: 2}}
+                onClick={handleClick}
+            >
+                <AccountCircle  />
+            </IconButton>
+        </Tooltip>
+        <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+        >
+            <MenuItem component={Link} to="/profile" onClick={handleClose}>Profile</MenuItem>
+            <MenuItem component={Link} to="/logout" onClick={handleClose}>Logout</MenuItem>
+        </Menu>
+
 
         </Toolbar>
       </AppBar>
@@ -190,7 +211,7 @@ const organizations = [
         }}
       >
         <List>
-          <ListItem button onClick={toggleDrawer}>
+          <ListItem button onClick={toggleDrawer} component={Link} to="/profile">
             <ListItemIcon>
               <AccountCircle />
             </ListItemIcon>

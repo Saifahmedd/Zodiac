@@ -10,7 +10,7 @@ import Teaching from "./pages/DonorTeaching";
 import MedicalCases from "./pages/DonorMedicalCases";
 import ViewOrg from "./pages/DonorViewOrg";
 import TrackingOrder from "./pages/DonorTrackingOrder";
-
+import Prfile from "./pages/DonorProfile";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -32,6 +32,7 @@ const router = createBrowserRouter(
       <Route path="/medicalcases" element={<MedicalCases />} />
       <Route path="/viewOrg" element={<ViewOrg />} />
       <Route path="/trackingorder" element ={<TrackingOrder />} />
+      <Route path="/profile" element ={<Prfile />} />
     </Route>
     
   )
