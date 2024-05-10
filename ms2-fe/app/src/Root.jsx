@@ -164,63 +164,7 @@ const Root = () => {
           </ListItem>
           <Collapse in={categoryOpen} 
           timeout="auto" unmountOnExit   sx={{  marginLeft: '20px',}}>
-            <List component="div" disablePadding>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <Checkroom />
-                </ListItemIcon>
-                <ListItemText primary="Clothes" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <Toys />
-                </ListItemIcon>
-              <ListItemText primary="Toys" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <MenuBook />
-                </ListItemIcon>
-              <ListItemText primary="School Book" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <Edit />
-                </ListItemIcon>
-              <ListItemText primary="School Stationary" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <Fastfood />
-                </ListItemIcon>
-              <ListItemText primary="Food" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <Vaccines />
-                </ListItemIcon>
-              <ListItemText primary="Medical Supplies" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <Bloodtype />
-                </ListItemIcon>
-              <ListItemText primary="Blood Donations" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <School />
-                </ListItemIcon>
-              <ListItemText primary="Teaching" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <Masks />
-                </ListItemIcon>
-              <ListItemText primary="Medical Cases" />
-              </ListItem>
-              
-            </List>
+      
           </Collapse>
           <ListItem button onClick={toggleDrawer}>
             <ListItemIcon>
@@ -228,11 +172,13 @@ const Root = () => {
             </ListItemIcon>
             <ListItemText primary="Track Order" />
           </ListItem>
-          <ListItem button onClick={toggleDrawer}>
+          <ListItem button onClick={toggleDrawer} component={Link} to="/vieworg">
             <ListItemIcon>
               <Groups />
             </ListItemIcon>
-            <ListItemText primary="View Organizations" />
+            <ListItemText primary="View My Posts" component={Link} to="/vieworg" />
+            
+
           </ListItem>
         </List>
       </Drawer>

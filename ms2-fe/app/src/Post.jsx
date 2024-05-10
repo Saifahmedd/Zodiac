@@ -99,6 +99,10 @@ const Post = () =>{
     const [showMedicalCasesTextboxes,setShowMedicalCasesTextboxes] = useState(false); 
     const [speciality, setSpeciality] = useState('');
     const [caseDescription, setCaseDescription] = useState('');
+    const [formData, setFormData] = useState([]);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    
+    
     
   
     const toggleDrawer = () => {
@@ -146,6 +150,7 @@ const Post = () =>{
       
     };
 
+
     const VisuallyHiddenInput = styled('input')({
         clip: 'rect(0 0 0 0)',
         clipPath: 'inset(50%)',
@@ -161,6 +166,20 @@ const Post = () =>{
       const handleBloodTypeChange = (event) => {
         setSelectedBloodType(event.target.value);
     };
+    // Function to handle form submission 
+    const handleSubmit = () => {
+      // Add the current form data to the array list
+      setFormData([...formData, {
+          category: selectedCategory,
+          // Add other form fields here...
+      }]);
+      // Open the popup message
+      setOpenSnackbar(true);
+  };
+  // Function to handle closing the popup message
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+};
 
   
     return (
@@ -373,7 +392,7 @@ const Post = () =>{
                   value={devices}
                   onChange={(e) => setDevices(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1, width:'400px' }}
+                  sx={{ marginBottom: 1, width:'500px' }}
                 />
                 <br/>
                 <TextField
@@ -383,13 +402,15 @@ const Post = () =>{
                   fullWidth
                   sx={{ marginBottom: 1 , width:'500px'}}
                 />
+                <br/>
                 <TextField
                   label="Use"
                   value={Use}
                   onChange={(e) => setUse(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1 , width:'500px'}}
                 />
+                <br/>           
                 <TextField
                     label="Quantity"
                     value={quantity}
@@ -400,6 +421,7 @@ const Post = () =>{
                     fullWidth
                     type="number"
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
+                    sx={{ marginBottom: 1 , width:'500px'}}
                     />
 
                <Grid container spacing={2} alignItems="center">
@@ -646,8 +668,9 @@ const Post = () =>{
                   value={patientName}
                   onChange={(e) => setPatientName(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1, width:'500px' }}
                 />
+                <br/>
                 <FormControl sx={{ minWidth: 200, marginBottom: 1 }}>
                   <InputLabel id="age-label">Age</InputLabel>
                   <TextField
@@ -660,6 +683,7 @@ const Post = () =>{
                     fullWidth
                     type="number"
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
+                    sx={{ marginBottom: 1,width:'500px' }}
                     />
                 </FormControl>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -676,8 +700,9 @@ const Post = () =>{
                   value={material}
                   onChange={(e) => setMaterial(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1,width:'500px' }}
                 />
+                <br/>
                 <TextField
                     label="Quantity"
                     value={quantity}
@@ -688,44 +713,46 @@ const Post = () =>{
                     fullWidth
                     type="number"
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
+                    sx={{ marginBottom: 1,width:'500px' }}
                     />
+                    <br/>
                 <TextField
                   label="Address"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1,width:'500px' }}
                 />
+                <br/>
                 <TextField
                   label="Speciality"
                   value={speciality}
                   onChange={(e) => setSpeciality(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1,width:'500px' }}
                 />
+                <br/>
                 <TextField
                   label="Case Description"
                   value={caseDescription}
                   onChange={(e) => setCaseDescription(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1,width:'500px' }}
                 />
+            
 
                 <div>
                     <GoogleMap />
                     
                 </div>
-
-
+                
               </Box>
             )}
+            
           </div>
 
-
-
-
-
         </div>
+        
       );
       
 }
