@@ -17,6 +17,8 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Tooltip from '@mui/material/Tooltip';
 import Grid from '@mui/material/Grid';
 import ClothesImage from './images/MedicalSupplies.jpg'; // Assuming you have an image for medical cases
+import GoogleMapMarkerDialog from './GoogleMap'; // Assuming you have a component for displaying Google Map markers
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -45,6 +47,16 @@ const DonorMedicalCases = () => {
         ["Emily Brown", 20, "Female", 55, "google marker url", "101 Pine St", "University Hospital", "Neurology", "Patient presents with symptoms of migraine headaches."],
         ["David Wilson", 55, "Male", 90, "google marker url", "202 Maple St", "Children's Hospital", "Pediatrics", "Patient brought in for routine checkup and immunization."],
     ]);
+
+    const [mapDialogOpen, setMapDialogOpen] = useState(false);
+
+    const handleViewLocation = () => {
+        setMapDialogOpen(true);
+    };
+
+    const handleCloseMapDialog = () => {
+        setMapDialogOpen(false);
+    };
 
     const handleSearchChange = (event) => {
         setSearchInput(event.target.value);
@@ -138,7 +150,7 @@ const DonorMedicalCases = () => {
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button size="small" onClick={() => handleViewDetails(medicalCase)}>View Location</Button>
+                            <Button onClick={handleViewLocation}>View Location</Button>
                                 <Button size="small" onClick={() => handleViewDetails(medicalCase)}>View Details</Button>
                                 <Button size="small" onClick={() => handleViewCase(medicalCase)}>Fulfill</Button>
                             </CardActions>
@@ -284,6 +296,17 @@ const DonorMedicalCases = () => {
                         Apply Filters
                     </Button>
                 </DialogActions>
+            </Dialog>
+            <Dialog
+                open={mapDialogOpen}
+                onClose={handleCloseMapDialog}
+                maxWidth="md" // Set the maximum width of the dialog
+                fullWidth // Make the dialog take up the full width of its container
+            >
+                <DialogTitle>Location</DialogTitle>
+                <DialogContent style={{ height: '400px' }}> {/* Adjust the height of the dialog content */}
+                    <GoogleMapMarkerDialog style={{ width: '100%', height: '100%' }} /> {/* Set the width and height of the map */}
+                </DialogContent>
             </Dialog>
         </div>
     );

@@ -76,8 +76,7 @@ const DonorSchoolSupplies = () => {
         
         // Close the filter dialog
         setFilterDialogOpen(false);
-    };
-    
+    };   
 
     useState(() => {
         setSelectedQuantities(new Array(medicalSupplies.length).fill(1));

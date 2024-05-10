@@ -17,6 +17,8 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Tooltip from '@mui/material/Tooltip';
 import Grid from '@mui/material/Grid';
 import ClothesImage from './images/Toys.jpg'; // Assuming you have an image for teaching
+import GoogleMapMarkerDialog from './GoogleMap';
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -38,6 +40,15 @@ const DonorTeaching = () => {
         area: '',
         governorate: ''
     });
+    const [mapDialogOpen, setMapDialogOpen] = useState(false);
+
+    const handleViewLocation = () => {
+        setMapDialogOpen(true);
+    };
+
+    const handleCloseMapDialog = () => {
+        setMapDialogOpen(false);
+    };
 
     const [teaching, setTeaching] = useState([
         [30, "123 Main St", "google marker url", "Mathematics"],
@@ -143,6 +154,7 @@ const DonorTeaching = () => {
                                 </Typography>
                             </CardContent>
                             <CardActions>
+                                <Button onClick={handleViewLocation}>View Location</Button>
                                 <Button size="small" onClick={() => handleViewDetails(teach)}>Details</Button>
                                 <Button size="small" onClick={() => handleDonationOpen(teach)}>Teach</Button>
                             </CardActions>
@@ -286,6 +298,20 @@ const DonorTeaching = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            <Dialog
+                open={mapDialogOpen}
+                onClose={handleCloseMapDialog}
+                maxWidth="md" // Set the maximum width of the dialog
+                fullWidth // Make the dialog take up the full width of its container
+            >
+                <DialogTitle>Location</DialogTitle>
+                <DialogContent style={{ height: '400px' }}> {/* Adjust the height of the dialog content */}
+                    <GoogleMapMarkerDialog style={{ width: '100%', height: '100%' }} /> {/* Set the width and height of the map */}
+                </DialogContent>
+            </Dialog>
+
+
         </div>
     );
 }
