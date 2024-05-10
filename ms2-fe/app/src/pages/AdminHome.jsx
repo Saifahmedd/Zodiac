@@ -181,7 +181,13 @@ const AdminHome = () => {
                     <ListItem disablePadding>
                         <ListItemButton component={Link} to="/delete" sx={{ color: 'inherit' }}>
                             <DeleteIcon />
-                            <ListItemText primary="Delete Accounts" />
+                            <ListItemText primary="Delete Organization Accounts" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton component={Link} to="/donordelete" sx={{ color: 'inherit' }}>
+                            <DeleteIcon />
+                            <ListItemText primary="Delete Donor Accounts" />
                         </ListItemButton>
                     </ListItem>
                 </List>

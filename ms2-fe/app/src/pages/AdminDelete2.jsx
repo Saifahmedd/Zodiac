@@ -14,18 +14,25 @@ import Ali from "AliElectricity.png";
 import hospital1 from "hospital.png";
 import hospital2 from "hospital2.png";
 import orphanage from "Orphanagee.png";
+import teacher from "teacher.png";
+import teacher2 from "teacher2.png";
+import doctor from "doctor.png";
+import doctor2 from "doctor2.png";
+import doctor3 from "doctor3.png";
 import { Box } from "@mui/material";
 
-const initialOrganizations = [
-    ["Care Hospital", "Non-profit", "123 Main St, Cityville", "+1234567890", "Central District", "City A", hospital1],
-    ["Canada Electricity", "Corporate", "456 Oak Ave, Townsville", "+2345678901", "Downtown", "City B", Reem],
-    ["Growth Orphanage", "Non-profit", "789 Elm St, Villagetown", "+3456789012", "Suburbia", "City C", orphanage],
-    ["Zodiac Hospital", "Non-profit", "321 Pine St, Countryside", "+4567890123", "Rural", "City D", hospital2],
-    ["Sewedy Electricity", "Non-profit", "654 Maple Ave, Beachside", "+5678901234", "Coastal", "City E", Ali]
+const donors = [
+    // [name, type, email]
+    ["John Doe", "Doctor", "john@example.com",doctor],
+    ["Jane Smith", "Teacher", "jane@example.com",teacher],
+    ["Michael Johnson", "Doctor", "michael@example.com",doctor2],
+    ["Emily Williams", "Teacher", "emily@example.com",teacher2],
+    ["David Brown", "Doctor", "david@example.com",doctor3]
 ];
 
-const AdminDelete = () => {
-    const [organizations, setOrganizations] = useState(initialOrganizations);
+
+const AdminDelete2 = () => {
+    const [organizations, setOrganizations] = useState(donors);
 
     const handleDelete = (index) => {
         const updatedOrganizations = [...organizations];
@@ -40,7 +47,7 @@ const AdminDelete = () => {
                     <Card key={index} sx={{ margin: '10px', minWidth: '200px', maxWidth: '300px' }}>
                         <CardMedia
                             sx={{ height: 140 }}
-                            image={organization[6]}
+                            image={organization[3]}
                             title="Array Test"
                         />
                         <CardContent>
@@ -48,10 +55,7 @@ const AdminDelete = () => {
                                 {organization[0]}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                Email: {organization[4]}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                Address: {organization[2]}
+                                Email: {organization[2]}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
                                 Type: {organization[1]}
@@ -67,4 +71,4 @@ const AdminDelete = () => {
     );
 }
 
-export default AdminDelete;
+export default AdminDelete2;

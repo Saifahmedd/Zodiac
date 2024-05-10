@@ -23,12 +23,13 @@ const settings = ['Profile', 'Change Password', 'Logout'];
 const drawerWidth = 300;
 
 const organizations = [
-    ["Care Hospital", "contact@care.com", "123 Main St, City, Country", { latitude: 40.7128, longitude: -74.006 }, "Hospital", hospital1],
-    ["Reem Electricity", "contact@reem.com", "456 Elm St, City, Country", { latitude: 34.0522, longitude: -118.2437 }, "Electrical", Reem],
-    ["Growth Orphanage", "contact@growth.com", "789 Oak St, City, Country", { latitude: 51.5074, longitude: -0.1278 }, "Orphanage", orphanage],
-    ["Zodiac Hospital", "contact@zodiac.com", "101 Pine St, City, Country", { latitude: 35.6895, longitude: 139.6917 }, "Hospital", hospital2],
-    ["Ali Electricity", "contact@ali.com", "111 Maple St, City, Country", { latitude: 48.8566, longitude: 2.3522 }, "Electrical", Ali]
-];
+    // [name, type, address, contactNumber, email, area, governorate]
+   ["Care Hospital", "Non-profit", "123 Main St, Cityville", "+1234567890", "Central District", "City A",hospital1],
+   ["Canada Electricity", "Corporate", "456 Oak Ave, Townsville", "+2345678901", "Downtown", "City B",Reem],
+   ["Growth Orphanage", "Non-profit", "789 Elm St, Villagetown", "+3456789012", "Suburbia", "City C",orphanage],
+   ["Zodiac Hospital", "Non-profit", "321 Pine St, Countryside", "+4567890123", "Rural", "City D",hospital2],
+   ["Sewedy Electricity", "Non-profit", "654 Maple Ave, Beachside", "+5678901234", "Coastal", "City E",Ali]
+ ];
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -102,7 +103,7 @@ export default function AdminSearch() {
                         <CardMedia
                             component="img"
                             height="140"
-                            image={organization[5]}
+                            image={organization[6]}
                             alt={organization[0]}
                         />
                         <CardContent>
