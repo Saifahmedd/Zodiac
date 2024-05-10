@@ -1,10 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, TextField, Button, CircularProgress, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+
+
 const Organization = () => {
+  const [registered, setRegistered] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [gender, setGender] = useState('');
+  const [message, setMessage] = useState('');
 
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage('');
+        setRegistered(false);
+        // Redirect to login page after clearing the message
+        window.location.href = '/';
+      }, 2000); // Delay in milliseconds before resetting message
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -26,10 +42,11 @@ const Organization = () => {
         orgGovernorate: data.get('orgGovernorate'),
         document: data.get('document')
       });
-      // You can handle form submission and document upload here
-    }, 2000);
-  };
-
+  
+  setMessage('Registered successfully! Redirecting to login page...');
+  setRegistered(true); // Set registered to true after form submission
+}, 1500); // Delay in milliseconds before simulating form submission completion
+};
   const mapContainerStyle = {
     width: '100%',
     height: '400px',
@@ -39,8 +56,16 @@ const Organization = () => {
     lat: 26.8206,
     lng: 30.8025,
   };
-  
+
   const zoom = 6;
+
+  if (registered) {
+    return (
+      <Box>
+        <Typography variant="h6" align="center">{message}</Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -170,7 +195,7 @@ const Organization = () => {
             required
             fullWidth
             id="document"
-            label="Upload required Document(s) for Organization Verification"
+            label="Upload required Document(s) for Organization Verification."
             name="document"
             type="file"
             InputLabelProps={{ shrink: true }}

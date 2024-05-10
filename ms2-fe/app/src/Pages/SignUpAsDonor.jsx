@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, FormControl, InputLabel, Select, MenuItem, } from '@mui/material';
+import React, { useState , useEffect } from 'react';
+import { Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem, Button, CircularProgress } from '@mui/material';
 import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
+
 const SignUpAsDonor = () => {
   const [role, setRole] = useState('');
   const [showTeachingFields, setShowTeachingFields] = useState(false);
@@ -12,6 +14,19 @@ const SignUpAsDonor = () => {
   const [probonoCases, setProbonoCases] = useState(0);
   const [probonoClasses, setProbonoClasses] = useState(0);
 
+  const [isUploading, setIsUploading] = useState(false);
+  const [message, setMessage] = useState('');
+ 
+    useEffect(() => {
+      if (message) {
+        const timer = setTimeout(() => {
+          setMessage('');
+          // Redirect to login page after clearing the message
+          window.location.href = '/';
+        }, 2000); // Delay in milliseconds before resetting message
+        return () => clearTimeout(timer);
+      }
+    }, [message]);
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -28,7 +43,13 @@ const SignUpAsDonor = () => {
       role: data.get('role'),
       document: data.get('document')
     });
+    setIsUploading(true);
+    setTimeout(() => {
+      setMessage('Registered successfully! Redirecting to login page...');
+      setIsUploading(false);
+    }, 1500); // Delay in milliseconds before setting message
   };
+
 
   const handleRoleChange = (event) => {
     const selectedRole = event.target.value;
@@ -36,6 +57,15 @@ const SignUpAsDonor = () => {
     setShowTeachingFields(selectedRole === 'teacher');
     setShowDoctorFields(selectedRole === 'doctor');
   };
+
+
+  if (message) {
+    return (
+      <Box>
+        <Typography variant="h6" align="center">{message}</Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -136,16 +166,7 @@ const SignUpAsDonor = () => {
             label="Governorate"
             name="governorate"
           />
-          <TextField
-            margin="normal"
-            fullWidth
-            id="document"
-            label="Upload required Document(s) for Donor Verification (if applicable)."
-            name="document"
-            type="file"
-            InputLabelProps={{ shrink: true }}
-            inputProps={{ multiple: true }}
-          />
+    
           <FormControl fullWidth margin="normal" required>
             <InputLabel id="role-label">Role</InputLabel>
             <Select
@@ -225,7 +246,17 @@ const SignUpAsDonor = () => {
         <KeyboardArrowDownIcon />
       </Button>
     </Box>
-   
+    <TextField
+             margin="normal"
+             required
+             fullWidth
+             id="document"
+            label="Upload required Document(s) for Teacher Verification."
+            name="document"
+            type="file"
+            InputLabelProps={{ shrink: true }}
+            inputProps={{ multiple: true }}
+          />
             </>
           )}
 
@@ -305,11 +336,28 @@ const SignUpAsDonor = () => {
         <KeyboardArrowDownIcon />
       </Button>
     </Box>
+    <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="document"
+            label="Upload required Document(s) for Doctor Verification."
+            name="document"
+            type="file"
+            InputLabelProps={{ shrink: true }}
+            inputProps={{ multiple: true }}
+          />
   </>
 )}
           
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
-            Sign Up
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3 }}
+            disabled={isUploading}
+          >
+            {isUploading ? <CircularProgress size={24} /> : 'Sign Up'}
           </Button>
         </Box>
       </Box>

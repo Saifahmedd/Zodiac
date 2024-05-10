@@ -4,7 +4,7 @@ import SignUpAsDonor from './Pages/SignUpAsDonor.jsx';
 import SignUpAsOrganization from './Pages/SignUpAsOrganization.jsx';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MapComponent from './Pages/MapComponent.jsx';
+
 import OrgLogin from './Pages/OrgLogin'; 
 
 import DonorLogin1 from './Pages/DonorLogin1.jsx';
