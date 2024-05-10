@@ -13,6 +13,7 @@ import AdminPassword from "pages/AdminPassword";
 import AdminView from "pages/AdminView";
 import AdminProfile from "pages/AdminProfile";
 import AdminDelete2 from "pages/AdminDelete2";
+import AdminManage2 from "pages/AdminManage2";
 
 
 
@@ -27,6 +28,7 @@ const router = createBrowserRouter(
       <Route path="view" element={<AdminView />}></Route>
       <Route path="profile" element={<AdminProfile />}></Route>
       <Route path="donordelete" element={<AdminDelete2 />}></Route>
+      <Route path="donormanage" element={<AdminManage2 />}></Route>
       
       
     

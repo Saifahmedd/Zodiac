@@ -30,10 +30,10 @@ const settings = ['Change Password', 'Logout'];
 const NotificationBar = () => {
     // Hard-coded messages for demonstration
     const notifications = [
-        { message: "care hospital", description: "A new patient has applied" },
+        { message: "Care hospital", description: "A new patient has applied" },
         { message: "Reminder: Charity event tomorrow.", description: "A reminder about the upcoming charity event at growth orphnage" },
         { message: "Account verification pending.", description: "There are accounts pending verification." },
-        { message: "Reem electricty ", description: "new monthly bill is recieved " }
+        { message: "Canada electricty ", description: "new monthly bill is recieved " }
     ];
 
     const [showMessage, setShowMessage] = useState(null);
@@ -163,13 +163,19 @@ const AdminHome = () => {
                     <ListItem disablePadding>
                         <ListItemButton component={Link} to="/view" sx={{ color: 'inherit' }}>
                             <ViewListIcon />
-                            <ListItemText primary="View Registrations" />
+                            <ListItemText primary="View Organization Registrations" />
                         </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>
                         <ListItemButton component={Link} to="/manage" sx={{ color: 'inherit' }}>
                             <SettingsIcon />
-                            <ListItemText primary="Manage Requests" />
+                            <ListItemText primary="Manage Organization Requests" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton component={Link} to="/donormanage" sx={{ color: 'inherit' }}>
+                            <SettingsIcon />
+                            <ListItemText primary="Manage Donor Requests" />
                         </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>

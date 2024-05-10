@@ -67,7 +67,7 @@ const AdminView = () => {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button variant="text" size="medium" color="primary" onClick={() => handleDetailsClick(organization)}>Details</Button>
+                            <Button variant="outlined" size="medium" color="primary" onClick={() => handleDetailsClick(organization)}>Details</Button>
                         </CardActions>
                     </Card>
                 ))}
