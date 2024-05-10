@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Tooltip, Grid, FormControl, InputLabel, Select, MenuItem, FormHelperText, TextField, Radio, RadioGroup, FormControlLabel } from '@mui/material';
+import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Tooltip} from '@mui/material';
 import { AccessTime, AccountCircle, Bloodtype, Category, Checkroom, Edit, EventNote, ExpandLess, ExpandMore, Fastfood, Groups, Home, Mail, Masks, MenuBook, School, Toys, Vaccines,FavoriteBorder } from '@mui/icons-material';
 import Logo from './Logo_Main.jpg';
 import Box from '@mui/material/Box';
@@ -15,6 +15,9 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import NavigationIcon from '@mui/icons-material/Navigation';
+import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive'; //el garaz el beyr2os
 import { Link } from 'react-router-dom';
 
 
@@ -222,17 +225,18 @@ const Root = () => {
               
             </List>
           </Collapse>
-          <ListItem button onClick={toggleDrawer}>
+          <ListItem button  component={Link} to="/DonatedPosts" onClick={toggleDrawer}>
             <ListItemIcon>
-              <AccessTime />
+              <VolunteerActivismIcon />
             </ListItemIcon>
-            <ListItemText primary="Track Order" />
+            <ListItemText primary="Donated Posts" />
           </ListItem>
-          <ListItem button onClick={toggleDrawer}>
+          <ListItem button  component={Link} to="/OrgPosts" onClick={toggleDrawer}>
+
             <ListItemIcon>
-              <Groups />
+              <DynamicFeedIcon />
             </ListItemIcon>
-            <ListItemText primary="View Organizations" />
+            <ListItemText primary="My Posts" />
           </ListItem>
         </List>
       </Drawer>

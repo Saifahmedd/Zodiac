@@ -2,6 +2,8 @@ import Home from "./OrgHome";
 import Root from "./Root";
 import Post from "./Post";
 import AccountInfo from "./AccountInfo";
+import OrgPosts from "./OrgPosts";
+import DonatedPosts from "./DonatedPosts";
 
 import {
   createBrowserRouter,
@@ -18,6 +20,8 @@ const router = createBrowserRouter(
       <Route path="home" element={<Home />} />
       <Route path="post" element={<Post />} />
       <Route path="account" element={<AccountInfo />} />
+      <Route path="OrgPosts" element={<OrgPosts/>} />
+      <Route path="DonatedPosts" element={<DonatedPosts/>} />
       
       {/* ... etc. */}
     </Route>
