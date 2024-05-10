@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,17 +14,55 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+
+
 
 function Login() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const enteredUsername = data.get('email').trim();
+    const enteredPassword = data.get('password').trim();
+
+    // Check if username and password match
+    if (enteredUsername === 'donor' && enteredPassword === 'donor') {
+      setLoggedIn(true);
+      setUsername(enteredUsername);
+      setPassword(enteredPassword);
+    } else if (enteredUsername === 'org' && enteredPassword === 'org') {
+      setLoggedIn(true);
+      setUsername(enteredUsername);
+      setPassword(enteredPassword);
+    } else if (enteredUsername === 'admin' && enteredPassword === 'admin') {
+      setLoggedIn(true);
+      setUsername(enteredUsername);
+      setPassword(enteredPassword);
+    } else {
+      alert('Invalid username or password');
+    }
   };
 
+
+  if (loggedIn) {
+    if (username === 'donor' && password=== 'donor') {
+      return <Navigate to="/DonorLogin" />;
+    } else if (username === 'org' && password=== 'org') {
+      return <Navigate to="/OrgLogin" />;
+    } else if (username === 'admin' && password=== 'admin') {
+      return <Navigate to="/AdminLogin" />;
+    }
+  }
   return (
     <ThemeProvider theme={createTheme()}>
       <Container component="main" maxWidth="xs">
@@ -59,10 +98,24 @@ function Login() {
               fullWidth
               name="password"
               label="Password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               id="password"
               autoComplete="current-password"
-            />
+
+            InputProps={{
+    endAdornment: (
+      <InputAdornment position="end">
+        <IconButton
+          aria-label="toggle password visibility"
+          onClick={handleClickShowPassword}
+          edge="end"
+        >
+          {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+        </IconButton>
+      </InputAdornment>
+    ),
+  }}
+/>
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
