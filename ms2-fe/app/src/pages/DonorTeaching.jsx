@@ -26,7 +26,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 // Import statements...
 
-const DonorTeaching = () => {
+const DonorTeaching = ({hideSearchFilter}) => {
     const [open, setOpen] = useState(false);
     const [selectedTeaching, setSelectedTeaching] = useState(null);
     const [dateTimeOpen, setDateTimeOpen] = useState(false);
@@ -121,14 +121,20 @@ const DonorTeaching = () => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
             {/* Search input and filter icon */}
-            <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
-                <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
-            </div>
-            <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
-                <IconButton onClick={handleFilterClick}>
-                    <FilterAltIcon />
-                </IconButton>
-            </div>
+            {!hideSearchFilter && (
+                <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
+                    <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
+                </div>
+            )}
+            {!hideSearchFilter && (
+                <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
+                    <Tooltip title="Filter">
+                        <IconButton onClick={handleFilterClick}>
+                            <FilterAltIcon />
+                        </IconButton>
+                    </Tooltip>
+                </div>
+            )}
 
             {/* Render filtered teaching posts */}
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', width: '100%', marginTop: '30px' }}>

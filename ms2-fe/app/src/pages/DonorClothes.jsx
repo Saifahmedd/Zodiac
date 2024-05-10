@@ -16,8 +16,6 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Tooltip from '@mui/material/Tooltip';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 
@@ -25,7 +23,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DonorClothes = () => {
+const DonorClothes = ({ hideSearchFilter }) => {
     const [open, setOpen] = useState(false);
     const [donationOpen, setDonationOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -33,11 +31,11 @@ const DonorClothes = () => {
     const [successAlertOpen, setSuccessAlertOpen] = useState(false);
     const [selectedCloth, setSelectedCloth] = useState(null);
     const [clothes, setClothes] = useState([
-        ["T-shirt", "Kids", "Unisex", "Summer", "Cotton", 10],
+        ["T-shirt", "Kids", "Male", "Summer", "Cotton", 10],
         ["Coat", "Adult", "Male", "Winter", "Wool", 5],
         ["Dress", "Teen", "Female", "Spring", "Polyester", 8],
         ["Jeans", "Adult", "Female", "Fall", "Denim", 6],
-        ["Sweater", "Kids", "Unisex", "Winter", "Acrylic", 7]
+        ["Sweater", "Kids", "Female", "Winter", "Acrylic", 7]
     ]);
     const [searchInput, setSearchInput] = useState('');
     const [selectedQuantities, setSelectedQuantities] = useState([]);
@@ -62,6 +60,7 @@ const DonorClothes = () => {
     const handleDetailClose = () => {
         setDetailOpen(false);
     };
+
 
     const handleQuantityChange = (index, page) => {
         setSelectedQuantities(prevQuantities => {
@@ -165,16 +164,20 @@ const DonorClothes = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
-            <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
-                <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
-            </div>
-            <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
-                <Tooltip title="Filter">
-                    <IconButton onClick={handleFilterDialogOpen}>
-                        <FilterAltIcon />
-                    </IconButton>
-                </Tooltip>
-            </div>
+            {!hideSearchFilter && (
+                <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
+                    <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
+                </div>
+            )}
+            {!hideSearchFilter && (
+                <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
+                    <Tooltip title="Filter">
+                        <IconButton onClick={handleFilterDialogOpen}>
+                            <FilterAltIcon />
+                        </IconButton>
+                    </Tooltip>
+                </div>
+            )}
             <Dialog
                 open={filterDialogOpen}
                 onClose={handleFilterDialogClose}

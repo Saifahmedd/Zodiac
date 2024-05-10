@@ -25,7 +25,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DonorSchoolSupplies = () => {
+const DonorSchoolSupplies = ({ hideSearchFilter }) => {
     const [open, setOpen] = useState(false);
     const [donationOpen, setDonationOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -33,16 +33,11 @@ const DonorSchoolSupplies = () => {
     const [successAlertOpen, setSuccessAlertOpen] = useState(false);
     const [selectedSupply, setSelectedSupply] = useState(null);
     const [supplies, setSupplies] = useState([
-        ["To Kill a Mockingbird", "Harper Lee", "English", "First", "A classic novel about racial injustice and moral growth.", "https://example.com/book1.jpg"],
-        ["1984", "George Orwell", "English", "Nineteen Eighty-Four", "A dystopian novel about totalitarianism and surveillance.", "https://example.com/book2.jpg"],
         ["The Great Gatsby", "F. Scott Fitzgerald", "English", "Reprint", "A story of the American Dream and its corruption in the Jazz Age.", "https://example.com/book3.jpg"],
-        ["Pride and Prejudice", "Jane Austen", "English", "Revised", "A romantic novel of manners set in early 19th-century England.", "https://example.com/book4.jpg"],
         ["Harry Potter and the Philosopher's Stone", "J.K. Rowling", "English", "First", "The first book in the Harry Potter series.", "https://example.com/book5.jpg"],
         ["Pens", 500],
         ["Notebooks", 300],
-        ["Pencils", 400],
-        ["Erasers", 200],
-        ["Markers", 150]
+        ["Pencils", 400]
     ]);
     const [searchInput, setSearchInput] = useState('');
     const [selectedQuantities, setSelectedQuantities] = useState([]);
@@ -165,14 +160,20 @@ const DonorSchoolSupplies = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
-            <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
-                <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
-            </div>
-            <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
-                <IconButton onClick={handleFilterIconClick}>
-                    <FilterAltIcon />
-                </IconButton>
-            </div>
+            {!hideSearchFilter && (
+                <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
+                    <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
+                </div>
+            )}
+            {!hideSearchFilter && (
+                <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
+                    <Tooltip title="Filter">
+                        <IconButton onClick={handleFilterIconClick}>
+                            <FilterAltIcon />
+                        </IconButton>
+                    </Tooltip>
+                </div>
+            )}
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', width: '100%', marginTop: '30px' }}>
                 {filteredSupplies.map((supply, index) => (
                     <div key={index} style={{ margin: '10px' }}>
@@ -183,20 +184,29 @@ const DonorSchoolSupplies = () => {
                                 image={supply[5]}
                                 style={{ width: '100%', objectFit: 'cover' }}
                             />
-                            <CardContent sx={{ height: '180px', overflow: 'auto' }}>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    {supply.length !== 6 ? supply[0] : supply[0] }
-                                </Typography>
-                                {supply.length !== 6 ? (
-                                    <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'right' }}>
-                                        Quantity available: {supply[1]}
-                                    </Typography>
-                                ) : (
-                                    <>
-                                        <Typography>The Author: {supply[1]}</Typography>
-                                    </>
-                                )}
-                            </CardContent>
+<CardContent sx={{ height: '180px', overflow: 'auto' }}>
+    <Typography gutterBottom variant="h5" component="div">
+        {supply.length !== 6 ? supply[0] : supply[0] }
+    </Typography>
+    {supply.length !== 6 ? (
+        <>
+            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'right' }}>
+                Quantity available: {supply[1]}
+            </Typography>
+            <p>Select Quantity: </p>
+            <Pagination
+                count={supply[1]}
+                color="primary"
+                onChange={(event, page) => handleQuantityChange(index, page)}
+            />
+        </>
+    ) : (
+        <>
+            <Typography>The Author: {supply[1]}</Typography>
+        </>
+    )}
+</CardContent>
+
                             <CardActions>
                                 <Button size="small" onClick={() => handleDetailOpen(supply)}>Details</Button>
                                 <Button size="small" onClick={() => handleDonationOpen(supply)}>Donate</Button>

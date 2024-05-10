@@ -24,7 +24,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DonorMedicalCases = () => {
+const DonorMedicalCases = ({hideSearchFilter}) => {
     const [open, setOpen] = useState(false);
     const [selectedCase, setSelectedCase] = useState(null);
     const [selectedCaseDetails, setSelectedCaseDetails] = useState(null);
@@ -120,14 +120,20 @@ const DonorMedicalCases = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
-            <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
-                <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
-            </div>
-            <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
-                <IconButton onClick={handleFilterClick}>
-                    <FilterAltIcon />
-                </IconButton>
-            </div>
+            {!hideSearchFilter && (
+                <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
+                    <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
+                </div>
+            )}
+            {!hideSearchFilter && (
+                <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
+                    <Tooltip title="Filter">
+                        <IconButton onClick={handleFilterClick}>
+                            <FilterAltIcon />
+                        </IconButton>
+                    </Tooltip>
+                </div>
+            )}
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', width: '100%', marginTop: '30px' }}>
                 {filteredCases.map((medicalCase, index) => (
                     <div key={index} style={{ margin: '10px' }}>

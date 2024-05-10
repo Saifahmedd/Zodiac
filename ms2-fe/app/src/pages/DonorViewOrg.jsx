@@ -18,18 +18,25 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { Tooltip } from '@mui/material';
+import hospital1 from './images/Hospital1.jpg';
+import hospital2 from './images/hospital2.jpg';
+import Reem from './images/Reem.jpg';
+import Ali from './images/Electricity.jpg';
+import orphanage from './images/orphanage.jpg';
+import GoogleMapMarkerDialog from './GoogleMap';
 
-const OrganizationCard = ({ organization }) => {
+const OrganizationCard = ({ organization, onViewLocation }) => {
+
   return (
     <div style={{ margin: '10px' }}>
-      <Card sx={{ maxWidth: 250, height: '100%' }}>
+      <Card sx={{ maxWidth: 250 }}>
         <CardMedia
           component="img"
           alt="Organization"
-          image={OrganizationImage} // Replace this with your organization image
-          style={{ width: '100%', objectFit: 'cover' }}
+          image={organization[6]} // Replace this with your organization image
+          style={{ width: '100%', objectFit: 'cover', height: '150px' }} // Adjust the height as needed
         />
-        <CardContent sx={{ height: '180px', overflow: 'auto' }}>
+        <CardContent style={{ height: '150px' }}> {/* Fixed height for the card content */}
           <Typography gutterBottom variant="h5" component="div">
             {organization[0]} {/* Name of the organization */}
           </Typography>
@@ -50,18 +57,19 @@ const OrganizationCard = ({ organization }) => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small">View Location</Button>
+            <Button onClick={onViewLocation}>View Location</Button>
         </CardActions>
       </Card>
     </div>
   );
 };
 
-const OrganizationList = ({ organizations }) => {
+
+const OrganizationList = ({ organizations, onViewLocation }) => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', width: '100%', marginTop: '30px' }}>
       {organizations.map((organization, index) => (
-        <OrganizationCard key={index} organization={organization} />
+        <OrganizationCard key={index} organization={organization} onViewLocation={onViewLocation} />
       ))}
     </div>
   );
@@ -71,7 +79,16 @@ const DonorViewOrg = () => {
   const [searchInput, setSearchInput] = useState('');
   const [filterDialogOpen, setFilterDialogOpen] = useState(false);
   const [filterCriteria, setFilterCriteria] = useState({ area: '', governorate: '', type: '' });
+  const [mapDialogOpen, setMapDialogOpen] = useState(false);
 
+  const handleViewLocation = () => {
+    setMapDialogOpen(true);
+  };
+
+  const handleCloseMapDialog = () => {
+    setMapDialogOpen(false);
+  };
+  
   const handleSearchChange = (event) => {
     setSearchInput(event.target.value);
   };
@@ -88,11 +105,12 @@ const DonorViewOrg = () => {
 
   // Sample organizations array
   const organizations = [
-    ["ABC Charity", "Non-profit", "123 Main St, Cityville", "+1234567890", "Central District", "City A"],
-    ["XYZ Corporation", "Corporate", "456 Oak Ave, Townsville", "+2345678901", "Downtown", "City B"],
-    ["Sunshine Foundation", "Non-profit", "789 Elm St, Villagetown", "+3456789012", "Suburbia", "City C"],
-    ["Green Earth Organization", "Non-profit", "321 Pine St, Countryside", "+4567890123", "Rural", "City D"],
-    ["Blue Ocean Institute", "Non-profit", "654 Maple Ave, Beachside", "+5678901234", "Coastal", "City E"]
+     // [name, type, address, contactNumber, email, area, governorate]
+    ["Care Hospital", "Non-profit", "123 Main St, Cityville", "+1234567890", "Central District", "City A", hospital1],
+    ["Canada Electricity", "Corporate", "456 Oak Ave, Townsville", "+2345678901", "Downtown", "City B", Reem],
+    ["Growth Orphanage", "Non-profit", "789 Elm St, Villagetown", "+3456789012", "Suburbia", "City C", orphanage],
+    ["Zodiac Hospital", "Non-profit", "321 Pine St, Countryside", "+4567890123", "Rural", "City D", hospital2],
+    ["Sewedy Electricity", "Non-profit", "654 Maple Ave, Beachside", "+5678901234", "Coastal", "City E", Ali]
   ];
 
   // Filtering organizations based on search input and filter criteria
@@ -115,7 +133,7 @@ const DonorViewOrg = () => {
           </IconButton>
         </Tooltip>
       </div>
-      <OrganizationList organizations={filteredOrganizations} />
+      <OrganizationList organizations={filteredOrganizations} onViewLocation={handleViewLocation} />
       <Dialog open={filterDialogOpen} onClose={() => setFilterDialogOpen(false)}>
         <DialogTitle>Filter Organizations</DialogTitle>
         <DialogContent>
@@ -172,6 +190,18 @@ const DonorViewOrg = () => {
           <Button onClick={handleReset}>Reset</Button>
           <Button onClick={() => setFilterDialogOpen(false)}>Close</Button>
         </DialogActions>
+      </Dialog>
+
+      <Dialog
+          open={mapDialogOpen}
+          onClose={handleCloseMapDialog}
+          maxWidth="md" // Set the maximum width of the dialog
+          fullWidth // Make the dialog take up the full width of its container
+      >
+          <DialogTitle>Location</DialogTitle>
+          <DialogContent style={{ height: '400px' }}> {/* Adjust the height of the dialog content */}
+              <GoogleMapMarkerDialog style={{ width: '100%', height: '100%' }} /> {/* Set the width and height of the map */}
+          </DialogContent>
       </Dialog>
     </div>
   );

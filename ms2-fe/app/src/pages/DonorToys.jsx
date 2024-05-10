@@ -17,12 +17,14 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import MenuItem from '@mui/material/MenuItem';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
+import Tooltip from '@mui/material/Tooltip';
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DonorToys = () => {
+const DonorToys = ({hideSearchFilter}) => {
     const [open, setOpen] = useState(false);
     const [donationOpen, setDonationOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -75,6 +77,7 @@ const DonorToys = () => {
 
     const handleClose = () => {
         setFilterDialogOpen(false);
+        setOpen(false);
     };
 
     const handleSearchChange = (event) => {
@@ -153,14 +156,20 @@ const DonorToys = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
-            <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
-                <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
-            </div>
-            <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
-                <IconButton onClick={handleClickOpen}>
-                    <FilterAltIcon />
-                </IconButton>
-            </div>
+            {!hideSearchFilter && (
+                <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
+                    <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
+                </div>
+            )}
+            {!hideSearchFilter && (
+                <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
+                    <Tooltip title="Filter">
+                        <IconButton onClick={handleClickOpen}>
+                            <FilterAltIcon />
+                        </IconButton>
+                    </Tooltip>
+                </div>
+            )}
             <div>
                 <Dialog open={filterDialogOpen} onClose={handleClose}>
                     <DialogTitle>Filter Toys</DialogTitle>

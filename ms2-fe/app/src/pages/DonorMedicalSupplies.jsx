@@ -26,7 +26,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DonorSchoolSupplies = () => {
+const DonorSchoolSupplies = ({hideSearchFilter}) => {
     const [open, setOpen] = useState(false);
     const [donationOpen, setDonationOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -174,16 +174,20 @@ const DonorSchoolSupplies = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
-            <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
-                <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
-            </div>
-            <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
-                <Tooltip title="Filter">
-                    <IconButton onClick={handleFilterDialogOpen}>
-                        <FilterAltIcon />
-                    </IconButton>
-                </Tooltip>
-            </div>
+            {!hideSearchFilter && (
+                <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
+                    <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
+                </div>
+            )}
+            {!hideSearchFilter && (
+                <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
+                    <Tooltip title="Filter">
+                        <IconButton onClick={handleFilterDialogOpen}>
+                            <FilterAltIcon />
+                        </IconButton>
+                    </Tooltip>
+                </div>
+            )}
 
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', width: '100%', marginTop: '30px' }}>
                 {filteredSupplies.map((supply, index) => (
