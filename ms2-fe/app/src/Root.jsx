@@ -142,7 +142,7 @@ const Root = () => {
         }}
       >
         <List>
-          <ListItem button onClick={toggleDrawer}>
+          <ListItem button  component={Link} to="/account" onClick={toggleDrawer}>
             <ListItemIcon>
               <AccountCircle />
             </ListItemIcon>

@@ -99,19 +99,12 @@ const Post = () =>{
     const [showMedicalCasesTextboxes,setShowMedicalCasesTextboxes] = useState(false); 
     const [speciality, setSpeciality] = useState('');
     const [caseDescription, setCaseDescription] = useState('');
+    const [formData, setFormData] = useState([]);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const submittedData = [];
+    const [showSubmitButton, setShowSubmitButton] = useState(false);
     
   
-    const toggleDrawer = () => {
-      setDrawerOpen(!drawerOpen);
-    };
-  
-    const toggleCategory = () => {
-      setCategoryOpen(!categoryOpen);
-    };
-  
-    const handleClick = () => {
-      setShowSelect(true); // Show the select component when "New Post" is clicked
-    };
   
     const handleChange = (event) => {
       setAge(event.target.value);
@@ -142,6 +135,7 @@ const Post = () =>{
       setShowBloodDonationsTextboxes(category === "Blood Donations");
       setShowTeachingTextboxes(category === "Teaching");
       setShowMedicalCasesTextboxes(category === "Medical Cases");
+      setShowSubmitButton(true);
 
       
     };
@@ -161,6 +155,27 @@ const Post = () =>{
       const handleBloodTypeChange = (event) => {
         setSelectedBloodType(event.target.value);
     };
+
+
+  // Function to handle closing the popup message
+      const handleCloseSnackbar = () => {
+      setOpenSnackbar(false);
+    };
+      const handleSubmit = () => {
+        // Prepare the data to be submitted
+        const data = {
+            // Include all the necessary fields here
+        };
+
+        // Add the data to the submittedData array list
+        submittedData.push(data);
+
+        // Show a pop-up message
+        alert('Data is submitted successfully');
+      };
+
+
+
 
   
     return (
@@ -216,14 +231,15 @@ const Post = () =>{
             {showClothesTextboxes && selectedCategory === 'Clothes' && (
               <Box sx={{ marginTop: 2 }}>
                 <FormControl sx={{ minWidth: 200, marginBottom: 1 }}>
-                  <InputLabel id="age-label">Age</InputLabel>
+                  <InputLabel id="age-label"></InputLabel>
                   <TextField
                     label="Age"
                     value={age}
                     onChange={(e) => {
-                        const value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-                        setAge(value);
-                    }}
+                      let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                      value = Math.max(1, Math.min(100, value)); // Ensure value is between 1 and 100
+                      setAge(value);
+                  }}
                     fullWidth
                     type="number"
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
@@ -252,8 +268,9 @@ const Post = () =>{
                   value={material}
                   onChange={(e) => setMaterial(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1, width:'400px' }}
                 />
+                <br/>
                 <TextField
                     label="Quantity"
                     value={quantity}
@@ -264,9 +281,12 @@ const Post = () =>{
                     fullWidth
                     type="number"
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
+                    sx={{ marginBottom: 1, width:'400px' }}
                     />
               </Box>
+              
             )}
+    
           </div>
 
           <div>
@@ -334,7 +354,7 @@ const Post = () =>{
 
 
               </Box>
-            )}
+            )}           
           </div>
 
           <div>
@@ -362,7 +382,7 @@ const Post = () =>{
 
 
               </Box>
-            )}
+            )}         
           </div>
 
           <div>
@@ -421,7 +441,7 @@ const Post = () =>{
 
 
               </Box>
-            )}
+            )}          
           </div>
 
           
@@ -500,7 +520,7 @@ const Post = () =>{
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
                     />
                 </Box>
-                )}
+                )}               
           </div>
 
           <div>
@@ -719,10 +739,15 @@ const Post = () =>{
               </Box>
             )}
           </div>
-
-
-
-
+                  {/* Submit button */}
+      <div style={{ position: 'fixed', bottom: 20, left: 20 }}>
+        {showSubmitButton && (
+          <Button onClick={handleSubmit} variant="contained" color="primary">
+            Submit
+          </Button>
+        )}
+      </div>
+          
 
         </div>
       );
