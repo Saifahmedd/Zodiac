@@ -373,14 +373,15 @@ const Post = () =>{
                   value={devices}
                   onChange={(e) => setDevices(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1, width:'400px' }}
                 />
+                <br/>
                 <TextField
                   label="Type"
                   value={type}
                   onChange={(e) => setType(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1 , width:'500px'}}
                 />
                 <TextField
                   label="Use"
