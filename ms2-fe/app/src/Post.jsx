@@ -55,7 +55,7 @@ const bloodTypes = [
     'O-',
 ];
 
-const Post = () =>{
+const Post = ({ addPost }) =>{
 
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [categoryOpen, setCategoryOpen] = useState(false);
@@ -101,21 +101,10 @@ const Post = () =>{
     const [caseDescription, setCaseDescription] = useState('');
     const [formData, setFormData] = useState([]);
     const [openSnackbar, setOpenSnackbar] = useState(false);
-    
-    
+    const submittedData = [];
+    const [showSubmitButton, setShowSubmitButton] = useState(false);
     
   
-    const toggleDrawer = () => {
-      setDrawerOpen(!drawerOpen);
-    };
-  
-    const toggleCategory = () => {
-      setCategoryOpen(!categoryOpen);
-    };
-  
-    const handleClick = () => {
-      setShowSelect(true); // Show the select component when "New Post" is clicked
-    };
   
     const handleChange = (event) => {
       setAge(event.target.value);
@@ -146,10 +135,10 @@ const Post = () =>{
       setShowBloodDonationsTextboxes(category === "Blood Donations");
       setShowTeachingTextboxes(category === "Teaching");
       setShowMedicalCasesTextboxes(category === "Medical Cases");
+      setShowSubmitButton(true);
 
       
     };
-
 
     const VisuallyHiddenInput = styled('input')({
         clip: 'rect(0 0 0 0)',
@@ -166,20 +155,45 @@ const Post = () =>{
       const handleBloodTypeChange = (event) => {
         setSelectedBloodType(event.target.value);
     };
-    // Function to handle form submission 
-    const handleSubmit = () => {
-      // Add the current form data to the array list
-      setFormData([...formData, {
-          category: selectedCategory,
-          // Add other form fields here...
-      }]);
-      // Open the popup message
-      setOpenSnackbar(true);
-  };
+
+
   // Function to handle closing the popup message
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
-};
+      const handleCloseSnackbar = () => {
+      setOpenSnackbar(false);
+    };
+      const handleSubmit = () => {
+        // Prepare the data to be submitted
+        const data = {
+            // Include all the necessary fields here
+        };
+
+        // Add the data to the submittedData array list
+        submittedData.push(data);
+
+        // Show a pop-up message
+        alert('Data is submitted successfully');
+      };
+
+       // Function to handle form submission
+      const handlePostSubmit = () => {
+        // Prepare the new post object
+        const newPost = {
+          // Add post data here...
+        };
+
+        // Call the addPost function passed from the parent component
+        addPost(newPost);
+  };
+
+
+      const newPost = {
+        // Create a new post object with the data you want to submit
+        // For example, if you have some state variables like age, gender, material, etc.
+        age: age,
+        gender: gender,
+        material: material,
+        // Add other fields as needed
+      };
 
   
     return (
@@ -235,17 +249,19 @@ const Post = () =>{
             {showClothesTextboxes && selectedCategory === 'Clothes' && (
               <Box sx={{ marginTop: 2 }}>
                 <FormControl sx={{ minWidth: 200, marginBottom: 1 }}>
-                  <InputLabel id="age-label">Age</InputLabel>
+                <InputLabel id="age-label">{age ? '' : 'Age'}</InputLabel>
                   <TextField
                     label="Age"
                     value={age}
                     onChange={(e) => {
-                        const value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-                        setAge(value);
-                    }}
+                      let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                      value = Math.max(1, Math.min(100, value)); // Ensure value is between 1 and 100
+                      setAge(value);
+                  }}
                     fullWidth
                     type="number"
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
+                    sx={{ marginBottom: 1, width:'400px' }}
                     />
                 </FormControl>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -271,8 +287,9 @@ const Post = () =>{
                   value={material}
                   onChange={(e) => setMaterial(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1, width:'400px' }}
                 />
+                <br/>
                 <TextField
                     label="Quantity"
                     value={quantity}
@@ -283,26 +300,31 @@ const Post = () =>{
                     fullWidth
                     type="number"
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
+                    sx={{ marginBottom: 1, width:'400px' }}
                     />
               </Box>
+              
             )}
+    
           </div>
 
           <div>
             {showToysTextboxes && selectedCategory === 'Toys' && (
               <Box sx={{ marginTop: 2 }}>
                 <FormControl sx={{ minWidth: 200, marginBottom: 1 }}>
-                  <InputLabel id="age-label">Age</InputLabel>
+                <InputLabel id="age-label">{age ? '' : 'Age'}</InputLabel>
                   <TextField
                     label="Age"
                     value={age}
                     onChange={(e) => {
-                        const value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-                        setAge(value);
-                    }}
+                      let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                      value = Math.max(1, Math.min(100, value)); // Ensure value is between 1 and 100
+                      setAge(value);
+                  }}
                     fullWidth
                     type="number"
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
+                    sx={{ marginBottom: 1, width:'400px' }}
                     />
                 </FormControl>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -319,8 +341,9 @@ const Post = () =>{
                   value={material}
                   onChange={(e) => setMaterial(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1, width:'400px' }}
                 />
+                <br/>
                 <TextField
                     label="Quantity"
                     value={quantity}
@@ -331,6 +354,7 @@ const Post = () =>{
                     fullWidth
                     type="number"
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
+                    sx={{ marginBottom: 1, width:'400px' }}
                     />
 
                <Grid container spacing={2} alignItems="center">
@@ -353,7 +377,7 @@ const Post = () =>{
 
 
               </Box>
-            )}
+            )}           
           </div>
 
           <div>
@@ -364,8 +388,9 @@ const Post = () =>{
                   value={type}
                   onChange={(e) => setType(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1, width:'400px' }}
                 />
+                <br/>
                 <TextField
                     label="Quantity"
                     value={quantity}
@@ -376,12 +401,13 @@ const Post = () =>{
                     fullWidth
                     type="number"
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
+                    sx={{ marginBottom: 1, width:'400px' }}
                     />
 
 
 
               </Box>
-            )}
+            )}         
           </div>
 
           <div>
@@ -392,7 +418,7 @@ const Post = () =>{
                   value={devices}
                   onChange={(e) => setDevices(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1, width:'500px' }}
+                  sx={{ marginBottom: 1, width:'400px' }}
                 />
                 <br/>
                 <TextField
@@ -400,7 +426,7 @@ const Post = () =>{
                   value={type}
                   onChange={(e) => setType(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 , width:'500px'}}
+                  sx={{ marginBottom: 1,width:'400px' }}
                 />
                 <br/>
                 <TextField
@@ -408,9 +434,9 @@ const Post = () =>{
                   value={Use}
                   onChange={(e) => setUse(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 , width:'500px'}}
+                  sx={{ marginBottom: 1,width:'400px' }}
                 />
-                <br/>           
+                <br/>
                 <TextField
                     label="Quantity"
                     value={quantity}
@@ -421,7 +447,7 @@ const Post = () =>{
                     fullWidth
                     type="number"
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
-                    sx={{ marginBottom: 1 , width:'500px'}}
+                    sx={{ marginBottom: 1,width:'400px' }}
                     />
 
                <Grid container spacing={2} alignItems="center">
@@ -444,7 +470,7 @@ const Post = () =>{
 
 
               </Box>
-            )}
+            )}          
           </div>
 
           
@@ -457,32 +483,36 @@ const Post = () =>{
                     value={bookName}
                     onChange={(e) => setBookName(e.target.value)}
                     fullWidth
-                    sx={{ marginBottom: 1 }}
+                    sx={{ marginBottom: 1,width:'400px' }}
                     />
+                    <br/>
                     {/* Author */}
                     <TextField
                     label="Author"
                     value={author}
                     onChange={(e) => setAuthor(e.target.value)}
                     fullWidth
-                    sx={{ marginBottom: 1 }}
+                    sx={{ marginBottom: 1, width:'400px' }}
                     />
+                    <br/>
                     {/* Language */}
                     <TextField
                     label="Language"
                     value={language}
                     onChange={(e) => setLanguage(e.target.value)}
                     fullWidth
-                    sx={{ marginBottom: 1 }}
+                    sx={{ marginBottom: 1,width:'400px' }}
                     />
+                    <br/>
                     {/* Edition */}
                     <TextField
                     label="Edition"
                     value={edition}
                     onChange={(e) => setEdition(e.target.value)}
                     fullWidth
-                    sx={{ marginBottom: 1 }}
+                    sx={{ marginBottom: 1,width:'400px' }}
                     />
+                    <br/>
                     {/* Short Summary */}
                     <TextField
                     label="Short Summary"
@@ -491,7 +521,7 @@ const Post = () =>{
                     fullWidth
                     multiline
                     rows={4}
-                    sx={{ marginBottom: 1 }}
+                    sx={{ marginBottom: 1,width:'400px' }}
                     />
                     {/* Picture */}
                     <Grid container spacing={2} alignItems="center">
@@ -510,6 +540,7 @@ const Post = () =>{
                         </Button>
                     </Grid>
                     </Grid>
+                    <br/>
                     {/* Quantity */}
                     <TextField
                     label="Quantity"
@@ -521,9 +552,10 @@ const Post = () =>{
                     fullWidth
                     type="number"
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
+                    sx={{ marginBottom: 1,width:'400px' }}
                     />
                 </Box>
-                )}
+                )}               
           </div>
 
           <div>
@@ -534,8 +566,9 @@ const Post = () =>{
                     value={type}
                     onChange={(e) => setType(e.target.value)}
                     fullWidth
-                    sx={{ marginBottom: 1 }}
+                    sx={{ marginBottom: 1,width:'400px' }}
                     />
+                    <br/>
                     <TextField
                     label="Amount"
                     value={amount}
@@ -546,6 +579,7 @@ const Post = () =>{
                     fullWidth
                     type="number"
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
+                    sx={{ marginBottom: 1,width:'400px' }}
                     />
                 </Box>
                 )}
@@ -560,7 +594,7 @@ const Post = () =>{
                   value={patientName}
                   onChange={(e) => setPatientName(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1,width:'400px' }}
                 />
 
             <Box>
@@ -572,6 +606,7 @@ const Post = () =>{
                     value={selectedBloodType}
                     label="Blood Type"
                     onChange={handleBloodTypeChange}
+                    sx={{ marginBottom: 1,width:'400px' }}
                 >
                     <MenuItem value="">
                         <em>Choose a Blood Type</em>
@@ -589,14 +624,15 @@ const Post = () =>{
                   value={hospitalName}
                   onChange={(e) => setHospitalName(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1,width:'400px' }}
                 />
+                <br/>
                 <TextField
                   label="Hospital Area"
                   value={hospitalArea}
                   onChange={(e) => setHospitalArea(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1,width:'400px' }}
                 />
                 <FormControl fullWidth>
                     <InputLabel id="government-select-label">Government</InputLabel>
@@ -606,6 +642,7 @@ const Post = () =>{
                         value={selectedGovernment}
                         label="Government"
                         onChange={handleChange}
+                        sx={{ marginBottom: 1,width:'400px' }}
                     >
                         {governments.map((government) => (
                         <MenuItem key={government} value={government}>
@@ -619,7 +656,7 @@ const Post = () =>{
                   value={hospitalAddress}
                   onChange={(e) => setHospitalAddress(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1,width:'400px' }}
                 />
                 </Box>
                 )}
@@ -634,22 +671,24 @@ const Post = () =>{
                   value={numberOfStudents}
                   onChange={(e) => setNumberOfStudents(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1 ,width:'400px'}}
                 />
+                <br/>
                 <TextField
                   label="Address"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   fullWidth
                   
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1 ,width:'400px'}}
                 />
+                <br/>
                 <TextField
                   label="Subjects"
                   value={subjects}
                   onChange={(e) => setSubjects(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1,width:'400px' }}
                 />
 
                 <div>
@@ -668,23 +707,30 @@ const Post = () =>{
                   value={patientName}
                   onChange={(e) => setPatientName(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1, width:'500px' }}
+                  sx={{ marginBottom: 1,width:'400px' }}
                 />
                 <br/>
                 <FormControl sx={{ minWidth: 200, marginBottom: 1 }}>
-                  <InputLabel id="age-label">Age</InputLabel>
-                  <TextField
+                <InputLabel id="age-label">{age ? '' : 'Age'}</InputLabel>
+                <TextField
                     label="Age"
                     value={age}
                     onChange={(e) => {
-                        const value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                        let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                        value = Math.max(1, Math.min(100, value)); // Ensure value is between 1 and 100
                         setAge(value);
+                    }}
+                    onKeyPress={(e) => {
+                        // Prevent non-numeric characters from being entered
+                        if (!/\d/.test(e.key)) {
+                            e.preventDefault();
+                        }
                     }}
                     fullWidth
                     type="number"
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
-                    sx={{ marginBottom: 1,width:'500px' }}
-                    />
+                    sx={{ marginBottom: 1, width:'400px' }}
+                />
                 </FormControl>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <FormControl component="fieldset" style={{ marginBottom: 10 }}>
@@ -700,7 +746,7 @@ const Post = () =>{
                   value={material}
                   onChange={(e) => setMaterial(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1,width:'500px' }}
+                  sx={{ marginBottom: 1,width:'400px' }}
                 />
                 <br/>
                 <TextField
@@ -713,7 +759,7 @@ const Post = () =>{
                     fullWidth
                     type="number"
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
-                    sx={{ marginBottom: 1,width:'500px' }}
+                    sx={{ marginBottom: 1,width:'400px' }}
                     />
                     <br/>
                 <TextField
@@ -721,7 +767,7 @@ const Post = () =>{
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1,width:'500px' }}
+                  sx={{ marginBottom: 1,width:'400px' }}
                 />
                 <br/>
                 <TextField
@@ -729,7 +775,7 @@ const Post = () =>{
                   value={speciality}
                   onChange={(e) => setSpeciality(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1,width:'500px' }}
+                  sx={{ marginBottom: 1,width:'400px' }}
                 />
                 <br/>
                 <TextField
@@ -737,25 +783,24 @@ const Post = () =>{
                   value={caseDescription}
                   onChange={(e) => setCaseDescription(e.target.value)}
                   fullWidth
-                  sx={{ marginBottom: 1,width:'500px' }}
+                  sx={{ marginBottom: 1,width:'400px' }}
                 />
-            
 
                 <div>
                     <GoogleMap />
                     
                 </div>
-                
+
+
               </Box>
             )}
-            
           </div>
+            
+          
 
         </div>
-        
       );
       
 }
 
 export default Post;
-
