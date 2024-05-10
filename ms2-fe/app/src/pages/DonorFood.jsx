@@ -20,6 +20,8 @@ import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import TextField from '@mui/material/TextField';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import { InputLabel, MenuItem, Select } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -33,14 +35,15 @@ const DonorFood = () => {
     const [successAlertOpen, setSuccessAlertOpen] = useState(false);
     const [selectedFood, setSelectedFood] = useState(null);
     const [food, setFood] = useState([
-        ["Apples", "20 kg"],
-        ["Rice", "50 kg"],
-        ["Canned Beans", "100 cans"],
-        ["Bread", "200 loaves"],
-        ["Chicken", "30 kg"]
+        ["Apples", "20 kg", "Fruits and Vegetables"],
+        ["Rice", "50 kg", "Fresh Meals"],
+        ["Canned Beans", "100 cans", "Canned Foods"],
+        ["Bread", "200 loaves", "Baked Goods"],
+        ["Chicken", "30 kg", "Fresh Meals"]
     ]);
     const [searchInput, setSearchInput] = useState('');
-    const [selectedDetails, setSelectedDetails] = useState(null); 
+    const [selectedDetails, setSelectedDetails] = useState(null);
+    const [selectedFilter, setSelectedFilter] = useState('All');
 
     const [selectedQuantities, setSelectedQuantities] = useState([]);
 
@@ -109,7 +112,7 @@ const DonorFood = () => {
             if (item === selectedFood) {
                 const [quantity, unit] = item[1].split(" ");
                 const updatedQuantity = parseInt(quantity) - selectedQuantities[index];
-                return [item[0], `${updatedQuantity} ${unit}`];
+                return [item[0], `${updatedQuantity} ${unit}`, item[2]];
             }
             return item;
         });
@@ -122,9 +125,16 @@ const DonorFood = () => {
         setSuccessAlertOpen(true);
     };
 
+    const handleFilterChange = (filter) => {
+        setSelectedFilter(filter);
+    };
+
     const filteredFood = food.filter(item => {
-        const [name] = item;
-        return name.toLowerCase().includes(searchInput.toLowerCase());
+        const [name, , category] = item;
+        return (
+            (selectedFilter === 'All' || category === selectedFilter) &&
+            name.toLowerCase().includes(searchInput.toLowerCase())
+        );
     });
 
     return (
@@ -133,7 +143,7 @@ const DonorFood = () => {
                 <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
             </div>
             <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
-                <IconButton>
+                <IconButton onClick={() => setOpen(true)}>
                     <FilterAltIcon />
                 </IconButton>
             </div>
@@ -156,7 +166,7 @@ const DonorFood = () => {
                                 </Typography>
                                 <p>Select Quantity: </p>
                                 <Pagination
-                                    count={parseInt(food[index][1])} 
+                                    count={parseInt(item[1].split(" ")[0])} 
                                     color="primary"
                                     onChange={(event, page) => handleQuantityChange(index, page)}
                                 />
@@ -169,126 +179,52 @@ const DonorFood = () => {
                     </div>
                 ))}
             </div>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">Details</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        {selectedDetails && (
-                            <>
-                                <Typography variant="body1">Name: {selectedDetails[0]}</Typography>
-                                <Typography variant="body1">Quantity available: {selectedDetails[1]}</Typography>
-                            </>
-                        )}
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} autoFocus>
-                        Close
-                    </Button>
-                </DialogActions>
-            </Dialog>
 
             <Dialog
-                open={donationOpen}
-                onClose={handleDonationClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
+    open={open}
+    onClose={() => setOpen(false)}
+    aria-labelledby="filter-dialog-title"
+>
+    <DialogTitle id="filter-dialog-title">Filter Food</DialogTitle>
+    <DialogContent>
+        <FormControl fullWidth>
+            <InputLabel id="filter-select-label">Filter</InputLabel>
+            <Select
+                labelId="filter-select-label"
+                id="filter-select"
+                value={selectedFilter}
+                onChange={(event) => handleFilterChange(event.target.value)}
+                label="Filter"
             >
-                <DialogTitle id="alert-dialog-title">{"Select Donation Type and Schedule"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description" style={{ marginBottom: '10px' }}>
-                        Please select the type of vehicle you want to donate and schedule the pickup:
-                    </DialogContentText>
-                    <Grid container spacing={2}>
-                        <Grid item>
-                            <Button
-                                onClick={() => handleSelectVehicle("Car")}
-                                className="paper"
-                                style={{
-                                    padding: '10px',
-                                    textAlign: 'center',
-                                    marginBottom: '10px',
-                                    color: selectedVehicle === "Car" ? '#ffffff' : '#000000',
-                                    backgroundColor: selectedVehicle === "Car" ? '#007bff' : 'transparent',
-                                }}
-                            >
-                                Car
-                            </Button>
-                        </Grid>
-                        <Grid item>
-                            <Button
-                                onClick={() => handleSelectVehicle("Truck")}
-                                className="paper"
-                                style={{
-                                    padding: '10px',
-                                    textAlign: 'center',
-                                    marginBottom: '10px',
-                                    color: selectedVehicle === "Truck" ? '#ffffff' : '#000000',
-                                    backgroundColor: selectedVehicle === "Truck" ? '#007bff' : 'transparent',
-                                }}
-                            >
-                                Truck
-                            </Button>
-                        </Grid>
-                        <Grid item>
-                            <Button
-                                onClick={() => handleSelectVehicle("Motorcycle")}
-                                className="paper"
-                                style={{
-                                    padding: '10px',
-                                    textAlign: 'center',
-                                    marginBottom: '10px',
-                                    color: selectedVehicle === "Motorcycle" ? '#ffffff' : '#000000',
-                                    backgroundColor: selectedVehicle === "Motorcycle" ? '#007bff' : 'transparent',
-                                }}
-                            >
-                                Motorcycle
-                            </Button>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                id="datetime-local"
-                                label="Pickup Date and Time"
-                                type="datetime-local"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                        </Grid>
-                    </Grid>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleDonationClose} autoFocus>
-                        Cancel
-                    </Button>
-                    <Button onClick={handleSubmit} autoFocus>
-                        Submit
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                <MenuItem value="All">All</MenuItem>
+                <MenuItem value="Fruits and Vegetables">Fruits and Vegetables</MenuItem>
+                <MenuItem value="Canned Foods">Canned Foods</MenuItem>
+                <MenuItem value="Fresh Meals">Fresh Meals</MenuItem>
+                <MenuItem value="Baked Goods">Baked Goods</MenuItem>
+            </Select>
+        </FormControl>
+    </DialogContent>
+</Dialog>
 
-            <Dialog
-                open={successAlertOpen}
-                TransitionComponent={Transition}
-                keepMounted
-                onClose={handleSuccessAlertClose}
-                aria-describedby="alert-dialog-slide-description"
-            >
-                <DialogTitle>{"Success"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
-                        Your donation has been successfully submitted.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleSuccessAlertClose}>Close</Button>
-                </DialogActions>
-            </Dialog>
+
+<Dialog
+    open={successAlertOpen}
+    TransitionComponent={Transition}
+    keepMounted
+    onClose={handleSuccessAlertClose}
+    aria-describedby="alert-dialog-slide-description"
+>
+    <DialogTitle>{"Success"}</DialogTitle>
+    <DialogContent>
+        <DialogContentText id="alert-dialog-slide-description">
+            Your donation has been successfully submitted.
+        </DialogContentText>
+    </DialogContent>
+    <DialogActions>
+        <Button onClick={handleSuccessAlertClose}>Close</Button>
+    </DialogActions>
+</Dialog>
+
         </div>
     );
 }

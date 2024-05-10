@@ -14,9 +14,13 @@ import Slide from '@mui/material/Slide';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import { InputLabel, MenuItem, Select } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -30,14 +34,46 @@ const DonorSchoolSupplies = () => {
     const [successAlertOpen, setSuccessAlertOpen] = useState(false);
     const [selectedSupply, setSelectedSupply] = useState(null);
     const [medicalSupplies, setMedicalSupplies] = useState([
-        ["Thermometer", "Measure body temperature", "https://example.com/medical1.jpg", 50],
-        ["First Aid Kit", "Provide initial medical treatment", "https://example.com/medical2.jpg", 30],
-        ["Blood Pressure Monitor", "Measure blood pressure", "https://example.com/medical3.jpg", 20],
-        ["Nebulizer", "Deliver medication as a mist to be inhaled into the lungs", "https://example.com/medical4.jpg", 10],
-        ["Stethoscope", "Listen to sounds within the body", "https://example.com/medical5.jpg", 40]
+        ["Thermometer", "Measure body temperature", "https://example.com/medical1.jpg", 50, "medical device"],
+        ["First Aid Kit", "Provide initial medical treatment", "https://example.com/medical2.jpg", 30, "medical equipment"],
+        ["Blood Pressure Monitor", "Measure blood pressure", "https://example.com/medical3.jpg", 20, "medical device"],
+        ["Nebulizer", "Deliver medication as a mist to be inhaled into the lungs", "https://example.com/medical4.jpg", 10, "medication"],
+        ["Stethoscope", "Listen to sounds within the body", "https://example.com/medical5.jpg", 40, "medical device"]
     ]);
     const [searchInput, setSearchInput] = useState('');
     const [selectedQuantities, setSelectedQuantities] = useState([]);
+    const [filterCategory, setFilterCategory] = useState('');
+    const [filterDialogOpen, setFilterDialogOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+    
+    const handleClose = () => {
+        setOpen(false);
+    };    
+
+    const handleFilterDialogOpen = () => {
+        setFilterDialogOpen(true);
+    };
+    
+    const handleFilterDialogClose = () => {
+        setFilterDialogOpen(false);
+    };
+    
+    const applyFilterLogic = () => {
+        // Filter the medical supplies based on the selected category
+        const filteredSupplies = medicalSupplies.filter(supply => {
+            return filterCategory === '' || supply[4].toLowerCase() === filterCategory.toLowerCase();
+        });
+        
+        // Update the state with the filtered supplies
+        setMedicalSupplies(filteredSupplies);
+        
+        // Close the filter dialog
+        setFilterDialogOpen(false);
+    };
+    
 
     useState(() => {
         setSelectedQuantities(new Array(medicalSupplies.length).fill(1));
@@ -49,14 +85,6 @@ const DonorSchoolSupplies = () => {
             newQuantities[index] = page;
             return newQuantities;
         });
-    };
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
     };
 
     const handleSearchChange = (event) => {
@@ -115,10 +143,18 @@ const DonorSchoolSupplies = () => {
         setSuccessAlertOpen(true);
     };
 
+    const handleFilterChange = (category) => {
+        setFilterCategory(category);
+    };
+
     const filteredSupplies = medicalSupplies.filter(supply => {
         const [name] = supply;
-        return name.toLowerCase().includes(searchInput.toLowerCase());
+        return (
+            name.toLowerCase().includes(searchInput.toLowerCase()) &&
+            (filterCategory === '' || supply[4].toLowerCase() === filterCategory.toLowerCase())
+        );
     });
+    
 
     // Details Dialog
     const [detailsOpen, setDetailsOpen] = useState(false);
@@ -138,6 +174,14 @@ const DonorSchoolSupplies = () => {
             <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
                 <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
             </div>
+            <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
+                <Tooltip title="Filter">
+                    <IconButton onClick={handleFilterDialogOpen}>
+                        <FilterAltIcon />
+                    </IconButton>
+                </Tooltip>
+            </div>
+
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', width: '100%', marginTop: '30px' }}>
                 {filteredSupplies.map((supply, index) => (
                     <div key={index} style={{ margin: '10px' }}>
@@ -317,6 +361,37 @@ const DonorSchoolSupplies = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            <Dialog
+    open={filterDialogOpen}
+    onClose={handleFilterDialogClose}
+    aria-labelledby="filter-dialog-title"
+>
+    <DialogTitle id="filter-dialog-title">Filter Medical Supplies</DialogTitle>
+    <DialogContent>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '10px', marginLeft: '20px' }}>
+            <FormControl style={{ minWidth: '120px' }}>
+                <InputLabel id="filter-category-label">Category</InputLabel>
+                <Select
+                    labelId="filter-category-label"
+                    id="filter-category"
+                    value={filterCategory}
+                    onChange={(e) => setFilterCategory(e.target.value)}
+                >
+                    <MenuItem value="">All</MenuItem>
+                    <MenuItem value="medical device">Medical Device</MenuItem>
+                    <MenuItem value="medical equipment">Medical Equipment</MenuItem>
+                    <MenuItem value="medication">Medication</MenuItem>
+                </Select>
+            </FormControl>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <Button onClick={handleFilterDialogClose}>Cancel</Button>
+        <Button onClick={applyFilterLogic} color="primary">Apply</Button>
+    </DialogActions>
+</Dialog>
+
         </div>
     );
 }

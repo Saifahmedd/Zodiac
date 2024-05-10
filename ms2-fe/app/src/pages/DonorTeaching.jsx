@@ -22,6 +22,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
+// Import statements...
+
 const DonorTeaching = () => {
     const [open, setOpen] = useState(false);
     const [selectedTeaching, setSelectedTeaching] = useState(null);
@@ -30,6 +32,12 @@ const DonorTeaching = () => {
     const [searchInput, setSearchInput] = useState('');
     const [selectedDateTime, setSelectedDateTime] = useState('');
     const [selectedTeachingDetails, setSelectedTeachingDetails] = useState(null);
+    const [filterDialogOpen, setFilterDialogOpen] = useState(false);
+    const [filterCriteria, setFilterCriteria] = useState({
+        subject: '',
+        area: '',
+        governorate: ''
+    });
 
     const [teaching, setTeaching] = useState([
         [30, "123 Main St", "google marker url", "Mathematics"],
@@ -57,7 +65,6 @@ const DonorTeaching = () => {
     };
 
     const handleSubmit = () => {
-        // Check if date and time are selected
         if (!selectedDateTime) {
             setOpen(true); // Open the dialog informing the user to select date and time
             return;
@@ -69,8 +76,6 @@ const DonorTeaching = () => {
         setSelectedTeaching(null);
         setSuccessAlertOpen(true);
     };
-    
-    
 
     const handleDateTimeChange = (event) => {
         setSelectedDateTime(event.target.value);
@@ -81,25 +86,44 @@ const DonorTeaching = () => {
         setOpen(true);
     };
 
+    const handleFilterClick = () => {
+        setFilterDialogOpen(true);
+    };
+
+    const handleFilterClose = () => {
+        setFilterDialogOpen(false);
+    };
+
+    const handleFilterChange = (event) => {
+        const { name, value } = event.target;
+        setFilterCriteria({ ...filterCriteria, [name]: value });
+    };
+
     const filteredTeaching = teaching.filter(teach => {
-        // Assuming the subject is the fourth element in the array
-        const [, , , subject] = teach;
-        return subject.toLowerCase().includes(searchInput.toLowerCase());
+        const [,, , subject] = teach;
+        return subject.toLowerCase().includes(searchInput.toLowerCase()) &&
+            (filterCriteria.subject === '' || subject.toLowerCase().includes(filterCriteria.subject.toLowerCase())) &&
+            (filterCriteria.area === '' || teach[1].toLowerCase().includes(filterCriteria.area.toLowerCase())) &&
+            (filterCriteria.governorate === '' || teach[1].toLowerCase().includes(filterCriteria.governorate.toLowerCase()));
     });
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
+            {/* Search input and filter icon */}
             <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
                 <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
             </div>
             <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
-                <IconButton>
+                <IconButton onClick={handleFilterClick}>
                     <FilterAltIcon />
                 </IconButton>
             </div>
+
+            {/* Render filtered teaching posts */}
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', width: '100%', marginTop: '30px' }}>
                 {filteredTeaching.map((teach, index) => (
                     <div key={index} style={{ margin: '10px' }}>
+                        {/* Card component for each teaching post */}
                         <Card sx={{ maxWidth: 250, height: '100%' }}>
                             <CardMedia
                                 component="img"
@@ -119,19 +143,22 @@ const DonorTeaching = () => {
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button size="small" onClick={() => handleDonationOpen(teach)}>Teach</Button>
                                 <Button size="small" onClick={() => handleViewDetails(teach)}>Details</Button>
+                                <Button size="small" onClick={() => handleDonationOpen(teach)}>Teach</Button>
                             </CardActions>
                         </Card>
                     </div>
                 ))}
             </div>
+
+            {/* Dialog for teaching session details */}
             <Dialog
                 open={open}
                 onClose={() => setOpen(false)}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
+                {/* Dialog content */}
                 <DialogTitle id="alert-dialog-title">Teaching Session Details</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
@@ -144,12 +171,15 @@ const DonorTeaching = () => {
                         )}
                     </DialogContentText>
                 </DialogContent>
+                {/* Dialog actions */}
                 <DialogActions>
                     <Button onClick={() => setOpen(false)} autoFocus>
                         Close
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            {/* Success alert dialog */}
             <Dialog
                 open={successAlertOpen}
                 TransitionComponent={Transition}
@@ -167,9 +197,11 @@ const DonorTeaching = () => {
                     <Button onClick={handleSuccessAlertClose}>Close</Button>
                 </DialogActions>
             </Dialog>
+
+            {/* Dialog for selecting date and time */}
             <Dialog
-                open={dateTimeOpen} // Change to dateTimeOpen
-                onClose={handleDateTimeClose} // Change to handleDateTimeClose
+                open={dateTimeOpen}
+                onClose={handleDateTimeClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
@@ -202,8 +234,61 @@ const DonorTeaching = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            {/* Filter dialog */}
+            <Dialog
+                open={filterDialogOpen}
+                onClose={handleFilterClose}
+                aria-labelledby="form-dialog-title"
+            >
+                <DialogTitle id="form-dialog-title">Filter Teaching Posts</DialogTitle>
+                <DialogContent>
+                    {/* Text fields for filtering */}
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="subject"
+                        name="subject"
+                        label="Subject"
+                        type="text"
+                        fullWidth
+                        value={filterCriteria.subject}
+                        onChange={handleFilterChange}
+                    />
+                    <TextField
+                        margin="dense"
+                        id="area"
+                        name="area"
+                        label="Area"
+                        type="text"
+                        fullWidth
+                        value={filterCriteria.area}
+                        onChange={handleFilterChange}
+                    />
+                    <TextField
+                        margin="dense"
+                        id="governorate"
+                        name="governorate"
+                        label="Governorate"
+                        type="text"
+                        fullWidth
+                        value={filterCriteria.governorate}
+                        onChange={handleFilterChange}
+                    />
+                </DialogContent>
+                {/* Dialog actions */}
+                <DialogActions>
+                    <Button onClick={handleFilterClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleFilterClose} color="primary">
+                        Apply Filters
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }
 
 export default DonorTeaching;
+

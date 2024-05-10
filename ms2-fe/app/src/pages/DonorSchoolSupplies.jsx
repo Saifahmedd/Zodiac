@@ -19,6 +19,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
+import { FormControl, FormControlLabel, InputLabel, MenuItem, Radio, RadioGroup, Select } from '@mui/material';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -47,6 +48,15 @@ const DonorSchoolSupplies = () => {
     const [selectedQuantities, setSelectedQuantities] = useState([]);
     const [detailOpen, setDetailOpen] = useState(false);
     const [selectedSupplyDetails, setSelectedSupplyDetails] = useState(null);
+    const [filterDialogOpen, setFilterDialogOpen] = useState(false);
+
+    const handleFilterIconClick = () => {
+        setFilterDialogOpen(true);
+    };
+
+    const handleFilterDialogClose = () => {
+        setFilterDialogOpen(false);
+    };
 
     useState(() => {
         setSelectedQuantities(new Array(supplies.length).fill(1));
@@ -133,15 +143,25 @@ const DonorSchoolSupplies = () => {
         setSuccessAlertOpen(true);
     };
 
+    const [filterCategory, setFilterCategory] = useState(null);
+
+    const handleFilterChange = (event) => {
+        setFilterCategory(event.target.value);
+    };
+    
     const filteredSupplies = supplies.filter(supply => {
-        if (supply.length === 6) {
+        if (filterCategory === "books" && supply.length === 6) {
             const [name] = supply;
             return name.toLowerCase().includes(searchInput.toLowerCase());
-        } else {
+        } else if (filterCategory === "stationary" && supply.length !== 6) {
             const [name] = supply;
-            return name;
+            return name.toLowerCase().includes(searchInput.toLowerCase());
+        } else if (!filterCategory) {
+            return true; // No filter applied
         }
+        return false; // Filter applied but not matching category
     });
+    
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
@@ -149,7 +169,7 @@ const DonorSchoolSupplies = () => {
                 <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
             </div>
             <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
-                <IconButton>
+                <IconButton onClick={handleFilterIconClick}>
                     <FilterAltIcon />
                 </IconButton>
             </div>
@@ -264,6 +284,7 @@ const DonorSchoolSupplies = () => {
                 </DialogActions>
             </Dialog>
 
+            {/* Missing Information dialog */}
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -283,6 +304,7 @@ const DonorSchoolSupplies = () => {
                 </DialogActions>
             </Dialog>
 
+            {/* Success dialog */}
             <Dialog
                 open={successAlertOpen}
                 TransitionComponent={Transition}
@@ -300,6 +322,8 @@ const DonorSchoolSupplies = () => {
                     <Button onClick={handleSuccessAlertClose}>Close</Button>
                 </DialogActions>
             </Dialog>
+
+            {/* Supply details dialog */}
             <Dialog
                 open={detailOpen}
                 onClose={handleDetailClose}
@@ -326,6 +350,31 @@ const DonorSchoolSupplies = () => {
                     <Button onClick={handleDetailClose}>Close</Button>
                 </DialogActions>
             </Dialog>
+            <Dialog open={filterDialogOpen} onClose={handleFilterDialogClose}>
+                <DialogTitle>Choose Supply Type</DialogTitle>
+                <DialogContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '70px' }}>
+    <FormControl>
+        <InputLabel id="supply-type-label">Supply Type</InputLabel>
+        <Select
+            labelId="supply-type-label"
+            id="supply-type"
+            value={filterCategory}
+            onChange={handleFilterChange}
+            label="Supply Type"
+        >
+            <MenuItem value="">All</MenuItem>
+            <MenuItem value="books">Books</MenuItem>
+            <MenuItem value="stationary">Stationary</MenuItem>
+        </Select>
+    </FormControl>
+</DialogContent>
+
+                <DialogActions>
+                    <Button onClick={handleFilterDialogClose}>Close</Button>
+                </DialogActions>
+            </Dialog>
+
+
         </div>
     );
 }

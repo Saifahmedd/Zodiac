@@ -63,6 +63,14 @@ const DonorBloodDonation = () => {
         });
     };
 
+    const handleResetFilters = () => {
+        setFilterOptions({
+            hospital: '',
+            governorate: '',
+            area: ''
+        });
+    };
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -123,21 +131,93 @@ const DonorBloodDonation = () => {
         setSuccessAlertOpen(true);
     };
 
-    const filteredPatients = patients.filter(patient => {
-        const [name] = patient;
-        return name.toLowerCase().includes(searchInput.toLowerCase());
-    });
+    const [filterOpen, setFilterOpen] = useState(false);
+const [filterOptions, setFilterOptions] = useState({
+    hospital: '',
+    governorate: '',
+    area: ''
+});
+
+const handleFilterOpen = () => {
+    setFilterOpen(true);
+};
+
+const handleFilterClose = () => {
+    setFilterOpen(false);
+};
+
+const handleFilterChange = (type, value) => {
+    setFilterOptions(prevOptions => ({
+        ...prevOptions,
+        [type]: value
+    }));
+};
+
+const filteredPatients = patients.filter(patient => {
+    const [name, bloodType, hospital, area, governorate] = patient;
+    return (
+        name.toLowerCase().includes(searchInput.toLowerCase()) &&
+        (filterOptions.hospital === '' || hospital.toLowerCase() === filterOptions.hospital.toLowerCase()) &&
+        (filterOptions.governorate === '' || governorate.toLowerCase() === filterOptions.governorate.toLowerCase()) &&
+        (filterOptions.area === '' || area.toLowerCase() === filterOptions.area.toLowerCase())
+    );
+});
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
             <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
                 <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
             </div>
-            <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
-                <IconButton>
-                    <FilterAltIcon />
-                </IconButton>
-            </div>
+<div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
+    <IconButton onClick={handleFilterOpen}>
+        <FilterAltIcon />
+    </IconButton>
+</div>
+<Dialog
+    open={filterOpen}
+    onClose={handleFilterClose}
+    aria-labelledby="filter-dialog-title"
+    aria-describedby="filter-dialog-description"
+>
+    <DialogTitle id="filter-dialog-title">Filter Donations</DialogTitle>
+    <DialogContent>
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <TextField
+                    id="hospital-filter"
+                    label="Hospital"
+                    variant="outlined"
+                    value={filterOptions.hospital}
+                    onChange={(e) => handleFilterChange('hospital', e.target.value)}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <TextField
+                    id="governorate-filter"
+                    label="Governorate"
+                    variant="outlined"
+                    value={filterOptions.governorate}
+                    onChange={(e) => handleFilterChange('governorate', e.target.value)}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <TextField
+                    id="area-filter"
+                    label="Area"
+                    variant="outlined"
+                    value={filterOptions.area}
+                    onChange={(e) => handleFilterChange('area', e.target.value)}
+                />
+            </Grid>
+        </Grid>
+    </DialogContent>
+    <DialogActions>
+        <Button onClick={handleResetFilters}>Reset</Button>
+        <Button onClick={handleFilterClose} autoFocus>
+            Close
+        </Button>
+    </DialogActions>
+</Dialog>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', width: '100%', marginTop: '30px' }}>
                 {filteredPatients.map((patient, index) => (
                     <div key={index} style={{ margin: '10px' }}>

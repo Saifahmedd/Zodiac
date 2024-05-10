@@ -30,6 +30,13 @@ const DonorMedicalCases = () => {
     const [successAlertOpen, setSuccessAlertOpen] = useState(false);
     const [searchInput, setSearchInput] = useState('');
     const [selectedDateTime, setSelectedDateTime] = useState('');
+    const [filterDialogOpen, setFilterDialogOpen] = useState(false);
+    const [filterCriteria, setFilterCriteria] = useState({
+        medicalSpecialty: '',
+        organization: '',
+        area: '',
+        governorate: ''
+    });
 
     const [medicalCases, setMedicalCases] = useState([
         ["John Doe", 45, "Male", 70, "google marker url", "123 Main St", "City Hospital", "Cardiology", "Patient complains of chest pain and shortness of breath."],
@@ -77,10 +84,26 @@ const DonorMedicalCases = () => {
         setSelectedDateTime(event.target.value);
     };
 
+    const handleFilterClick = () => {
+        setFilterDialogOpen(true);
+    };
+
+    const handleFilterClose = () => {
+        setFilterDialogOpen(false);
+    };
+
+    const handleFilterChange = (event) => {
+        const { name, value } = event.target;
+        setFilterCriteria({ ...filterCriteria, [name]: value });
+    };
+
     const filteredCases = medicalCases.filter(medicalCase => {
-        // Assuming the patient name is the first element in the array
-        const [patientName] = medicalCase;
-        return patientName.toLowerCase().includes(searchInput.toLowerCase());
+        const [patientName, , , , , , , medicalSpecialty, , area, governorate] = medicalCase;
+        return patientName.toLowerCase().includes(searchInput.toLowerCase()) &&
+            medicalSpecialty.includes(filterCriteria.medicalSpecialty) &&
+            (filterCriteria.organization === '' || medicalCase[6].toLowerCase().includes(filterCriteria.organization.toLowerCase())) &&
+            (filterCriteria.area === '' || area.toLowerCase().includes(filterCriteria.area.toLowerCase())) &&
+            (filterCriteria.governorate === '' || governorate.toLowerCase().includes(filterCriteria.governorate.toLowerCase()));
     });
 
     return (
@@ -89,7 +112,7 @@ const DonorMedicalCases = () => {
                 <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
             </div>
             <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
-                <IconButton>
+                <IconButton onClick={handleFilterClick}>
                     <FilterAltIcon />
                 </IconButton>
             </div>
@@ -201,6 +224,64 @@ const DonorMedicalCases = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleSuccessAlertClose}>Close</Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                open={filterDialogOpen}
+                onClose={handleFilterClose}
+                aria-labelledby="form-dialog-title"
+            >
+                <DialogTitle id="form-dialog-title">Filter Medical Cases</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="medicalSpecialty"
+                        name="medicalSpecialty"
+                        label="Medical Specialty"
+                        type="text"
+                        fullWidth
+                        value={filterCriteria.medicalSpecialty}
+                        onChange={handleFilterChange}
+                    />
+                    <TextField
+                        margin="dense"
+                        id="organization"
+                        name="organization"
+                        label="Organization Name"
+                        type="text"
+                        fullWidth
+                        value={filterCriteria.organization}
+                        onChange={handleFilterChange}
+                    />
+                    <TextField
+                        margin="dense"
+                        id="area"
+                        name="area"
+                        label="Area"
+                        type="text"
+                        fullWidth
+                        value={filterCriteria.area}
+                        onChange={handleFilterChange}
+                    />
+                    <TextField
+                        margin="dense"
+                        id="governorate"
+                        name="governorate"
+                        label="Governorate"
+                        type="text"
+                        fullWidth
+                        value={filterCriteria.governorate}
+                        onChange={handleFilterChange}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleFilterClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleFilterClose} color="primary">
+                        Apply Filters
+                    </Button>
                 </DialogActions>
             </Dialog>
         </div>
