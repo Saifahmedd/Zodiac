@@ -3,7 +3,7 @@ import { Box, Stack, Typography, Avatar, Divider, Button, TextField, FormControl
 import { Person, Email, Phone, Password } from '@mui/icons-material';
 
 const AccountInfo = () => {
-    const [firstName, setFirstName] = useState("Nada");
+    const [firstName, setFirstName] = useState("Test");
     const [lastName, setLastName] = useState("Ibrahim");
     const [gender, setGender] = useState("Female");
     const [email, setEmail] = useState("nada.abdelfattah@guc.edu.eg");
