@@ -120,6 +120,15 @@ const medicalCases = [
     ["David Wilson", 55, "Male", 90, "google marker url", "202 Maple St", "Children's Hospital", "Pediatrics", "Patient brought in for routine checkup and immunization."],
 ];
 
+const organizations = [
+    // [name, type, address, contactNumber, area, governorate]
+    ["ABC Charity", "Non-profit", "123 Main St, Cityville", "+1234567890", "Central District", "City A"],
+    ["XYZ Corporation", "Corporate", "456 Oak Ave, Townsville", "+2345678901", "Downtown", "City B"],
+    ["Sunshine Foundation", "Non-profit", "789 Elm St, Villagetown", "+3456789012", "Suburbia", "City C"],
+    ["Green Earth Organization", "Non-profit", "321 Pine St, Countryside", "+4567890123", "Rural", "City D"],
+    ["Blue Ocean Institute", "Non-profit", "654 Maple Ave, Beachside", "+5678901234", "Coastal", "City E"]
+];
+
   return (
     <div>
       <AppBar position="static">
@@ -152,7 +161,7 @@ const medicalCases = [
             <Mail />
           </IconButton>
           </Tooltip>
-          
+
           <Tooltip title="Profile">
           <IconButton
             size="large"
@@ -261,7 +270,7 @@ const medicalCases = [
             </ListItemIcon>
             <ListItemText primary="Track Order" />
           </ListItem>
-          <ListItem button onClick={toggleDrawer}>
+          <ListItem button onClick={toggleDrawer} component={Link} to="/viewOrg">
             <ListItemIcon>
               <Groups />
             </ListItemIcon>
