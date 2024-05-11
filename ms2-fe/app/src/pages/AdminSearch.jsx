@@ -13,10 +13,10 @@ import orphanage from "Orphanagee.png";
 const organizations = [
     // [name, type, address, contactNumber, area, governorate, image]
     ["Care Hospital", "Non-profit", "123 Main St Cityville", "+1234567890", "City A", "Central District", hospital1],
-    ["Canada Electricity", "Corporate", "456 Oak Ave Townsville", "+2345678901", "City B", "Downtown", Reem],
+    ["Canada Electricity", "Corporate", "456 Oak Ave Townsville", "+2345678901", "City B", "Downtown", Ali],
     ["Growth Orphanage", "Non-profit", "789 Elm St Villagetown", "+3456789012", "City C", "Suburbia", orphanage],
     ["Zodiac Hospital", "Non-profit", "321 Pine St Countryside", "+4567890123", "City D", "Rural", hospital2],
-    ["Sewedy Electricity", "Non-profit", "654 Maple Ave Beachside", "+5678901234", "City E", "Coastal", Ali]
+    ["Sewedy Electricity", "Non-profit", "654 Maple Ave Beachside", "+5678901234", "City E", "Coastal", Reem]
 ];
 
 const Search = styled('div')(({ theme }) => ({
