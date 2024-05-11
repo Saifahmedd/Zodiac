@@ -6,6 +6,8 @@ import DonorMedicalCases from './DonorMedicalCases';
 import DonorMedicalSupplies from './DonorMedicalSupplies';
 import DonorTeaching from './DonorTeaching';
 import DonorToys from './DonorToys';
+import DonorBloodDonation from './DonorBloodDonation';
+
 import { TextField } from '@mui/material';
 
 const DonorHome = () => {
@@ -22,7 +24,8 @@ const DonorHome = () => {
         { name: 'MedicalSupplies', component: <DonorMedicalSupplies hideSearchFilter={true} /> },
         { name: 'SchoolSupplies', component: <DonorSchoolSupplies hideSearchFilter={true} /> },
         { name: 'Teaching', component: <DonorTeaching hideSearchFilter={true} /> },
-        { name: 'Toys', component: <DonorToys hideSearchFilter={true} /> }
+        { name: 'Toys', component: <DonorToys hideSearchFilter={true} /> },
+        { name: 'BloodDonation', component: <DonorBloodDonation hideSearchFilter={true} /> }
     ];
 
     const filteredComponentsToShow = filteredComponents.filter(item =>

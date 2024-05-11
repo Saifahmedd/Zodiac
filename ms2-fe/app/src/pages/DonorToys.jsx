@@ -20,6 +20,12 @@ import Pagination from '@mui/material/Pagination';
 import Tooltip from '@mui/material/Tooltip';
 
 
+import Doll from './images/toys/Doll.jpg';
+import Figure from './images/toys/Figure.jpg';
+import Lego from './images/toys/Lego.jpg';
+import Puzzle from './images/toys/Puzzle.jpg';
+import Remote from './images/toys/Remote.jpg';
+
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -32,12 +38,13 @@ const DonorToys = ({hideSearchFilter}) => {
     const [successAlertOpen, setSuccessAlertOpen] = useState(false);
     const [selectedToy, setSelectedToy] = useState(null);
     const [toys, setToys] = useState([
-        ["LEGO Set", "5-12", "Unisex", "Building", "https://example.com/toy1.jpg", 80],
-        ["Barbie Doll", "3-10", "Female", "Dolls", "https://example.com/toy2.jpg", 60],
-        ["Remote Control Car", "8-14", "Male", "Vehicles", "https://example.com/toy3.jpg", 40],
-        ["Puzzle", "6-10", "Unisex", "Educational", "https://example.com/toy4.jpg", 100],
-        ["Action Figure", "5-12", "Male", "Action", "https://example.com/toy5.jpg", 70]
+        ["LEGO Set", "5-12", "Male", "Building", Lego, 80],
+        ["Barbie Doll", "3-10", "Female", "Dolls", Doll, 60],
+        ["Remote Control Car", "8-14", "Male", "Vehicles", Remote, 40],
+        ["Puzzle", "6-10", "Female", "Educational", Puzzle, 100],
+        ["Action Figure", "5-12", "Male", "Action", Figure, 70]
     ]);
+    
     const [searchInput, setSearchInput] = useState('');
     const [filterOptions, setFilterOptions] = useState({
         age: '',
@@ -235,7 +242,7 @@ const DonorToys = ({hideSearchFilter}) => {
                                 component="img"
                                 alt="Toy"
                                 image={toy[4]}
-                                style={{ width: '100%', objectFit: 'cover' }}
+                                style={{ width: '100%', height: '250px', objectFit: 'cover' }} // Set a fixed height and object-fit: cover
                             />
                             <CardContent sx={{ height: '180px', overflow: 'auto' }}>
                                 <Typography gutterBottom variant="h5" component="div">

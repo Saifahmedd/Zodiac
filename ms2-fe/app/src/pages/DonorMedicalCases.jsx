@@ -16,9 +16,13 @@ import IconButton from '@mui/material/IconButton';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Tooltip from '@mui/material/Tooltip';
 import Grid from '@mui/material/Grid';
-import ClothesImage from './images/MedicalSupplies.jpg'; // Assuming you have an image for medical cases
 import GoogleMapMarkerDialog from './GoogleMap'; // Assuming you have a component for displaying Google Map markers
 
+import Female1 from './images/medicalcases/Female1.jpg';
+import Female2 from './images/medicalcases/Female2.jpg';
+import Male1 from './images/medicalcases/Male1.jpg';
+import Male2 from './images/medicalcases/Male2.jpg';
+import Male3 from './images/medicalcases/Male3.jpg';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -47,6 +51,14 @@ const DonorMedicalCases = ({hideSearchFilter}) => {
         ["Emily Brown", 20, "Female", 55, "google marker url", "101 Pine St", "University Hospital", "Neurology", "Patient presents with symptoms of migraine headaches."],
         ["David Wilson", 55, "Male", 90, "google marker url", "202 Maple St", "Children's Hospital", "Pediatrics", "Patient brought in for routine checkup and immunization."],
     ]);
+
+    const medicalcasesArray =[
+        Male1,
+        Female1,
+        Male2,
+        Female2,
+        Male3
+    ];
 
     const [mapDialogOpen, setMapDialogOpen] = useState(false);
 
@@ -141,8 +153,8 @@ const DonorMedicalCases = ({hideSearchFilter}) => {
                             <CardMedia
                                 component="img"
                                 alt="Medical Case"
-                                image={ClothesImage} // Assuming you have an image for medical cases
-                                style={{ width: '100%', objectFit: 'cover' }}
+                                image={medicalcasesArray[index]} // Assuming you have an image for medical cases
+                                style={{ width: '100%', height: '250px', objectFit: 'cover' }} // Set a fixed height and object-fit: cover
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">

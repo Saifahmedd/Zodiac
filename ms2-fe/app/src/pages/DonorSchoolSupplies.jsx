@@ -21,6 +21,20 @@ import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import { FormControl, FormControlLabel, InputLabel, MenuItem, Radio, RadioGroup, Select } from '@mui/material';
 
+import Harry from './schoolsupplies/Harry.jpg';
+import Notebook from './schoolsupplies/Notebook.jpg';
+import Pencils from './schoolsupplies/Pencils.jpg';
+import Pens from './schoolsupplies/Pens.jpg';
+import Pride from './schoolsupplies/Pride.jpg';
+
+const stationaryArray =[
+    Pride,
+    Harry,
+    Pens,
+    Notebook,
+    Pencils
+];
+
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -33,8 +47,8 @@ const DonorSchoolSupplies = ({ hideSearchFilter }) => {
     const [successAlertOpen, setSuccessAlertOpen] = useState(false);
     const [selectedSupply, setSelectedSupply] = useState(null);
     const [supplies, setSupplies] = useState([
-        ["The Great Gatsby", "F. Scott Fitzgerald", "English", "Reprint", "A story of the American Dream and its corruption in the Jazz Age.", "https://example.com/book3.jpg"],
-        ["Harry Potter and the Philosopher's Stone", "J.K. Rowling", "English", "First", "The first book in the Harry Potter series.", "https://example.com/book5.jpg"],
+        ["Pride and Prejudice", "Jane Austen", "English", "Revised", "A romantic novel of manners set in early 19th-century England.", Pride],
+        ["Harry Potter and the Philosopher's Stone", "J.K. Rowling", "English", "First", "The first book in the Harry Potter series.", Harry],
         ["Pens", 500],
         ["Notebooks", 300],
         ["Pencils", 400]
@@ -156,7 +170,6 @@ const DonorSchoolSupplies = ({ hideSearchFilter }) => {
         }
         return false; // Filter applied but not matching category
     });
-    
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
@@ -181,8 +194,8 @@ const DonorSchoolSupplies = ({ hideSearchFilter }) => {
                             <CardMedia
                                 component="img"
                                 alt="Supply"
-                                image={supply[5]}
-                                style={{ width: '100%', objectFit: 'cover' }}
+                                image={stationaryArray[index]}
+                                style={{ width: '100%', height: '250px', objectFit: 'cover' }} // Set a fixed height and object-fit: cover
                             />
 <CardContent sx={{ height: '180px', overflow: 'auto' }}>
     <Typography gutterBottom variant="h5" component="div">

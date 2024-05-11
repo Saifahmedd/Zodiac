@@ -5,7 +5,6 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import FoodImage from './images/Food.jpg'; // Update with appropriate image path
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -22,6 +21,13 @@ import TextField from '@mui/material/TextField';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { InputLabel, MenuItem, Select } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
+
+import Apples from './food/Apples.jpg';
+import Beans from './food/Beans.jpg';
+import Bread from './food/Bread.jpg';
+import Chicken from './food/Chicken.jpg';
+import Rice from './food/Rice.jpg'
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -41,6 +47,15 @@ const DonorFood = ({hideSearchFilter}) => {
         ["Bread", "200 loaves", "Baked Goods"],
         ["Chicken", "30 kg", "Fresh Meals"]
     ]);
+
+    const images =[
+        Apples,
+        Rice,
+        Beans,
+        Bread,
+        Chicken
+    ];
+
     const [searchInput, setSearchInput] = useState('');
     const [selectedDetails, setSelectedDetails] = useState(null);
     const [selectedFilter, setSelectedFilter] = useState('All');
@@ -175,8 +190,8 @@ const DonorFood = ({hideSearchFilter}) => {
                             <CardMedia
                                 component="img"
                                 alt="Food"
-                                image={FoodImage}
-                                style={{ width: '100%', objectFit: 'cover' }}
+                                image={images[index]}
+                                style={{ width: '100%', height: '250px', objectFit: 'cover' }} // Set a fixed height and object-fit: cover
                             />
                             <CardContent sx={{ height: '180px', overflow: 'auto' }}>
                                 <Typography gutterBottom variant="h5" component="div">

@@ -18,15 +18,20 @@ import Tooltip from '@mui/material/Tooltip';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
-import ClothesImage from './images/BloodDonation.jpg';
 import GoogleMapMarkerDialog from './GoogleMap'; // Assuming you have a component for displaying Google Map markers
 
+
+import Apositive from './images/bloodDonation/A+.jpg';
+import ABpositive from './images/bloodDonation/AB+.jpg';
+import Bpositive from './images/bloodDonation/B+.jpg';
+import Onegative from './images/bloodDonation/O-.jpg';
+import Opositive from './images/bloodDonation/O+.jpg';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DonorBloodDonation = () => {
+const DonorBloodDonation = ({ hideSearchFilter }) => {
     const [open, setOpen] = useState(false);
     const [selectedPatient, setSelectedPatient] = useState(null);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -34,12 +39,21 @@ const DonorBloodDonation = () => {
     const [successAlertOpen, setSuccessAlertOpen] = useState(false);
     const [searchInput, setSearchInput] = useState('');
     const [patients, setPatients] = useState([
-        ["John Doe", "O+", "City Hospital", "Downtown", "Example Governorate", "123 Main Street"],
-        ["Jane Smith", "AB-", "Community Hospital", "Suburb", "Another Governorate", "456 Elm Street"],
-        ["Michael Johnson", "A+", "Regional Hospital", "Rural Area", "Yet Another Governorate", "789 Oak Street"],
-        ["Emily Brown", "B+", "University Hospital", "Urban Area", "Different Governorate", "101 Pine Street"],
-        ["David Wilson", "O-", "Children's Hospital", "Industrial Area", "New Governorate", "202 Maple Street"]
+        ["John Doe", "O+", "City Hospital", "Downtown", "Cairo", "123 Main Street"],
+        ["Jane Smith", "AB+", "Community Hospital", "Suburb", "Alexandria", "456 Elm Street"],
+        ["Michael Johnson", "A+", "Regional Hospital", "Rural Area", "Helwan", "789 Oak Street"],
+        ["Emily Brown", "B+", "University Hospital", "Urban Area", "Ain Sokhna", "101 Pine Street"],
+        ["David Wilson", "O-", "Children's Hospital", "Industrial Area", "Sharkeya", "202 Maple Street"]
     ]);
+
+    const bloodArray =[
+        Opositive,
+        ABpositive,
+        Apositive,
+        Bpositive,
+        Onegative
+    ];
+
     const [selectedQuantities, setSelectedQuantities] = useState([]);
     const [detailOpen, setDetailOpen] = useState(false);
     const [selectedPatientDetails, setSelectedPatientDetails] = useState(null);
@@ -175,14 +189,20 @@ const filteredPatients = patients.filter(patient => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
-            <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
-                <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
-            </div>
-<div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
-    <IconButton onClick={handleFilterOpen}>
-        <FilterAltIcon />
-    </IconButton>
-</div>
+            {!hideSearchFilter && (
+                <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
+                    <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
+                </div>
+            )}
+            {!hideSearchFilter && (
+                <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
+                    <Tooltip title="Filter">
+                        <IconButton onClick={handleFilterOpen}>
+                            <FilterAltIcon />
+                        </IconButton>
+                    </Tooltip>
+                </div>
+            )}
 <Dialog
     open={filterOpen}
     onClose={handleFilterClose}
@@ -235,8 +255,8 @@ const filteredPatients = patients.filter(patient => {
                             <CardMedia
                                 component="img"
                                 alt="Patient"
-                                image={ClothesImage}
-                                style={{ width: '100%', objectFit: 'cover' }}
+                                image={bloodArray[index]}
+                                style={{ width: '100%', height: '250px', objectFit: 'cover' }} // Set a fixed height and object-fit: cover
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">

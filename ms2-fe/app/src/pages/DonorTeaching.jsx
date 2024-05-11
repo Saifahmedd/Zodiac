@@ -16,9 +16,13 @@ import IconButton from '@mui/material/IconButton';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Tooltip from '@mui/material/Tooltip';
 import Grid from '@mui/material/Grid';
-import ClothesImage from './images/Toys.jpg'; // Assuming you have an image for teaching
 import GoogleMapMarkerDialog from './GoogleMap';
 
+import Art from './images/Teaching/Art.jpg';
+import English from './images/Teaching/English.jpg';
+import History from './images/Teaching/History.jpg';
+import Math from './images/Teaching/Math.jpg';
+import Science from './images/Teaching/Science.jpg';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -58,6 +62,13 @@ const DonorTeaching = ({hideSearchFilter}) => {
         [40, "202 Maple St", "google marker url", "Art"]
     ]);
 
+    const TeachingArray =[
+        Art,
+        English,
+        History,
+        Math,
+        Science
+    ]
     const handleSearchChange = (event) => {
         setSearchInput(event.target.value);
     };
@@ -145,8 +156,8 @@ const DonorTeaching = ({hideSearchFilter}) => {
                             <CardMedia
                                 component="img"
                                 alt="Teaching"
-                                image={ClothesImage} // Assuming you have an image for teaching
-                                style={{ width: '100%', objectFit: 'cover' }}
+                                image={TeachingArray[index]} // Assuming you have an image for teaching
+                                style={{ width: '100%', height: '250px', objectFit: 'cover' }} // Set a fixed height and object-fit: cover
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">

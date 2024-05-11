@@ -5,7 +5,6 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Clothes from './images/Clothes.jpg';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -18,6 +17,13 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Tooltip from '@mui/material/Tooltip';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
+
+import Shirt from './images/clothes/T-shirt.jpg';
+import Coat from './images/clothes/Coat.jpg';
+import Dress from './images/clothes/Dress.jpg';
+import Jeans from './images/clothes/Jeans.jpg';
+import Sweater from './images/clothes/Sweater.jpg';
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -37,6 +43,15 @@ const DonorClothes = ({ hideSearchFilter }) => {
         ["Jeans", "Adult", "Female", "Fall", "Denim", 6],
         ["Sweater", "Kids", "Female", "Winter", "Acrylic", 7]
     ]);
+
+    const images =[
+        [Shirt],
+        [Coat],
+        [Dress],
+        [Jeans],
+        [Sweater]
+    ];
+
     const [searchInput, setSearchInput] = useState('');
     const [selectedQuantities, setSelectedQuantities] = useState([]);
     const [detailOpen, setDetailOpen] = useState(false);
@@ -226,33 +241,34 @@ const DonorClothes = ({ hideSearchFilter }) => {
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', width: '100%', marginTop: '30px' }}>
                 {filteredClothes.map((cloth, index) => (
                     <div key={index} style={{ margin: '10px' }}>
-                        <Card sx={{ maxWidth: 250, height: '100%' }}>
-                            <CardMedia
-                                component="img"
-                                alt="Clothes"
-                                image={Clothes}
-                                style={{ width: '100%', objectFit: 'cover' }}
-                            />
-                            <CardContent sx={{ height: '180px', overflow: 'auto' }}>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    {cloth[0]}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'right' }}>
-                                    Quantity available: {cloth[5]}
-                                </Typography>
-                                <p>Select Quantity: </p>
-                                <Pagination
-                                    count={cloth[5]}
-                                    color="primary"
-                                    onChange={(event, page) => handleQuantityChange(index, page)}
-                                />
-                            </CardContent>
-                            <CardActions>
-                                <Button size="small" onClick={() => handleDetailOpen(cloth)}>Details</Button>
-                                <Button size="small" onClick={() => handleDonationOpen(cloth)}>Donate</Button>
-                            </CardActions>
-                        </Card>
-                    </div>
+    <Card sx={{ maxWidth: 250, height: '100%' }}>
+        <CardMedia
+            component="img"
+            alt="Clothes"
+            image={images[index]}
+            style={{ width: '100%', height: '250px', objectFit: 'cover' }} // Set a fixed height and object-fit: cover
+        />
+        <CardContent sx={{ height: '180px', overflow: 'auto' }}>
+            <Typography gutterBottom variant="h5" component="div">
+                {cloth[0]}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'right' }}>
+                Quantity available: {cloth[5]}
+            </Typography>
+            <p>Select Quantity: </p>
+            <Pagination
+                count={cloth[5]}
+                color="primary"
+                onChange={(event, page) => handleQuantityChange(index, page)}
+            />
+        </CardContent>
+        <CardActions>
+            <Button size="small" onClick={() => handleDetailOpen(cloth)}>Details</Button>
+            <Button size="small" onClick={() => handleDonationOpen(cloth)}>Donate</Button>
+        </CardActions>
+    </Card>
+</div>
+
                 ))}
             </div>
             <Dialog

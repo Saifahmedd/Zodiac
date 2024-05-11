@@ -21,6 +21,11 @@ import { InputLabel, MenuItem, Select } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
+import Thermometer from './medicalsupplies/Thermometer.jpg';
+import FirstAidKit from './medicalsupplies/FirstAidKit.jpg';
+import Nebulizer from './medicalsupplies/Nebulizer.jpg';
+import Stethoscope from './medicalsupplies/Stethoscope.jpg';
+import BloodPressureMonitor from './medicalsupplies/BloodPressureMonitor.jpg';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -34,12 +39,13 @@ const DonorSchoolSupplies = ({hideSearchFilter}) => {
     const [successAlertOpen, setSuccessAlertOpen] = useState(false);
     const [selectedSupply, setSelectedSupply] = useState(null);
     const [medicalSupplies, setMedicalSupplies] = useState([
-        ["Thermometer", "Measure body temperature", "https://example.com/medical1.jpg", 50, "medical device"],
-        ["First Aid Kit", "Provide initial medical treatment", "https://example.com/medical2.jpg", 30, "medical equipment"],
-        ["Blood Pressure Monitor", "Measure blood pressure", "https://example.com/medical3.jpg", 20, "medical device"],
-        ["Nebulizer", "Deliver medication as a mist to be inhaled into the lungs", "https://example.com/medical4.jpg", 10, "medication"],
-        ["Stethoscope", "Listen to sounds within the body", "https://example.com/medical5.jpg", 40, "medical device"]
+        ["Thermometer", "Measure body temperature", Thermometer , 50, "medical device"],
+        ["First Aid Kit", "Provide initial medical treatment", FirstAidKit, 30, "medical equipment"],
+        ["Blood Pressure Monitor", "Measure blood pressure", BloodPressureMonitor, 20, "medical device"],
+        ["Nebulizer", "Deliver medication as a mist to be inhaled into the lungs", Nebulizer, 10, "medication"],
+        ["Stethoscope", "Listen to sounds within the body", Stethoscope, 40, "medical device"]
     ]);
+
     const [searchInput, setSearchInput] = useState('');
     const [selectedQuantities, setSelectedQuantities] = useState([]);
     const [filterCategory, setFilterCategory] = useState('');
@@ -197,7 +203,7 @@ const DonorSchoolSupplies = ({hideSearchFilter}) => {
                                 component="img"
                                 alt="Medical Supply"
                                 image={supply[2]}
-                                style={{ width: '100%', objectFit: 'cover' }}
+                                style={{ width: '100%', height: '250px', objectFit: 'cover' }} // Set a fixed height and object-fit: cover
                             />
                             <CardContent sx={{ height: '180px', overflow: 'auto' }}>
                                 <Typography gutterBottom variant="h5" component="div">
