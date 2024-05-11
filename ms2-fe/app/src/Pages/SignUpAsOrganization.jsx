@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, TextField, Button, CircularProgress, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Box, Typography, TextField, Button, CircularProgress, FormControl, InputLabel, Select, MenuItem, AppBar, Toolbar, IconButton, Tooltip } from '@mui/material';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import MenuIcon from '@mui/icons-material/Menu';
+import Mail from '@mui/icons-material/Mail';
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 
+import { Link } from 'react-router-dom';
 
 const Organization = () => {
   const [registered, setRegistered] = useState(false);
@@ -15,7 +20,7 @@ const Organization = () => {
         setMessage('');
         setRegistered(false);
         // Redirect to login page after clearing the message
-        window.location.href = '/';
+        window.location.href = '/login';
       }, 2000); // Delay in milliseconds before resetting message
       return () => clearTimeout(timer);
     }
@@ -51,6 +56,10 @@ const Organization = () => {
     width: '100%',
     height: '400px',
   };
+  const toggleDrawer = () => {
+    // Your toggleDrawer implementation
+  };
+
 
   const center = {
     lat: 26.8206,
@@ -65,10 +74,68 @@ const Organization = () => {
         <Typography variant="h6" align="center">{message}</Typography>
       </Box>
     );
-  }
+  };
 
   return (
-    <Box
+    <>
+   <AppBar position="static">
+  <Toolbar>
+    <Tooltip title="Menu">
+      <IconButton
+        size="large"
+        edge="start"
+        color="inherit"
+        aria-label="menu"
+        sx={{ mr: 2 }}
+        onClick={toggleDrawer}
+      >
+        <MenuIcon />
+      </IconButton>
+    </Tooltip>
+   
+          <img alt="logo" style={{ width: 'auto', height: '60px', marginRight: '10px' }} />
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Care Charity
+          </Typography>
+    <Tooltip title="Mail">
+      <IconButton
+        size="large"
+        edge="start"
+        color="inherit"
+        aria-label="menu"
+        sx={{ mr: 2 }}
+      >
+        <Mail />
+      </IconButton>
+    </Tooltip>
+    <Tooltip title="Likes">
+      <IconButton
+        size="large"
+        edge="start"
+        color="inherit"
+        aria-label="menu"
+        sx={{ mr: 2 }}
+      >
+        <FavoriteBorder />
+      </IconButton>
+    </Tooltip>
+    <Tooltip title="Profile">
+      <IconButton
+        size="large"
+        edge="start"
+        color="inherit"
+        aria-label="menu"
+        component={Link}
+        to="/account"
+        sx={{ mr: 2, ml: 2 }}
+      >
+        <AccountCircle />
+      </IconButton>
+    </Tooltip>
+  </Toolbar>
+</AppBar>
+
+      <Box
       sx={{
         display: 'flex',
         justifyContent: 'center',
@@ -213,6 +280,7 @@ const Organization = () => {
         </Box>
       </Box>
     </Box>
+    </>
   );
 };
 

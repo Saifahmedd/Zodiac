@@ -1,8 +1,18 @@
 import React, { useState , useEffect } from 'react';
-import { Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem, Button, CircularProgress } from '@mui/material';
+import { Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem, Button, CircularProgress,IconButton } from '@mui/material';
 import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import MenuIcon from '@mui/icons-material/Menu';
+import MailIcon from '@mui/icons-material/Mail';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
+import { Link } from 'react-router-dom';
+
 
 
 const SignUpAsDonor = () => {
@@ -22,7 +32,7 @@ const SignUpAsDonor = () => {
         const timer = setTimeout(() => {
           setMessage('');
           // Redirect to login page after clearing the message
-          window.location.href = '/';
+          window.location.href = '/login';
         }, 2000); // Delay in milliseconds before resetting message
         return () => clearTimeout(timer);
       }
@@ -49,6 +59,9 @@ const SignUpAsDonor = () => {
       setIsUploading(false);
     }, 1500); // Delay in milliseconds before setting message
   };
+  const toggleDrawer = () => {
+    // Your toggleDrawer implementation
+  };
 
 
   const handleRoleChange = (event) => {
@@ -68,6 +81,50 @@ const SignUpAsDonor = () => {
   }
 
   return (
+    <>
+    <AppBar position="static">
+        <Toolbar>
+          <Tooltip title="Menu">
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={toggleDrawer}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Tooltip>
+          <img alt="logo" style={{ width: 'auto', height: '60px', marginRight: '10px' }} />
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Care Charity
+          </Typography>
+          <Tooltip title="Mail">
+            <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+              <MailIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Likes">
+            <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+              <FavoriteBorderIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Profile">
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              component={Link}
+              to="/account"
+              sx={{ mr: 2, ml: 2 }}
+            >
+              <AccountCircleIcon />
+            </IconButton>
+          </Tooltip>
+        </Toolbar>
+      </AppBar>
     <Box
       sx={{
         display: 'flex',
@@ -362,6 +419,7 @@ const SignUpAsDonor = () => {
         </Box>
       </Box>
     </Box>
+    </>
   );
 };
 

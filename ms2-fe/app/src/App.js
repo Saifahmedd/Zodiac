@@ -9,13 +9,15 @@ import OrgLogin from './Pages/OrgLogin';
 
 import DonorLogin1 from './Pages/DonorLogin1.jsx';
 import AdminLogin1 from './Pages/AdminLogin1.jsx';
+import GetStartedPage from './Pages/GetStartedPage.js';
 
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+      <Route path="/" element={<GetStartedPage />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/Signup" element={<SignUpAsDonor />} />
         <Route path="/Signup1" element={<SignUpAsOrganization />} />
         <Route path="/OrgLogin" element={<OrgLogin />} />
