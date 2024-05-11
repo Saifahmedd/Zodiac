@@ -94,6 +94,24 @@ const OrgPosts = ({ posts }) =>{
         setMapDialogOpen(false);
     };
 
+    const [cardsVisibility, setCardsVisibility] = useState({
+        card1: true,
+        card2: true,
+        card3: true,
+        card4: true,
+        card5: true,
+        card6: true,
+        card7: true,
+        card8: true,
+        card9: true,
+    });
+
+    const handleDeleteCard = (cardKey) => {
+        setCardsVisibility({
+            ...cardsVisibility,
+            [cardKey]: false,
+        });
+    };
     
 
 
@@ -456,7 +474,7 @@ const OrgPosts = ({ posts }) =>{
                         <IconButton aria-label="edit">
                             <EditIcon />
                         </IconButton>
-                        <IconButton aria-label="delete">
+                        <IconButton aria-label="delete" onClick={() => handleDeleteCard('card1')}>
                             <DeleteIcon />
                         </IconButton>
                         <IconButton aria-label="location" onClick={handleViewLocation}>
