@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Tooltip} from '@mui/material';
+import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Tooltip, Dialog, DialogTitle} from '@mui/material';
 import { AccessTime, AccountCircle, Bloodtype, Category, Checkroom, Edit, EventNote, ExpandLess, ExpandMore, Fastfood, Groups, Home, Mail, Masks, MenuBook, School, Toys, Vaccines,FavoriteBorder } from '@mui/icons-material';
 import Logo from './Logo_Main.jpg';
 import Box from '@mui/material/Box';
@@ -19,6 +19,8 @@ import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive'; //el garaz el beyr2os
 import { Link } from 'react-router-dom';
+
+
 
 
 
@@ -38,8 +40,6 @@ const Root = () => {
   const [quantity, setQuantity] = useState(''); // Add quantity state
 
 
-
-
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
@@ -48,60 +48,97 @@ const Root = () => {
     setCategoryOpen(!categoryOpen);
   };
 
-  const handleClick = () => {
-    setShowSelect(true); // Show the select component when "New Post" is clicked
-  };
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
   
-
-  const handleSchoolSupplyChange = (event) => {
-    setSelectedSchoolSupply(event.target.value);
-  };
-
-  const handleCategoryChange = (event) => {
-    const category = event.target.value;
-    setSelectedCategory(category);
-    setShowSchoolSuppliesSelect(category === "School Supplies"); // Show the school supplies select if the category is "School Supplies"
-    setShowClothesTextboxes(category === "Clothes"); // Show the clothes textboxes if the category is "Clothes"
-  };
+    const handleClose = () => {
+      setOpen(false);
+    };
   
+    const [open, setOpen] = useState(false);
+    const [posts, setPosts] = useState([
+      { id: 1, author: 'Saif Ahmed', content: 'sent a request to donate 2 T-shirts' },
+      { id: 2, author: 'Ali Hani', content: 'sent a request to donate 5 pairs of shoes' },
+      { id: 3, author: 'Jane Smith', content: 'sent a request to donate 10 blankets' },
+      { id: 4, author: 'Alice Johnson', content: 'sent a request to donate 3 bags of rice' },
+    ]);
 
-
+    const handleApprove = (postId) => {
+      // Implement approve logic here
+    };
+  
+    const handleReject = (postId) => {
+      // Implement reject logic here
+    };
+  
+    const handleViewDetails = (postId) => {
+      // Implement view details logic here
+    };
+  
 
   return (
     <div>
       <AppBar position="static">
         <Toolbar>
-        <Tooltip title="Menu">
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2}}
-            onClick={toggleDrawer} // Call toggleDrawer function on menu icon click
-          >
-            <MenuIcon />
-          </IconButton>
+<Tooltip title="Menu">
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={toggleDrawer} // Call toggleDrawer function on menu icon click
+            >
+              <MenuIcon />
+            </IconButton>
           </Tooltip>
-          <img src={Logo} alt="logo" style={{ width: 'auto', height: '60px', marginRight: '10px'}} />
+          <img src={Logo} alt="logo" style={{ width: 'auto', height: '60px', marginRight: '10px' }} />
 
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Care Charity
           </Typography>
           <Tooltip title="Mail">
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2}}
-          >
-            <Mail />
-          </IconButton>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={handleClickOpen}
+            >
+              <Mail />
+            </IconButton>
+            <Dialog open={open} onClose={handleClose}>
+              <DialogTitle>Notifications</DialogTitle>
+              <Divider />
+              <Box p={2}>
+                {posts.map((post, index) => (
+                  <div key={post.id}>
+                    <Box>
+                      <p>{post.author} {post.content}</p>
+                    </Box>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mt={2} sx={{ width: '100%' }}>
+                      <Box>
+                        <Button variant="outlined" color="primary" onClick={() => handleApprove(post.id)}>
+                          Approve
+                        </Button>
+                        <Button variant="outlined" color="secondary" onClick={() => handleReject(post.id)}>
+                          Reject
+                        </Button>
+                      </Box>
+                      <Button variant="outlined" onClick={() => handleViewDetails(post.id)}>
+                        View Details
+                      </Button>
+                    </Box>
+                    <br/>
+                    {index !== posts.length - 1 && <Divider />} {/* Add divider if not the last post */}
+                  </div>
+                ))}
+              </Box>
+
+            </Dialog>
           </Tooltip>
 
           <Tooltip title="Likes">
