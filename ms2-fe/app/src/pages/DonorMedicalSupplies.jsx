@@ -21,11 +21,11 @@ import { InputLabel, MenuItem, Select } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
-import Thermometer from './medicalsupplies/Thermometer.jpg';
-import FirstAidKit from './medicalsupplies/FirstAidKit.jpg';
-import Nebulizer from './medicalsupplies/Nebulizer.jpg';
-import Stethoscope from './medicalsupplies/Stethoscope.jpg';
-import BloodPressureMonitor from './medicalsupplies/BloodPressureMonitor.jpg';
+import Thermometer from './images/medicalsupplies/Thermometer.jpg';
+import FirstAidKit from './images/medicalsupplies/FirstAidKit.jpg';
+import Nebulizer from './images/medicalsupplies/Nebulizer.jpg';
+import Stethoscope from './images/medicalsupplies/Stethoscope.jpg';
+import BloodPressureMonitor from './images/medicalsupplies/BloodPressureMonitor.jpg';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;

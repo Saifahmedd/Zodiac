@@ -22,11 +22,11 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { InputLabel, MenuItem, Select } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 
-import Apples from './food/Apples.jpg';
-import Beans from './food/Beans.jpg';
-import Bread from './food/Bread.jpg';
-import Chicken from './food/Chicken.jpg';
-import Rice from './food/Rice.jpg'
+import Apples from './images/food/Apples.jpg';
+import Beans from './images/food/Beans.jpg';
+import Bread from './images/food/Bread.jpg';
+import Chicken from './images/food/Chicken.jpg';
+import Rice from './images/food/Rice.jpg'
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {

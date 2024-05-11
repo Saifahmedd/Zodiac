@@ -21,11 +21,11 @@ import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import { FormControl, FormControlLabel, InputLabel, MenuItem, Radio, RadioGroup, Select } from '@mui/material';
 
-import Harry from './schoolsupplies/Harry.jpg';
-import Notebook from './schoolsupplies/Notebook.jpg';
-import Pencils from './schoolsupplies/Pencils.jpg';
-import Pens from './schoolsupplies/Pens.jpg';
-import Pride from './schoolsupplies/Pride.jpg';
+import Harry from './images/schoolsupplies/Harry.jpg';
+import Notebook from './images/schoolsupplies/Notebook.jpg';
+import Pencils from './images/schoolsupplies/Pencils.jpg';
+import Pens from './images/schoolsupplies/Pens.jpg';
+import Pride from './images/schoolsupplies/Pride.jpg';
 
 const stationaryArray =[
     Pride,
