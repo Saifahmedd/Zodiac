@@ -26,50 +26,10 @@ import Logo from 'logo.jpeg';
 
 const settings = ['Change Password', 'Logout'];
 
-// Notification component
-const NotificationBar = () => {
-    // Hard-coded messages for demonstration
-    const notifications = [
-        { message: "Care hospital", description: "A new patient has applied" },
-        { message: "Reminder: Charity event tomorrow.", description: "A reminder about the upcoming charity event at growth orphnage" },
-        { message: "Account verification pending.", description: "There are accounts pending verification." },
-        { message: "Canada electricty ", description: "new monthly bill is recieved " }
-    ];
-
-    const [showMessage, setShowMessage] = useState(null);
-
-    const handleNotificationClick = (notification) => {
-        setShowMessage(notification);
-    };
-
-    const handleCloseMessage = () => {
-        setShowMessage(null);
-    };
-
-    return (
-        <div style={{ backgroundColor: '#f0f0f0', padding: '5px', textAlign: 'center' }}>
-            <Typography variant="h6" style={{ marginBottom: '10px' }}>Notifications</Typography>
-            {notifications.map((notification, index) => (
-                <div key={index} style={{ margin: '5px', padding: '5px', border: '1px solid #ccc', borderRadius: '5px', display: 'inline-block', cursor: 'pointer' }} onClick={() => handleNotificationClick(notification)}>
-                    {notification.message}
-                </div>
-            ))}
-            {showMessage && (
-                <div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', backgroundColor: '#fff', padding: '20px', borderRadius: '5px', boxShadow: '0px 0px 10px 2px rgba(0,0,0,0.1)', zIndex: 9999 }}>
-                    <Typography variant="h6">{showMessage.message}</Typography>
-                    <Typography variant="body1" style={{ marginTop: '10px' }}>{showMessage.description}</Typography>
-                    <IconButton style={{ position: 'absolute', top: '5px', right: '5px' }} onClick={handleCloseMessage}>
-                        <CloseIcon />
-                    </IconButton>
-                </div>
-            )}
-        </div>
-    );
-};
-
 const AdminHome = () => {
-    const [drawerOpen, setDrawerOpen] = useState(false); // State to manage drawer open/close
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [anchorElUser, setAnchorElUser] = useState(null);
+    const [showMessage, setShowMessage] = useState(null);
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -80,8 +40,24 @@ const AdminHome = () => {
     };
 
     const toggleDrawer = () => {
-        setDrawerOpen(!drawerOpen); // Function to toggle the drawer state
+        setDrawerOpen(!drawerOpen);
     };
+
+    const handleNotificationClick = (notification) => {
+        setShowMessage(notification);
+    };
+
+    const handleCloseMessage = () => {
+        setShowMessage(null);
+    };
+
+    // Hard-coded messages for demonstration
+    const notifications = [
+        { message: "Care hospital", description: "A new patient has applied" },
+        { message: "Reminder: Charity event tomorrow.", description: "A reminder about the upcoming charity event at growth orphnage" },
+        { message: "Account verification pending.", description: "There are accounts pending verification." },
+        { message: "Canada electricty ", description: "new monthly bill is recieved " }
+    ];
 
     return (
         <div>
@@ -94,7 +70,7 @@ const AdminHome = () => {
                             color="inherit"
                             aria-label="menu"
                             sx={{ mr: 2 }}
-                            onClick={toggleDrawer} // Call toggleDrawer function on menu icon click
+                            onClick={toggleDrawer}
                         >
                             <MenuIcon />
                         </IconButton>
@@ -139,7 +115,23 @@ const AdminHome = () => {
                 </Toolbar>
             </AppBar>
 
-            <NotificationBar /> {/* Notification bar component */}
+            <div style={{ backgroundColor: '#f0f0f0', padding: '5px', textAlign: 'center' }}>
+                <Typography variant="h6" style={{ marginBottom: '10px' }}>Notifications</Typography>
+                {notifications.map((notification, index) => (
+                    <div key={index} style={{ margin: '5px', padding: '5px', border: '1px solid #ccc', borderRadius: '5px', display: 'inline-block', cursor: 'pointer' }} onClick={() => handleNotificationClick(notification)}>
+                        {notification.message}
+                    </div>
+                ))}
+                {showMessage && (
+                    <div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', backgroundColor: '#fff', padding: '20px', borderRadius: '5px', boxShadow: '0px 0px 10px 2px rgba(0,0,0,0.1)', zIndex: 9999 }}>
+                        <Typography variant="h6">{showMessage.message}</Typography>
+                        <Typography variant="body1" style={{ marginTop: '10px' }}>{showMessage.description}</Typography>
+                        <IconButton style={{ position: 'absolute', top: '5px', right: '5px' }} onClick={handleCloseMessage}>
+                            <CloseIcon />
+                        </IconButton>
+                    </div>
+                )}
+            </div>
 
             <Drawer
                 anchor="left"

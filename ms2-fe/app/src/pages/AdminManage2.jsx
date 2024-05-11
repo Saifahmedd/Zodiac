@@ -19,30 +19,44 @@ import teacher2 from "teacher2.png";
 import doctor from "doctor.png";
 import doctor2 from "doctor2.png";
 import doctor3 from "doctor3.png";
-import { Box } from "@mui/material";
+import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 
 const donors = [
-    // [name, type, email]
-    ["John Doe", "Doctor", "john@example.com",doctor],
-    ["Jane Smith", "Teacher", "jane@example.com",teacher],
-    ["Michael Johnson", "Doctor", "michael@example.com",doctor2],
-    ["Emily Williams", "Teacher", "emily@example.com",teacher2],
-    ["David Brown", "Doctor", "david@example.com",doctor3]
+    // [name, type, email, image]
+    ["John Doe", "Doctor", "john@example.com", doctor],
+    ["Jane Smith", "Teacher", "jane@example.com", teacher],
+    ["Michael Johnson", "Doctor", "michael@example.com", doctor2],
+    ["Emily Williams", "Teacher", "emily@example.com", teacher2],
+    ["David Brown", "Doctor", "david@example.com", doctor3]
 ];
 
 const AdminManage2 = () => {
     const [organizations, setOrganizations] = useState(donors);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [deleteIndex, setDeleteIndex] = useState(null);
 
     const handleAccept = (index) => {
-        const updatedOrganizations = [...organizations];
-        updatedOrganizations.splice(index, 1);
-        setOrganizations(updatedOrganizations);
+        setDeleteIndex(index);
+        setDialogOpen(true);
     };
 
     const handleDelete = (index) => {
-        const updatedOrganizations = [...organizations];
-        updatedOrganizations.splice(index, 1);
-        setOrganizations(updatedOrganizations);
+        setDeleteIndex(index);
+        setDialogOpen(true);
+    };
+
+    const handleCloseDialog = () => {
+        setDeleteIndex(null);
+        setDialogOpen(false);
+    };
+
+    const handleConfirmDelete = () => {
+        if (deleteIndex !== null) {
+            const updatedOrganizations = [...organizations];
+            updatedOrganizations.splice(deleteIndex, 1);
+            setOrganizations(updatedOrganizations);
+            handleCloseDialog();
+        }
     };
 
     return (
@@ -62,7 +76,6 @@ const AdminManage2 = () => {
                             <Typography variant="body2" color="text.secondary">
                                 Email: {organization[2]}
                             </Typography>
-                            
                             <Typography variant="body2" color="text.secondary">
                                 Type: {organization[1]}
                             </Typography>
@@ -86,6 +99,20 @@ const AdminManage2 = () => {
                     </Card>
                 ))}
             </Box>
+            <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+                <DialogTitle>Are you sure?</DialogTitle>
+                <DialogContent>
+                    This action cannot be undone.
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog} color="primary">
+                        No
+                    </Button>
+                    <Button onClick={handleConfirmDelete} color="error" autoFocus>
+                        Yes
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }

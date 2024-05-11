@@ -14,7 +14,7 @@ import Ali from "AliElectricity.png";
 import hospital1 from "hospital.png";
 import hospital2 from "hospital2.png";
 import orphanage from "Orphanagee.png";
-import { Box } from "@mui/material";
+import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 
 const initialOrganizations = [
     ["Care Hospital", "Non-profit", "123 Main St, Cityville", "+1234567890", "Central District", "City A", hospital1],
@@ -26,24 +26,38 @@ const initialOrganizations = [
 
 const AdminManage = () => {
     const [organizations, setOrganizations] = useState(initialOrganizations);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [deleteIndex, setDeleteIndex] = useState(null);
 
     const handleAccept = (index) => {
-        const updatedOrganizations = [...organizations];
-        updatedOrganizations.splice(index, 1);
-        setOrganizations(updatedOrganizations);
+        setDeleteIndex(index);
+        setDialogOpen(true);
     };
 
     const handleDelete = (index) => {
-        const updatedOrganizations = [...organizations];
-        updatedOrganizations.splice(index, 1);
-        setOrganizations(updatedOrganizations);
+        setDeleteIndex(index);
+        setDialogOpen(true);
+    };
+
+    const handleCloseDialog = () => {
+        setDeleteIndex(null);
+        setDialogOpen(false);
+    };
+
+    const handleConfirmDelete = () => {
+        if (deleteIndex !== null) {
+            const updatedOrganizations = [...organizations];
+            updatedOrganizations.splice(deleteIndex, 1);
+            setOrganizations(updatedOrganizations);
+            handleCloseDialog();
+        }
     };
 
     return (
         <div>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                 {organizations.map((organization, index) => (
-                    <Card key={index} sx={{ margin: '10px', minWidth: '200px', maxWidth: '350px' }}>
+                    <Card key={index} sx={{ margin: '10px', fixedwidth: '200px', maxWidth: '350px' }}>
                         <CardMedia
                             sx={{ height: 140 }}
                             image={organization[6]}
@@ -82,6 +96,20 @@ const AdminManage = () => {
                     </Card>
                 ))}
             </Box>
+            <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+                <DialogTitle>Are you sure?</DialogTitle>
+                <DialogContent>
+                    This action cannot be undone.
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog} color="primary">
+                        No
+                    </Button>
+                    <Button onClick={handleConfirmDelete} color="error" autoFocus>
+                        Yes
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }

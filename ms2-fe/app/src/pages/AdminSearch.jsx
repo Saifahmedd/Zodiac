@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import { Stack, TextField, Tooltip, Card, CardContent, CardActions, Button, CardMedia } from '@mui/material';
+import { Stack, TextField, Tooltip, Card, CardContent, CardActions, Button, CardMedia, MenuItem } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { useState } from 'react';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -23,7 +23,7 @@ const settings = ['Profile', 'Change Password', 'Logout'];
 const drawerWidth = 300;
 
 const organizations = [
-    // [name, type, address, contactNumber, email, area, governorate]
+    // [name, type, address, contactNumber, email, area, governorate,image]
    ["Care Hospital", "Non-profit", "123 Main St, Cityville", "+1234567890", "Central District", "City A",hospital1],
    ["Canada Electricity", "Corporate", "456 Oak Ave, Townsville", "+2345678901", "Downtown", "City B",Reem],
    ["Growth Orphanage", "Non-profit", "789 Elm St, Villagetown", "+3456789012", "Suburbia", "City C",orphanage],
@@ -77,14 +77,25 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function AdminSearch() {
     const [searchInput, setSearchInput] = useState(''); // Define searchInput state variable
+    const [filter, setFilter] = useState(''); // Define filter state variable
 
     const handleSearchChange = (event) => {
         setSearchInput(event.target.value);
     };
 
-    const filteredOrganizations = organizations.filter(organization => {
-        const [name] = organization;
-        return name.toLowerCase().includes(searchInput.toLowerCase());
+    const handleFilterChange = (event) => {
+        setFilter(event.target.value);
+    };
+
+    const filteredOrganizations = organizations.filter((organization) => {
+        const [name, type, address, contactNumber, email, area, governorate] = organization;
+        return (
+            name.toLowerCase().includes(searchInput.toLowerCase()) &&
+            (filter === '' || 
+             area.toLowerCase() === filter.toLowerCase() || 
+             governorate.toLowerCase() === filter.toLowerCase() || 
+             type.toLowerCase() === filter.toLowerCase())
+        );
     });
 
     return (
@@ -96,10 +107,30 @@ export default function AdminSearch() {
                 <IconButton>
                     <FilterAltIcon />
                 </IconButton>
+                <TextField
+                    id="filter"
+                    select
+                    label="Filter"
+                    value={filter}
+                    onChange={handleFilterChange}
+                    variant="outlined"
+                    style={{ marginLeft: '10px' }}
+                >
+                    <MenuItem value="">All</MenuItem>
+                    {organizations.map((organization, index) => (
+                        <MenuItem key={index} value={organization[5]}>{organization[5]}</MenuItem>
+                    ))}
+                    {organizations.map((organization, index) => (
+                        <MenuItem key={index} value={organization[4]}>{organization[4]}</MenuItem>
+                    ))}
+                    {organizations.map((organization, index) => (
+                        <MenuItem key={index} value={organization[1]}>{organization[1]}</MenuItem>
+                    ))}
+                </TextField>
             </div>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                 {filteredOrganizations.map((organization, index) => (
-                    <Card key={index} style={{ margin: '10px', minWidth: '200px', maxWidth: '300px' }}>
+                    <Card key={index} sx={{ margin: '10px', fixedwidth:'300px' }}>
                         <CardMedia
                             component="img"
                             height="140"
@@ -123,5 +154,3 @@ export default function AdminSearch() {
         </div>
     );
 }
-
-

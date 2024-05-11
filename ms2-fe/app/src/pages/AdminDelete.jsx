@@ -14,7 +14,7 @@ import Ali from "AliElectricity.png";
 import hospital1 from "hospital.png";
 import hospital2 from "hospital2.png";
 import orphanage from "Orphanagee.png";
-import { Box } from "@mui/material";
+import { Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 
 const initialOrganizations = [
     ["Care Hospital", "Non-profit", "123 Main St, Cityville", "+1234567890", "Central District", "City A", hospital1],
@@ -26,11 +26,25 @@ const initialOrganizations = [
 
 const AdminDelete = () => {
     const [organizations, setOrganizations] = useState(initialOrganizations);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [deleteIndex, setDeleteIndex] = useState(null);
 
     const handleDelete = (index) => {
+        setDeleteIndex(index);
+        setOpenDialog(true);
+    };
+
+    const handleDialogClose = () => {
+        setOpenDialog(false);
+        setDeleteIndex(null);
+    };
+
+    const handleConfirmDelete = () => {
         const updatedOrganizations = [...organizations];
-        updatedOrganizations.splice(index, 1);
+        updatedOrganizations.splice(deleteIndex, 1);
         setOrganizations(updatedOrganizations);
+        setOpenDialog(false);
+        setDeleteIndex(null);
     };
 
     return (
@@ -63,6 +77,27 @@ const AdminDelete = () => {
                     </Card>
                 ))}
             </Box>
+            <Dialog
+                open={openDialog}
+                onClose={handleDialogClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to delete this organization?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogClose} color="primary">
+                        No
+                    </Button>
+                    <Button onClick={handleConfirmDelete} color="error" autoFocus>
+                        Yes
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }
