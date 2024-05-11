@@ -15,6 +15,7 @@ import doctor from "doctor.png";
 import doctor2 from "doctor2.png";
 import doctor3 from "doctor3.png";
 import { Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import Home from "./AdminHome"
 
 const donors = [
     // [name, type, email, image]
@@ -50,6 +51,9 @@ const AdminDelete2 = () => {
     };
 
     return (
+        <div>
+            <Home/>
+        
         <div>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                 {organizations.map((organization, index) => (
@@ -97,6 +101,7 @@ const AdminDelete2 = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+        </div>
         </div>
     );
 }

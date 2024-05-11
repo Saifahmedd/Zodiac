@@ -15,6 +15,7 @@ import hospital1 from "hospital.png";
 import hospital2 from "hospital2.png";
 import orphanage from "Orphanagee.png";
 import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+import Home from "./AdminHome"
 
 const initialOrganizations = [
     ["Care Hospital", "Non-profit", "123 Main St, Cityville", "+1234567890", "Central District", "City A", hospital1],
@@ -54,6 +55,9 @@ const AdminManage = () => {
     };
 
     return (
+        <div>
+            <Home/>
+       
         <div>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                 {organizations.map((organization, index) => (
@@ -110,6 +114,7 @@ const AdminManage = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+        </div>
         </div>
     );
 }

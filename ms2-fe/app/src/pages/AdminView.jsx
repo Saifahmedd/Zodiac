@@ -19,6 +19,7 @@ import hospital1 from "hospital.png";
 import hospital2 from "hospital2.png";
 import orphanage from "Orphanagee.png";
 import { Box } from "@mui/material";
+import Home from "./AdminHome"
 
 const organizations = [
     // [name, type, address, contactNumber, email, area, governorate]
@@ -43,6 +44,9 @@ const AdminView = () => {
     };
 
     return (
+        <div>
+            <Home/>
+        
         <div>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                 {organizations.map((organization, index) => (
@@ -92,6 +96,7 @@ const AdminView = () => {
                 </Dialog>
 
             </Box>
+        </div>
         </div>
     );
 }

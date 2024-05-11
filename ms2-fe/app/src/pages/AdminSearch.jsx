@@ -1,35 +1,23 @@
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import { Stack, TextField, Tooltip, Card, CardContent, CardActions, Button, CardMedia, MenuItem } from '@mui/material';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { useState } from 'react';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { TextField, MenuItem, Card, CardContent, CardActions, Button, CardMedia, Box, Typography, IconButton } from '@mui/material';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import Home from "./AdminHome";
 import Reem from "ReemElectricity.png";
 import Ali from "AliElectricity.png";
 import hospital1 from "hospital.png";
 import hospital2 from "hospital2.png";
 import orphanage from "Orphanagee.png";
 
-const pages = ['Admin'];
-const settings = ['Profile', 'Change Password', 'Logout'];
-const drawerWidth = 300;
-
 const organizations = [
-    // [name, type, address, contactNumber, email, area, governorate,image]
-   ["Care Hospital", "Non-profit", "123 Main St, Cityville", "+1234567890", "Central District", "City A",hospital1],
-   ["Canada Electricity", "Corporate", "456 Oak Ave, Townsville", "+2345678901", "Downtown", "City B",Reem],
-   ["Growth Orphanage", "Non-profit", "789 Elm St, Villagetown", "+3456789012", "Suburbia", "City C",orphanage],
-   ["Zodiac Hospital", "Non-profit", "321 Pine St, Countryside", "+4567890123", "Rural", "City D",hospital2],
-   ["Sewedy Electricity", "Non-profit", "654 Maple Ave, Beachside", "+5678901234", "Coastal", "City E",Ali]
- ];
+    // [name, type, address, contactNumber, area, governorate, image]
+    ["Care Hospital", "Non-profit", "123 Main St Cityville", "+1234567890", "City A", "Central District", hospital1],
+    ["Canada Electricity", "Corporate", "456 Oak Ave Townsville", "+2345678901", "City B", "Downtown", Reem],
+    ["Growth Orphanage", "Non-profit", "789 Elm St Villagetown", "+3456789012", "City C", "Suburbia", orphanage],
+    ["Zodiac Hospital", "Non-profit", "321 Pine St Countryside", "+4567890123", "City D", "Rural", hospital2],
+    ["Sewedy Electricity", "Non-profit", "654 Maple Ave Beachside", "+5678901234", "City E", "Coastal", Ali]
+];
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -48,17 +36,7 @@ const Search = styled('div')(({ theme }) => ({
     },
 }));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
+const StyledInputBase = styled(TextField)(({ theme }) => ({
     color: 'inherit',
     width: '100%',
     '& .MuiInputBase-input': {
@@ -87,70 +65,85 @@ export default function AdminSearch() {
         setFilter(event.target.value);
     };
 
-    const filteredOrganizations = organizations.filter((organization) => {
-        const [name, type, address, contactNumber, email, area, governorate] = organization;
-        return (
-            name.toLowerCase().includes(searchInput.toLowerCase()) &&
-            (filter === '' || 
-             area.toLowerCase() === filter.toLowerCase() || 
-             governorate.toLowerCase() === filter.toLowerCase() || 
-             type.toLowerCase() === filter.toLowerCase())
-        );
-    });
+    // Extract unique filter options and categorize them
+    const categories = organizations.reduce((acc, organization) => {
+        const [name, type, address, contactNumber, area, governorate] = organization;
+        if (!acc.types.includes(type)) acc.types.push(type);
+        if (!acc.areas.includes(area)) acc.areas.push(area);
+        if (!acc.governorates.includes(governorate)) acc.governorates.push(governorate);
+        return acc;
+    }, { types: [], areas: [], governorates: [] });
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
-            <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
-                <TextField id="search" label="Search" variant="outlined" onChange={handleSearchChange} />
+        <div>
+            <Home />
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
+                <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
+                    <StyledInputBase id="search" label="Search" variant="outlined" onChange={handleSearchChange} />
+                </div>
+                <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
+                    <IconButton>
+                        <FilterAltIcon />
+                    </IconButton>
+                    <StyledInputBase
+                        id="filter"
+                        select
+                        label="Filter"
+                        value={filter}
+                        onChange={handleFilterChange}
+                        variant="outlined"
+                        style={{ marginLeft: '10px' }}
+                    >
+                        <MenuItem value="">All</MenuItem>
+                        <MenuItem disabled>Types</MenuItem>
+                        {categories.types.map((type, index) => (
+                            <MenuItem key={`type-${index}`} value={type}>{type}</MenuItem>
+                        ))}
+                        <MenuItem disabled>Areas</MenuItem>
+                        {categories.areas.map((area, index) => (
+                            <MenuItem key={`area-${index}`} value={area}>{area}</MenuItem>
+                        ))}
+                        <MenuItem disabled>Governorates</MenuItem>
+                        {categories.governorates.map((governorate, index) => (
+                            <MenuItem key={`governorate-${index}`} value={governorate}>{governorate}</MenuItem>
+                        ))}
+                    </StyledInputBase>
+                </div>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    {organizations
+                        .filter((organization) => {
+                            const [name, type, address, contactNumber, area, governorate] = organization;
+                            return (
+                                name.toLowerCase().includes(searchInput.toLowerCase()) &&
+                                (filter === '' ||
+                                    area.toLowerCase() === filter.toLowerCase() ||
+                                    governorate.toLowerCase() === filter.toLowerCase() ||
+                                    type.toLowerCase() === filter.toLowerCase())
+                            );
+                        })
+                        .map((organization, index) => (
+                            <Card key={index} sx={{ margin: '10px', fixedwidth: '300px' }}>
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={organization[6]} // Assuming image index is 6 (governorate)
+                                    alt={organization[0]}
+                                />
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
+                                        {organization[0]}
+                                    </Typography>
+                                    <Typography color="text.secondary" gutterBottom>
+                                        {organization[2]}
+                                    </Typography>
+                                </CardContent>
+                                <CardActions>
+                                    <Button size="small">Details</Button>
+                                </CardActions>
+                            </Card>
+                        ))}
+                </Box>
             </div>
-            <div style={{ alignSelf: 'flex-end', marginRight: '20px', marginTop: '-60px' }}>
-                <IconButton>
-                    <FilterAltIcon />
-                </IconButton>
-                <TextField
-                    id="filter"
-                    select
-                    label="Filter"
-                    value={filter}
-                    onChange={handleFilterChange}
-                    variant="outlined"
-                    style={{ marginLeft: '10px' }}
-                >
-                    <MenuItem value="">All</MenuItem>
-                    {organizations.map((organization, index) => (
-                        <MenuItem key={index} value={organization[5]}>{organization[5]}</MenuItem>
-                    ))}
-                    {organizations.map((organization, index) => (
-                        <MenuItem key={index} value={organization[4]}>{organization[4]}</MenuItem>
-                    ))}
-                    {organizations.map((organization, index) => (
-                        <MenuItem key={index} value={organization[1]}>{organization[1]}</MenuItem>
-                    ))}
-                </TextField>
-            </div>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-                {filteredOrganizations.map((organization, index) => (
-                    <Card key={index} sx={{ margin: '10px', fixedwidth:'300px' }}>
-                        <CardMedia
-                            component="img"
-                            height="140"
-                            image={organization[6]}
-                            alt={organization[0]}
-                        />
-                        <CardContent>
-                            <Typography variant="h6" component="div">
-                                {organization[0]}
-                            </Typography>
-                            <Typography color="text.secondary" gutterBottom>
-                                {organization[2]}
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <Button size="small">Details</Button>
-                        </CardActions>
-                    </Card>
-                ))}
-            </Box>
         </div>
     );
 }

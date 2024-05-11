@@ -12,6 +12,7 @@ import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Typography } from '@mui/material';
+import Home from "./AdminHome"
 
 export default function AdminPassword() {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -23,6 +24,9 @@ export default function AdminPassword() {
   };
 
   return (
+    <div>
+        <Home/>
+    
     <Box sx={{ width: 400 ,mt:5, ml:60}}>
       <Typography variant="h3" gutterBottom>
         Password Change
@@ -103,5 +107,6 @@ export default function AdminPassword() {
       </Box>
     </Box>
     </Box>
+    </div>
   );
 }

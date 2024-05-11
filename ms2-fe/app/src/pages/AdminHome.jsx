@@ -54,8 +54,8 @@ const AdminHome = () => {
     // Hard-coded messages for demonstration
     const notifications = [
         { message: "Care hospital", description: "A new patient has applied" },
-        { message: "Reminder: Charity event tomorrow.", description: "A reminder about the upcoming charity event at growth orphnage" },
-        { message: "Account verification pending.", description: "There are accounts pending verification." },
+        { message: "Reminder: Charity event tomorrow", description: "A reminder about the upcoming charity event at growth orphnage" },
+        { message: "Account verification pending", description: "There are accounts pending verification" },
         { message: "Canada electricty ", description: "new monthly bill is recieved " }
     ];
 
