@@ -10,6 +10,9 @@ import hospital1 from "hospital.png";
 import hospital2 from "hospital2.png";
 import orphanage from "Orphanagee.png";
 
+
+// test
+
 const organizations = [
     // [name, type, address, contactNumber, area, governorate, image]
     ["Care Hospital", "Non-profit", "123 Main St Cityville", "+1234567890", "City A", "Central District", hospital1],
