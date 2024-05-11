@@ -20,6 +20,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import { FormControl, FormControlLabel, InputLabel, MenuItem, Radio, RadioGroup, Select } from '@mui/material';
+import Root from "./DonorRoot";
 
 import Harry from './images/schoolsupplies/Harry.jpg';
 import Notebook from './images/schoolsupplies/Notebook.jpg';
@@ -39,7 +40,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DonorSchoolSupplies = ({ hideSearchFilter }) => {
+const DonorSchoolSupplies = ({ hideSearchFilter , hideRoot}) => {
     const [open, setOpen] = useState(false);
     const [donationOpen, setDonationOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -172,7 +173,10 @@ const DonorSchoolSupplies = ({ hideSearchFilter }) => {
     });
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
+        <div>
+            {!hideRoot && (
+            <Root/>
+            )}        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
             {!hideSearchFilter && (
                 <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
                     <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
@@ -398,6 +402,7 @@ const DonorSchoolSupplies = ({ hideSearchFilter }) => {
             </Dialog>
 
 
+        </div>
         </div>
     );
 }

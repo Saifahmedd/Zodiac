@@ -1,10 +1,12 @@
 import React from 'react';
 import { Card, CardContent, Divider, Typography } from '@mui/material';
-
+import Root from './DonorRoot';
 const DonorProfile = () => {
     const profile = ["Saif", "Ahmed", "Male", "saifahmedsalah11@gmail.com", "01023255440","Me3rag", "Maadi", "Cairo"];
 
     return (
+        <div>
+            <Root />
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '90vh' }}>
             <Card className="card" style={{ maxWidth: 400 }}>
                 <CardContent>
@@ -24,6 +26,7 @@ const DonorProfile = () => {
                     </ul>
                 </CardContent>
             </Card>
+        </div>
         </div>
     );
 }

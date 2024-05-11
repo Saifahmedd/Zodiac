@@ -19,7 +19,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import GoogleMapMarkerDialog from './GoogleMap'; // Assuming you have a component for displaying Google Map markers
-
+import Root from './DonorRoot';
 
 import Apositive from './images/bloodDonation/A+.jpg';
 import ABpositive from './images/bloodDonation/AB+.jpg';
@@ -31,7 +31,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DonorBloodDonation = ({ hideSearchFilter }) => {
+const DonorBloodDonation = ({ hideSearchFilter , hideRoot}) => {
     const [open, setOpen] = useState(false);
     const [selectedPatient, setSelectedPatient] = useState(null);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -188,6 +188,10 @@ const filteredPatients = patients.filter(patient => {
 });
 
     return (
+        <div>
+        {!hideRoot && (
+            <Root/>
+        )}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
             {!hideSearchFilter && (
                 <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
@@ -407,6 +411,7 @@ const filteredPatients = patients.filter(patient => {
                     <GoogleMapMarkerDialog style={{ width: '100%', height: '100%' }} /> {/* Set the width and height of the map */}
                 </DialogContent>
             </Dialog>
+        </div>
         </div>
     );
 }

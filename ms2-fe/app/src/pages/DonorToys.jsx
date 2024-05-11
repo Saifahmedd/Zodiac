@@ -18,7 +18,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import Tooltip from '@mui/material/Tooltip';
-
+import Root from "./DonorRoot";
 
 import Doll from './images/toys/Doll.jpg';
 import Figure from './images/toys/Figure.jpg';
@@ -30,7 +30,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DonorToys = ({hideSearchFilter}) => {
+const DonorToys = ({ hideSearchFilter , hideRoot}) => {
     const [open, setOpen] = useState(false);
     const [donationOpen, setDonationOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -162,6 +162,10 @@ const DonorToys = ({hideSearchFilter}) => {
     });
 
     return (
+        <div>
+            {!hideRoot && (
+            <Root/>
+            )}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
             {!hideSearchFilter && (
                 <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
@@ -403,6 +407,7 @@ const DonorToys = ({hideSearchFilter}) => {
                     <Button onClick={handleDetailClose}>Close</Button>
                 </DialogActions>
             </Dialog>
+        </div>
         </div>
     );
 }

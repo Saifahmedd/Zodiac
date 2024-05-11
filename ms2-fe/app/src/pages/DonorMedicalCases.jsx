@@ -17,6 +17,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Tooltip from '@mui/material/Tooltip';
 import Grid from '@mui/material/Grid';
 import GoogleMapMarkerDialog from './GoogleMap'; // Assuming you have a component for displaying Google Map markers
+import Root from './DonorRoot';
 
 import Female1 from './images/medicalcases/Female1.jpg';
 import Female2 from './images/medicalcases/Female2.jpg';
@@ -28,7 +29,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DonorMedicalCases = ({hideSearchFilter}) => {
+const DonorMedicalCases = ({ hideSearchFilter , hideRoot}) => {
     const [open, setOpen] = useState(false);
     const [selectedCase, setSelectedCase] = useState(null);
     const [selectedCaseDetails, setSelectedCaseDetails] = useState(null);
@@ -131,7 +132,10 @@ const DonorMedicalCases = ({hideSearchFilter}) => {
     });
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
+        <div>
+            {!hideRoot && (
+            <Root/>
+            )}        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
             {!hideSearchFilter && (
                 <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
                     <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
@@ -326,6 +330,7 @@ const DonorMedicalCases = ({hideSearchFilter}) => {
                     <GoogleMapMarkerDialog style={{ width: '100%', height: '100%' }} /> {/* Set the width and height of the map */}
                 </DialogContent>
             </Dialog>
+        </div>
         </div>
     );
 }

@@ -23,6 +23,7 @@ import Reem from './images/Reem.jpg';
 import Ali from './images/Electricity.jpg';
 import orphanage from './images/orphanage.jpg';
 import GoogleMapMarkerDialog from './GoogleMap';
+import Root from './DonorRoot';
 
 const OrganizationCard = ({ organization, onViewLocation }) => {
 
@@ -121,6 +122,8 @@ const DonorViewOrg = () => {
   );
 
   return (
+    <div>
+      <Root />
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
       <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
         <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
@@ -202,6 +205,7 @@ const DonorViewOrg = () => {
               <GoogleMapMarkerDialog style={{ width: '100%', height: '100%' }} /> {/* Set the width and height of the map */}
           </DialogContent>
       </Dialog>
+    </div>
     </div>
   );
 };

@@ -21,6 +21,7 @@ import TextField from '@mui/material/TextField';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { InputLabel, MenuItem, Select } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
+import Root from "./DonorRoot";
 
 import Apples from './images/food/Apples.jpg';
 import Beans from './images/food/Beans.jpg';
@@ -33,7 +34,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DonorFood = ({hideSearchFilter}) => {
+const DonorFood = ({ hideSearchFilter , hideRoot}) => {
     const [open, setOpen] = useState(false);
     const [donationOpen, setDonationOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -168,7 +169,10 @@ const DonorFood = ({hideSearchFilter}) => {
     });
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
+        <div>
+            {!hideRoot && (
+            <Root/>
+            )}        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
             {!hideSearchFilter && (
                 <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
                     <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
@@ -426,6 +430,7 @@ const DonorFood = ({hideSearchFilter}) => {
         </Button>
     </DialogActions>
 </Dialog>
+        </div>
         </div>
     );
 }

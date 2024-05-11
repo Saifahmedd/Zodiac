@@ -17,6 +17,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Tooltip from '@mui/material/Tooltip';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
+import Root from "./DonorRoot";
 
 import Shirt from './images/clothes/T-shirt.jpg';
 import Coat from './images/clothes/Coat.jpg';
@@ -29,7 +30,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DonorClothes = ({ hideSearchFilter }) => {
+const DonorClothes = ({ hideSearchFilter , hideRoot}) => {
     const [open, setOpen] = useState(false);
     const [donationOpen, setDonationOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -178,7 +179,10 @@ const DonorClothes = ({ hideSearchFilter }) => {
     });
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
+        <div>
+            {!hideRoot && (
+            <Root/>
+            )}        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
             {!hideSearchFilter && (
                 <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
                     <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
@@ -411,6 +415,8 @@ const DonorClothes = ({ hideSearchFilter }) => {
 </Dialog>
 
         </div>
+        </div>
+
     );
 }
 

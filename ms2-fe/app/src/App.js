@@ -1,4 +1,5 @@
-import Root from "./pages/DonorRoot";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/DonorHome";
 import Clothes from "./pages/DonorClothes";
 import Toys from "./pages/DonorToys";
@@ -10,37 +11,26 @@ import Teaching from "./pages/DonorTeaching";
 import MedicalCases from "./pages/DonorMedicalCases";
 import ViewOrg from "./pages/DonorViewOrg";
 import TrackingOrder from "./pages/DonorTrackingOrder";
-import Prfile from "./pages/DonorProfile";
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider,
-} from "react-router-dom";
-
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<Root />}>
-      <Route path="/home" element={<Home />} />
-      <Route path="/clothes" element={<Clothes />} />
-      <Route path="/toys" element={<Toys />} />
-      <Route path="/food" element={<Food />} />
-      <Route path="/schoolsupplies" element={<SchoolSupplies />} />
-      <Route path="/medicalsupplies" element={<MedicalSupplies />} />
-      <Route path="/blooddonation" element={<BloodDonation />} />
-      <Route path="/teaching" element={<Teaching />} />
-      <Route path="/medicalcases" element={<MedicalCases />} />
-      <Route path="/viewOrg" element={<ViewOrg />} />
-      <Route path="/trackingorder" element ={<TrackingOrder />} />
-      <Route path="/profile" element ={<Prfile />} />
-    </Route>
-    
-  )
-);
+import Profile from "./pages/DonorProfile";
 
 function App() {
   return (
-    <RouterProvider router={router}/>
+    <Router>
+      <Routes>
+        <Route path='/home' element={<Home />} />
+        <Route path="/clothes" element={<Clothes />} />
+        <Route path="/toys" element={<Toys />} />
+        <Route path="/food" element={<Food />} />
+        <Route path="/schoolsupplies" element={<SchoolSupplies />} />
+        <Route path="/medicalsupplies" element={<MedicalSupplies />} />
+        <Route path="/blooddonation" element={<BloodDonation />} />
+        <Route path="/teaching" element={<Teaching />} />
+        <Route path="/medicalcases" element={<MedicalCases />} />
+        <Route path="/viewOrg" element={<ViewOrg />} />
+        <Route path="/trackingorder" element={<TrackingOrder />} />
+        <Route path="/profile" element={<Profile />} />
+      </Routes>
+    </Router>
   );
 }
 

@@ -20,18 +20,19 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { InputLabel, MenuItem, Select } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import Root from "./DonorRoot";
 
 import Thermometer from './images/medicalsupplies/Thermometer.jpg';
-import FirstAidKit from './images/medicalsupplies/FirstAidKit.jpg';
-import Nebulizer from './images/medicalsupplies/Nebulizer.jpg';
-import Stethoscope from './images/medicalsupplies/Stethoscope.jpg';
-import BloodPressureMonitor from './images/medicalsupplies/BloodPressureMonitor.jpg';
+import Syringe from './images/medicalsupplies/Syringe.jpg';
+import Gloves from './images/medicalsupplies/Gloves.jpg';
+import Bronchokum from './images/medicalsupplies/Bronchokum.jpg';
+import DoloDPlus from './images/medicalsupplies/DoloDPlus.jpg';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DonorSchoolSupplies = ({hideSearchFilter}) => {
+const DonorMedicalSupplies = ({ hideSearchFilter , hideRoot}) => {
     const [open, setOpen] = useState(false);
     const [donationOpen, setDonationOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -39,17 +40,20 @@ const DonorSchoolSupplies = ({hideSearchFilter}) => {
     const [successAlertOpen, setSuccessAlertOpen] = useState(false);
     const [selectedSupply, setSelectedSupply] = useState(null);
     const [medicalSupplies, setMedicalSupplies] = useState([
-        ["Thermometer", "Measure body temperature", Thermometer , 50, "medical device"],
-        ["First Aid Kit", "Provide initial medical treatment", FirstAidKit, 30, "medical equipment"],
-        ["Blood Pressure Monitor", "Measure blood pressure", BloodPressureMonitor, 20, "medical device"],
-        ["Nebulizer", "Deliver medication as a mist to be inhaled into the lungs", Nebulizer, 10, "medication"],
-        ["Stethoscope", "Listen to sounds within the body", Stethoscope, 40, "medical device"]
+        ["Thermometer", "Measure body temperature", Thermometer , 5, "medical device"],
+        ["Syringe", "Administer medication or draw blood", Syringe, 7, "medical equipment"],
+        ["Gloves", "Protect hands during medical procedures", Gloves, 8, "medical equipment"],
+        ["Bronchokum", "Relieve symptoms of bronchitis and cough", Bronchokum, 3, "medication"],
+        ["Dolo D Plus", "Provide relief from headaches, body aches, and fever", DoloDPlus, 10, "medication"]
     ]);
+
+    
 
     const [searchInput, setSearchInput] = useState('');
     const [selectedQuantities, setSelectedQuantities] = useState([]);
     const [filterCategory, setFilterCategory] = useState('');
     const [filterDialogOpen, setFilterDialogOpen] = useState(false);
+    const [filterMedicalUse, setFilterMedicalUse] = useState('');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -68,12 +72,13 @@ const DonorSchoolSupplies = ({hideSearchFilter}) => {
     };
     
     const applyFilterLogic = () => {
-        // Filter the medical supplies based on the selected category
+        // Filter the medical supplies based on the selected category and medical use
         const filteredSupplies = medicalSupplies.filter(supply => {
-            const [name, , , , category] = supply;
+            const [name, , , , category, medicalUse] = supply;
             return (
                 name.toLowerCase().includes(searchInput.toLowerCase()) &&
-                (filterCategory === '' || category.toLowerCase() === filterCategory.toLowerCase())
+                (filterCategory === '' || category.toLowerCase() === filterCategory.toLowerCase()) &&
+                (filterMedicalUse === '' || medicalUse.toLowerCase() === filterMedicalUse.toLowerCase())
             );
         });
         
@@ -82,7 +87,7 @@ const DonorSchoolSupplies = ({hideSearchFilter}) => {
         
         // Close the filter dialog
         setFilterDialogOpen(false);
-    };   
+    };  
 
     useState(() => {
         setSelectedQuantities(new Array(medicalSupplies.length).fill(1));
@@ -179,7 +184,10 @@ const DonorSchoolSupplies = ({hideSearchFilter}) => {
     };
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
+        <div>
+            {!hideRoot && (
+            <Root/>
+            )}        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
             {!hideSearchFilter && (
                 <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
                     <TextField id="search" label="Search" variant="outlined" value={searchInput} onChange={handleSearchChange} />
@@ -376,37 +384,52 @@ const DonorSchoolSupplies = ({hideSearchFilter}) => {
             </Dialog>
 
             <Dialog
-    open={filterDialogOpen}
-    onClose={handleFilterDialogClose}
-    aria-labelledby="filter-dialog-title"
->
-    <DialogTitle id="filter-dialog-title">Filter Medical Supplies</DialogTitle>
-    <DialogContent>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '10px', marginLeft: '20px' }}>
-            <FormControl style={{ minWidth: '120px' }}>
-                <InputLabel id="filter-category-label">Category</InputLabel>
-                <Select
-                    labelId="filter-category-label"
-                    id="filter-category"
-                    value={filterCategory}
-                    onChange={(e) => setFilterCategory(e.target.value)}
-                >
-                    <MenuItem value="">All</MenuItem>
-                    <MenuItem value="medical device">Medical Device</MenuItem>
-                    <MenuItem value="medical equipment">Medical Equipment</MenuItem>
-                    <MenuItem value="medication">Medication</MenuItem>
-                </Select>
-            </FormControl>
-        </div>
-    </DialogContent>
-    <DialogActions>
-        <Button onClick={handleFilterDialogClose}>Cancel</Button>
-        <Button onClick={applyFilterLogic} color="primary">Apply</Button>
-    </DialogActions>
-</Dialog>
+                open={filterDialogOpen}
+                onClose={handleFilterDialogClose}
+                aria-labelledby="filter-dialog-title"
+            >
+                <DialogTitle id="filter-dialog-title">Filter Medical Supplies</DialogTitle>
+                <DialogContent>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: '10px' }}>
+                        <FormControl style={{ minWidth: '120px', marginBottom: '10px' }}>
+                            <InputLabel id="filter-category-label">Category</InputLabel>
+                            <Select
+                                labelId="filter-category-label"
+                                id="filter-category"
+                                value={filterCategory}
+                                onChange={(e) => setFilterCategory(e.target.value)}
+                            >
+                                <MenuItem value="">All</MenuItem>
+                                <MenuItem value="medical device">Medical Device</MenuItem>
+                                <MenuItem value="medical equipment">Medical Equipment</MenuItem>
+                                <MenuItem value="medication">Medication</MenuItem>
+                            </Select>
+                        </FormControl>
+                        {filterCategory === 'medication' && (
+                            <FormControl style={{ minWidth: '120px' }}>
+                                <InputLabel id="filter-medical-use-label">Medical Use</InputLabel>
+                                <Select
+                                    labelId="filter-medical-use-label"
+                                    id="filter-medical-use"
+                                    value={filterMedicalUse}
+                                    onChange={(e) => setFilterMedicalUse(e.target.value)}
+                                >
+                                    <MenuItem value="">All</MenuItem>
+                                    
+                                </Select>
+                            </FormControl>
+                        )}
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleFilterDialogClose}>Cancel</Button>
+                    <Button onClick={applyFilterLogic} color="primary">Apply</Button>
+                </DialogActions>
+            </Dialog>
 
+        </div>
         </div>
     );
 }
 
-export default DonorSchoolSupplies;
+export default DonorMedicalSupplies;

@@ -17,6 +17,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Tooltip from '@mui/material/Tooltip';
 import Grid from '@mui/material/Grid';
 import GoogleMapMarkerDialog from './GoogleMap';
+import Root from './DonorRoot';
 
 import Art from './images/Teaching/Art.jpg';
 import English from './images/Teaching/English.jpg';
@@ -30,7 +31,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 // Import statements...
 
-const DonorTeaching = ({hideSearchFilter}) => {
+const DonorTeaching = ({ hideSearchFilter , hideRoot}) => {
     const [open, setOpen] = useState(false);
     const [selectedTeaching, setSelectedTeaching] = useState(null);
     const [dateTimeOpen, setDateTimeOpen] = useState(false);
@@ -130,7 +131,10 @@ const DonorTeaching = ({hideSearchFilter}) => {
     });
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
+        <div>
+            {!hideRoot && (
+            <Root/>
+            )}        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '90vh' }}>
             {/* Search input and filter icon */}
             {!hideSearchFilter && (
                 <div style={{ alignSelf: 'flex-start', marginLeft: '20px', marginTop: '20px' }}>
@@ -329,6 +333,7 @@ const DonorTeaching = ({hideSearchFilter}) => {
             </Dialog>
 
 
+        </div>
         </div>
     );
 }

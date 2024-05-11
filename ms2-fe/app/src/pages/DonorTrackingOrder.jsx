@@ -8,6 +8,7 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
+import Root from './DonorRoot';
 
 const steps = [
     'Searching for a Driver',
@@ -47,6 +48,8 @@ const DonorTrackingOrder = () => {
     }, [activeStep1, activeStep2]);
 
     return (
+        <div>
+            <Root />
         <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div>
             <Accordion>
@@ -85,6 +88,7 @@ const DonorTrackingOrder = () => {
                     </Stepper>
                 </AccordionDetails>
             </Accordion>
+        </div>
         </div>
         </div>
     );
