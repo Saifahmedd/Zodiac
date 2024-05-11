@@ -1,41 +1,41 @@
-import React from "react";
-import { styled } from '@mui/material/styles';
+import React, { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import {Checkroom} from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Tshirt from './tshirt.jpg';
 import Divider from '@mui/material/Divider';
 import LunchDiningIcon from '@mui/icons-material/LunchDining';
 import ToysIcon from '@mui/icons-material/Toys';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import DeviceThermostatIcon from '@mui/icons-material/DeviceThermostat';
 import BloodtypeIcon from '@mui/icons-material/Bloodtype';
 import SchoolIcon from '@mui/icons-material/School';
 import Diversity1Icon from '@mui/icons-material/Diversity1';
 import DrawIcon from '@mui/icons-material/Draw';
-import Food from './Food.jpg';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-
-
-
+import Tshirt from './tshirt.jpg';
+import Food from './Food.jpg';
+import BloodDonation from './Blood donation.jpg'
+import Book from './Book.jpg'
+import Lego from './Lego.jpg'
+import MedicalCases from './Medical Cases.jpg'
+import MedicalSupplies from './Medical Supplies.jpg'
+import Stationary from './Stationary.jpg'
+import Teaching from './Teaching.jpg'
+import { Dialog, DialogTitle, DialogContent } from '@mui/material';
+import GoogleMapMarkerDialog from './Location';
 
 
 
 const OrgPosts = ({ posts }) =>{
     const [expanded, setExpanded] = React.useState(false);
+    const [mapDialogOpen, setMapDialogOpen] = useState(false);
+    
 
         
         const food = [
@@ -80,6 +80,21 @@ const OrgPosts = ({ posts }) =>{
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+
+    const handleLocationClick = () => {
+        // Handle location button click here
+        console.log('Location button clicked');
+    };
+
+    const handleViewLocation = () => {
+        setMapDialogOpen(true);
+    };
+
+    const handleCloseMapDialog = () => {
+        setMapDialogOpen(false);
+    };
+
+    
 
 
 
@@ -186,7 +201,7 @@ const OrgPosts = ({ posts }) =>{
                     />
                     <Divider sx={{ mb: 2 }} />
                     <img
-                    src={Tshirt}
+                    src={Lego}
                     alt="logo"
                     style={{ width: '250px', height: '250px', marginRight: '10px', marginLeft: '40px' }}
                     />
@@ -223,7 +238,7 @@ const OrgPosts = ({ posts }) =>{
                     />
                     <Divider sx={{ mb: 2 }} />
                     <img
-                    src={Tshirt}
+                    src={Stationary}
                     alt="logo"
                     style={{ width: '250px', height: '250px', marginRight: '10px', marginLeft: '40px' }}
                     />
@@ -260,7 +275,7 @@ const OrgPosts = ({ posts }) =>{
                     />
                     <Divider sx={{ mb: 2 }} />
                     <img
-                    src={Tshirt}
+                    src={Book}
                     alt="logo"
                     style={{ width: '250px', height: '250px', marginRight: '10px', marginLeft: '40px' }}
                     />
@@ -298,7 +313,7 @@ const OrgPosts = ({ posts }) =>{
                     />
                     <Divider sx={{ mb: 2 }} />
                     <img
-                    src={Tshirt}
+                    src={MedicalSupplies}
                     alt="logo"
                     style={{ width: '250px', height: '250px', marginRight: '10px', marginLeft: '40px' }}
                     />
@@ -335,7 +350,7 @@ const OrgPosts = ({ posts }) =>{
                     />
                     <Divider sx={{ mb: 2 }} />
                     <img
-                    src={Tshirt}
+                    src={BloodDonation}
                     alt="logo"
                     style={{ width: '250px', height: '250px', marginRight: '10px', marginLeft: '40px' }}
                     />
@@ -372,7 +387,7 @@ const OrgPosts = ({ posts }) =>{
                     />
                     <Divider sx={{ mb: 2 }} />
                     <img
-                    src={Tshirt}
+                    src={Teaching}
                     alt="logo"
                     style={{ width: '250px', height: '250px', marginRight: '10px', marginLeft: '40px' }}
                     />
@@ -391,10 +406,23 @@ const OrgPosts = ({ posts }) =>{
                         <IconButton aria-label="delete">
                             <DeleteIcon />
                         </IconButton>
-                        <IconButton aria-label="delete">
+                        <IconButton aria-label="location" onClick={handleViewLocation}>
                             <LocationOnIcon />
                         </IconButton>
                     </CardActions>
+
+                    <Dialog
+                        open={mapDialogOpen}
+                        onClose={handleCloseMapDialog}
+                        maxWidth="md" // Set the maximum width of the dialog
+                        fullWidth // Make the dialog take up the full width of its container
+                    >
+                        <DialogTitle>Location</DialogTitle>
+                        <DialogContent style={{ height: '400px' }}> {/* Adjust the height of the dialog content */}
+                            <GoogleMapMarkerDialog style={{ width: '100%', height: '100%' }} /> {/* Set the width and height of the map */}
+                        </DialogContent>
+                    </Dialog>
+
                 </Card>
             ))}
             </div>
@@ -412,7 +440,7 @@ const OrgPosts = ({ posts }) =>{
                     />
                     <Divider sx={{ mb: 2 }} />
                     <img
-                    src={Tshirt}
+                    src={MedicalCases}
                     alt="logo"
                     style={{ width: '250px', height: '250px', marginRight: '10px', marginLeft: '40px' }}
                     />
@@ -431,7 +459,23 @@ const OrgPosts = ({ posts }) =>{
                         <IconButton aria-label="delete">
                             <DeleteIcon />
                         </IconButton>
+                        <IconButton aria-label="location" onClick={handleViewLocation}>
+                            <LocationOnIcon />
+                        </IconButton>
                     </CardActions>
+
+                    <Dialog
+                        open={mapDialogOpen}
+                        onClose={handleCloseMapDialog}
+                        maxWidth="md" // Set the maximum width of the dialog
+                        fullWidth // Make the dialog take up the full width of its container
+                    >
+                        <DialogTitle>Location</DialogTitle>
+                        <DialogContent style={{ height: '400px' }}> {/* Adjust the height of the dialog content */}
+                            <GoogleMapMarkerDialog style={{ width: '100%', height: '100%' }} /> {/* Set the width and height of the map */}
+                        </DialogContent>
+                    </Dialog>
+
                 </Card>
             ))}
             </div>
