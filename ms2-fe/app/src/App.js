@@ -9,6 +9,7 @@ import AdminView from "pages/AdminView";
 import AdminProfile from "pages/AdminProfile";
 import AdminDelete2 from "pages/AdminDelete2";
 import AdminManage2 from "pages/AdminManage2";
+import AdminView2 from "pages/AdminView2";
 
 
 
@@ -29,6 +30,7 @@ function App() {
         <Route path="profile" element={<AdminProfile />}/>
         <Route path="donordelete" element={<AdminDelete2 />}/>
         <Route path="donormanage" element={<AdminManage2 />}/>
+        <Route path="donorview" element={<AdminView2 />}/>
       
       </Routes>
     </Router>

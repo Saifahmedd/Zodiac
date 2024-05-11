@@ -159,6 +159,12 @@ const AdminHome = () => {
                         </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>
+                        <ListItemButton component={Link} to="/donorview" sx={{ color: 'inherit' }}>
+                            <ViewListIcon />
+                            <ListItemText primary="View Donor Registrations" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
                         <ListItemButton component={Link} to="/manage" sx={{ color: 'inherit' }}>
                             <SettingsIcon />
                             <ListItemText primary="Manage Organization Requests" />

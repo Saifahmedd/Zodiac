@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import { useState } from 'react';
-import { TextField, MenuItem, Card, CardContent, CardActions, Button, CardMedia, Box, Typography, IconButton } from '@mui/material';
+import { TextField, Checkbox, FormControlLabel, Card, CardContent, CardActions, Button, CardMedia, Box, Typography, IconButton } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Home from "./AdminHome";
 import Reem from "ReemElectricity.png";
@@ -10,14 +10,11 @@ import hospital1 from "hospital.png";
 import hospital2 from "hospital2.png";
 import orphanage from "Orphanagee.png";
 
-
-// test
-
 const organizations = [
     // [name, type, address, contactNumber, area, governorate, image]
     ["Care Hospital", "Non-profit", "123 Main St Cityville", "+1234567890", "City A", "Central District", hospital1],
     ["Canada Electricity", "Corporate", "456 Oak Ave Townsville", "+2345678901", "City B", "Downtown", Ali],
-    ["Growth Orphanage", "Non-profit", "789 Elm St Villagetown", "+3456789012", "City C", "Suburbia", orphanage],
+    ["Growth Orphanage", "Non-profit", "789 Elm St Villagetown", "+3456789012", "City C", "Downtown", orphanage],
     ["Zodiac Hospital", "Non-profit", "321 Pine St Countryside", "+4567890123", "City D", "Rural", hospital2],
     ["Sewedy Electricity", "Non-profit", "654 Maple Ave Beachside", "+5678901234", "City E", "Coastal", Reem]
 ];
@@ -56,26 +53,46 @@ const StyledInputBase = styled(TextField)(({ theme }) => ({
     },
 }));
 
+const StyledFormControlLabel = styled(FormControlLabel)(({ theme }) => ({
+    marginBottom: theme.spacing(1),
+}));
+
 export default function AdminSearch() {
     const [searchInput, setSearchInput] = useState(''); // Define searchInput state variable
-    const [filter, setFilter] = useState(''); // Define filter state variable
+    const [selectedAreas, setSelectedAreas] = useState([]); // Define selectedAreas state variable
+    const [selectedGovernorates, setSelectedGovernorates] = useState([]); // Define selectedGovernorates state variable
+    const [selectedTypes, setSelectedTypes] = useState([]); // Define selectedTypes state variable
 
     const handleSearchChange = (event) => {
         setSearchInput(event.target.value);
     };
 
-    const handleFilterChange = (event) => {
-        setFilter(event.target.value);
+    const handleAreaChange = (event) => {
+        const { name, checked } = event.target;
+        if (checked) {
+            setSelectedAreas(prevSelectedAreas => [...prevSelectedAreas, name]);
+        } else {
+            setSelectedAreas(prevSelectedAreas => prevSelectedAreas.filter(area => area !== name));
+        }
     };
 
-    // Extract unique filter options and categorize them
-    const categories = organizations.reduce((acc, organization) => {
-        const [name, type, address, contactNumber, area, governorate] = organization;
-        if (!acc.types.includes(type)) acc.types.push(type);
-        if (!acc.areas.includes(area)) acc.areas.push(area);
-        if (!acc.governorates.includes(governorate)) acc.governorates.push(governorate);
-        return acc;
-    }, { types: [], areas: [], governorates: [] });
+    const handleGovernorateChange = (event) => {
+        const { name, checked } = event.target;
+        if (checked) {
+            setSelectedGovernorates(prevSelectedGovernorates => [...prevSelectedGovernorates, name]);
+        } else {
+            setSelectedGovernorates(prevSelectedGovernorates => prevSelectedGovernorates.filter(governorate => governorate !== name));
+        }
+    };
+
+    const handleTypeChange = (event) => {
+        const { name, checked } = event.target;
+        if (checked) {
+            setSelectedTypes(prevSelectedTypes => [...prevSelectedTypes, name]);
+        } else {
+            setSelectedTypes(prevSelectedTypes => prevSelectedTypes.filter(type => type !== name));
+        }
+    };
 
     return (
         <div>
@@ -88,40 +105,55 @@ export default function AdminSearch() {
                     <IconButton>
                         <FilterAltIcon />
                     </IconButton>
-                    <StyledInputBase
-                        id="filter"
-                        select
-                        label="Filter"
-                        value={filter}
-                        onChange={handleFilterChange}
-                        variant="outlined"
-                        style={{ marginLeft: '10px' }}
-                    >
-                        <MenuItem value="">All</MenuItem>
-                        <MenuItem disabled>Types</MenuItem>
-                        {categories.types.map((type, index) => (
-                            <MenuItem key={`type-${index}`} value={type}>{type}</MenuItem>
+                    <div style={{ marginLeft: '10px' }}>
+                        <Typography variant="subtitle2">Areas:</Typography>
+                        {organizations.reduce((acc, [, , , , area]) => {
+                            if (!acc.includes(area)) acc.push(area);
+                            return acc;
+                        }, []).map((area, index) => (
+                            <StyledFormControlLabel
+                                key={`area-${index}`}
+                                control={<Checkbox checked={selectedAreas.includes(area)} onChange={handleAreaChange} name={area} />}
+                                label={area}
+                            />
                         ))}
-                        <MenuItem disabled>Areas</MenuItem>
-                        {categories.areas.map((area, index) => (
-                            <MenuItem key={`area-${index}`} value={area}>{area}</MenuItem>
+                    </div>
+                    <div style={{ marginLeft: '10px' }}>
+                        <Typography variant="subtitle2">Governorates:</Typography>
+                        {organizations.reduce((acc, [, , , , , governorate]) => {
+                            if (!acc.includes(governorate)) acc.push(governorate);
+                            return acc;
+                        }, []).map((governorate, index) => (
+                            <StyledFormControlLabel
+                                key={`governorate-${index}`}
+                                control={<Checkbox checked={selectedGovernorates.includes(governorate)} onChange={handleGovernorateChange} name={governorate} />}
+                                label={governorate}
+                            />
                         ))}
-                        <MenuItem disabled>Governorates</MenuItem>
-                        {categories.governorates.map((governorate, index) => (
-                            <MenuItem key={`governorate-${index}`} value={governorate}>{governorate}</MenuItem>
+                    </div>
+                    <div style={{ marginLeft: '10px' }}>
+                        <Typography variant="subtitle2">Types:</Typography>
+                        {organizations.reduce((acc, [, type]) => {
+                            if (!acc.includes(type)) acc.push(type);
+                            return acc;
+                        }, []).map((type, index) => (
+                            <StyledFormControlLabel
+                                key={`type-${index}`}
+                                control={<Checkbox checked={selectedTypes.includes(type)} onChange={handleTypeChange} name={type} />}
+                                label={type}
+                            />
                         ))}
-                    </StyledInputBase>
+                    </div>
                 </div>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                     {organizations
                         .filter((organization) => {
-                            const [name, type, address, contactNumber, area, governorate] = organization;
+                            const [, type, , , area, governorate] = organization;
                             return (
-                                name.toLowerCase().includes(searchInput.toLowerCase()) &&
-                                (filter === '' ||
-                                    area.toLowerCase() === filter.toLowerCase() ||
-                                    governorate.toLowerCase() === filter.toLowerCase() ||
-                                    type.toLowerCase() === filter.toLowerCase())
+                                organization[0].toLowerCase().includes(searchInput.toLowerCase()) &&
+                                (selectedAreas.length === 0 || selectedAreas.includes(area)) &&
+                                (selectedGovernorates.length === 0 || selectedGovernorates.includes(governorate)) &&
+                                (selectedTypes.length === 0 || selectedTypes.includes(type))
                             );
                         })
                         .map((organization, index) => (
@@ -150,3 +182,5 @@ export default function AdminSearch() {
         </div>
     );
 }
+
+//final
