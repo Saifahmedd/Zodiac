@@ -6,6 +6,8 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Button from '@mui/material/Button';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 import GoogleMap from './GoogleMap';
+import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Link } from 'react-router-dom'; // Import Link component
 
 
 const governments = [
@@ -103,8 +105,167 @@ const Post = ({ addPost }) =>{
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const submittedData = [];
     const [showSubmitButton, setShowSubmitButton] = useState(false);
+
+    const [isMapOpen, setIsMapOpen] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
+
+    const [errors, setErrors] = useState({});
+    const validateForm = (selectedCategory) => {
+      const errors = {};
     
+      switch (selectedCategory) {
+        case 'Clothes':
+          if (!age) {
+            errors.age = 'Age is required';
+          }
+          if (!gender) {
+            errors.gender = 'Gender is required';
+          }
+          if (!season) {
+            errors.season = 'Season is required';
+          }
+          if (!material) {
+            errors.material = 'Material is required';
+          }
+          if (!quantity) {
+            errors.quantity = 'Quantity is required';
+          }
+          break;
+        case 'Toys':
+          if (!age) {
+            errors.age = 'Age is required';
+          }
+          if (!gender) {
+            errors.gender = 'Gender is required';
+          }
+          if (!material) {
+            errors.category = 'Category is required';
+          }
+          if (!quantity) {
+            errors.quantity = 'Quantity is required';
+          }
+          break;
+        case 'Food':
+          if (!type) {
+            errors.type = 'Type is required';
+          }
+          if (!quantity) {
+            errors.quantity = 'Quantity is required';
+          }
+          break;
+        case 'Medical Supplies':
+          if (!devices) {
+            errors.devices = 'Devices are required';
+          }
+          if (!type) {
+            errors.type = 'Type is required';
+          }
+          if (!Use) {
+            errors.use = 'Use is required';
+          }
+          if (!quantity) {
+            errors.quantity = 'Quantity is required';
+          }
+          break;
+        case 'School Supplies':
+          if (!selectedSchoolSupply) {
+            errors.selectedSchoolSupply = 'School Supply is required';
+          }
+          break;
+        case 'Blood Donations':
+          if (!patientName) {
+            errors.patientName = 'Patient Name is required';
+          }
+          if (!selectedBloodType) {
+            errors.selectedBloodType = 'Blood Type is required';
+          }
+          if (!hospitalName) {
+            errors.hospitalName = 'Hospital Name is required';
+          }
+          if (!hospitalArea) {
+            errors.hospitalArea = 'Hospital Area is required';
+          }
+          if (!selectedGovernment) {
+            errors.selectedGovernment = 'Government is required';
+          }
+          if (!hospitalAddress) {
+            errors.hospitalAddress = 'Hospital Address is required';
+          }
+          break;
+        case 'Teaching':
+          if (!numberOfStudents) {
+            errors.numberOfStudents = 'Number of Students is required';
+          }
+          if (!address) {
+            errors.address = 'Address is required';
+          }
+          if (!subjects) {
+            errors.subjects = 'Subjects are required';
+          }
+          break;
+        case 'Medical Cases':
+          if (!patientName) {
+            errors.patientName = 'Patient Name is required';
+          }
+          if (!age) {
+            errors.age = 'Age is required';
+          }
+          if (!gender) {
+            errors.gender = 'Gender is required';
+          }
+          if (!material) {
+            errors.material = 'Category is required';
+          }
+          if (!quantity) {
+            errors.quantity = 'Quantity is required';
+          }
+          if (!address) {
+            errors.address = 'Address is required';
+          }
+          if (!speciality) {
+            errors.speciality = 'Speciality is required';
+          }
+          if (!caseDescription) {
+            errors.caseDescription = 'Case Description is required';
+          }
+          break;
+        default:
+          break;
+      }
+    
+      setErrors(errors);
+      return Object.keys(errors).length === 0;
+    };
+    
+
+
   
+    const handleSubmitButton = (selectedCategory) => {
+      const isValid = validateForm(selectedCategory);
+      if (isValid) {
+        setIsSubmitted(true);
+      }
+      else{
+        alert('Please enter the missing data.');
+      }
+    };
+  
+    const handleClose = () => {
+      setIsSubmitted(false);
+      
+    };
+    const openMap = () => {
+      setIsMapOpen(true);
+    };
+  
+    const closeMap = () => {
+      setIsMapOpen(false);
+    };
+    const clearBloodType = () => {
+      setSelectedBloodType('');
+    };
+    
   
     const handleChange = (event) => {
       setAge(event.target.value);
@@ -118,8 +279,76 @@ const Post = ({ addPost }) =>{
         setShowStationaryTextboxes(selectedSupply === "Stationary");
         // Add any other logic for other school supplies if needed
       };
+
+      const handleGovernmentChange = (event) => {
+        setSelectedGovernment(event.target.value);
+      };
+
+      const clearGovernment = () => {
+        setSelectedGovernment('');
+      };
       
-    
+      const handleSeasonChange = (event) => {
+          setSeason(event.target.value);
+      };
+      
+      const handleCategoryChange2 = (category) => {
+        setSelectedCategory(category);
+        // Clear all state variables when category changes to 'Clothes'
+        if (category === 'Clothes') {
+          setAge('');
+          setGender('');
+          setSeason('');
+          setMaterial('');
+          setQuantity('');
+        }
+        if(category === 'toys'){
+          setAge('');
+          setGender('');
+          setQuantity('');
+        }
+        if(category === 'food'){
+          setType('');
+          setQuantity('');
+        }
+        if(category ==='medicalSupplis'){
+          setDevices('');
+          setType('');
+          setUse('');
+          setQuantity('');
+        }
+        if(category === 'schoolSupplies'){
+          setBookName('');
+          setAuthor('');
+          setLanguage('');
+          setEdition('');
+          setSummary('');
+          setAmount('');
+          setType('');
+        }
+        if(category === 'bloodDonation'){
+          clearBloodType();
+          clearGovernment();
+          setPatientName('');
+          setHospitalName('');
+          setHospitalArea('');
+          setHospitalAddress('');
+        }
+        if(category === 'medicalCases'){
+          setPatientName('');
+          setAge('');
+          setMaterial('');
+          setQuantity('');
+          setAddress('');
+          setSpeciality('');
+          setCaseDescription('');
+        }
+        if(category === 'teaching'){
+          setNumberOfStudents('');
+          setAddress('');
+          setSubjects('');
+        }
+      }
   
     const handleCategoryChange = (event) => {
       const category = event.target.value;
@@ -138,6 +367,16 @@ const Post = ({ addPost }) =>{
       setShowSubmitButton(true);
 
       
+    };
+
+    const [labelVisible, setLabelVisible] = useState(false);
+  
+    const handleSelectFocus = () => {
+      setLabelVisible(true);
+    };
+
+    const handleGenderChange = (event) => {
+        setGender(event.target.value);
     };
 
     const VisuallyHiddenInput = styled('input')({
@@ -212,14 +451,14 @@ const Post = ({ addPost }) =>{
                   <MenuItem value=""> 
                     <em>Choose a Category</em>
                   </MenuItem>
-                  <MenuItem value="Clothes">Clothes</MenuItem>
-                  <MenuItem value="Toys">Toys</MenuItem>
-                  <MenuItem value="Food">Food</MenuItem>
-                  <MenuItem value="Medical Supplies">Medical Supplies</MenuItem>
-                  <MenuItem value="School Supplies">School Supplies</MenuItem>
-                  <MenuItem value="Blood Donations">Blood Donations</MenuItem>
-                  <MenuItem value="Teaching">Teaching</MenuItem>
-                  <MenuItem value="Medical Cases">Medical Cases</MenuItem>
+                  <MenuItem value="Clothes" onClick={() => handleCategoryChange2('Clothes')}>Clothes</MenuItem>
+                  <MenuItem value="Toys"  onClick={() => handleCategoryChange2('toys')}>Toys</MenuItem>
+                  <MenuItem value="Food" onClick={() => handleCategoryChange2('food')}>Food</MenuItem>
+                  <MenuItem value="Medical Supplies" onClick={() => handleCategoryChange2('medicalSupplies')}>Medical Supplies</MenuItem>
+                  <MenuItem value="School Supplies" onClick={() => handleCategoryChange2('schoolSupplies')}>School Supplies</MenuItem>
+                  <MenuItem value="Blood Donations" onClick={() => handleCategoryChange2('bloodDonation')}>Blood Donations</MenuItem>
+                  <MenuItem value="Teaching" onClick={() => handleCategoryChange2('teaching')}>Teaching</MenuItem>
+                  <MenuItem value="Medical Cases" onClick={() => handleCategoryChange2('medicalCases')}>Medical Cases</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -246,93 +485,170 @@ const Post = ({ addPost }) =>{
           </div>
 
           <div>
-            {showClothesTextboxes && selectedCategory === 'Clothes' && (
-              <Box sx={{ marginTop: 2 }}>
-                <FormControl sx={{ minWidth: 200, marginBottom: 1 }}>
-                <InputLabel id="age-label">{age ? '' : 'Age'}</InputLabel>
-                  <TextField
-                    label="Age"
-                    value={age}
-                    onChange={(e) => {
-                      let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-                      value = Math.max(1, Math.min(100, value)); // Ensure value is between 1 and 100
-                      setAge(value);
-                  }}
-                    fullWidth
-                    type="number"
-                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
-                    sx={{ marginBottom: 1, width:'400px' }}
-                    />
-                </FormControl>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <FormControl component="fieldset" style={{ marginBottom: 10 }}>
-                        <FormLabel component="legend">Gender</FormLabel>
-                        <div style={{ display: 'flex', flexDirection: 'row' }}>
-                        <FormControlLabel value="Male" control={<Radio />} label="Male" />
-                        <FormControlLabel value="Female" control={<Radio />} label="Female" />
-                        </div>
-                    </FormControl>
-                    <FormControl component="fieldset">
-                        <FormLabel component="legend">Season</FormLabel>
-                        <div style={{ display: 'flex', flexDirection: 'row' }}>
-                        <FormControlLabel value="Summer" control={<Radio />} label="Summer" />
-                        <FormControlLabel value="Winter" control={<Radio />} label="Winter" />
-                        <FormControlLabel value="Autumn" control={<Radio />} label="Autumn" />
-                        <FormControlLabel value="Spring" control={<Radio />} label="Spring" />
-                        </div>
-                    </FormControl>
-                    </div>
-                <TextField
-                  label="Material"
-                  value={material}
-                  onChange={(e) => setMaterial(e.target.value)}
-                  fullWidth
-                  sx={{ marginBottom: 1, width:'400px' }}
-                />
-                <br/>
-                <TextField
-                    label="Quantity"
-                    value={quantity}
-                    onChange={(e) => {
-                        const value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-                        setQuantity(value);
-                    }}
-                    fullWidth
-                    type="number"
-                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
-                    sx={{ marginBottom: 1, width:'400px' }}
-                    />
-              </Box>
-              
-            )}
-    
+      {/* Render textboxes when selectedCategory is 'Clothes' */}
+      {selectedCategory === 'Clothes' && (
+        <Box sx={{ marginTop: 2 }}>
+<FormControl sx={{ minWidth: 220 }}>
+        <InputLabel 
+          id="age-select-label" 
+          htmlFor="age-select" 
+          shrink={labelVisible}
+          focused={labelVisible}
+        >
+          Age Range
+        </InputLabel>
+        <Select
+          labelId="age-select-label"
+          id="age-select"
+          value={age}
+          onChange={handleChange}
+          onFocus={handleSelectFocus}
+          fullWidth
+          label="Age Range"
+          displayEmpty
+          inputProps={{
+            name: 'age',
+            id: 'age',
+          }}
+          variant="standard"
+        >
+          {!age && (
+            <MenuItem value="" disabled>
+            </MenuItem>
+          )}
+          <MenuItem value="0-6 months">0 - 6 months</MenuItem>
+          <MenuItem value="6-12 months">6 - 12 months</MenuItem>
+          <MenuItem value="1-2 years">1 - 2 years</MenuItem>
+          <MenuItem value="1-2 years">2 - 4 years</MenuItem>
+          <MenuItem value="1-2 years">4 - 6 years</MenuItem>
+          <MenuItem value="1-2 years">6 - 8 years</MenuItem>
+          <MenuItem value="1-2 years">8 - 10 years</MenuItem>
+          <MenuItem value="1-2 years">10 - 12 years</MenuItem>
+          <MenuItem value="1-2 years">12 - 14 years</MenuItem>
+          <MenuItem value="1-2 years">14 - 16 years</MenuItem>
+          <MenuItem value="1-2 years">16 - 18 years</MenuItem>
+          <MenuItem value="1-2 years">18 - 20 years</MenuItem>
+          {/* Add more age ranges as needed */}
+        </Select>
+      </FormControl>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <FormControl component="fieldset" style={{ marginBottom: 10 }}>
+              <FormLabel component="legend">Gender</FormLabel>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <RadioGroup
+                  aria-label="gender"
+                  name="gender"
+                  value={gender}
+                  onChange={handleGenderChange}
+                  style={{ display: 'flex', flexDirection: 'row' }}
+                >
+                  <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                  <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                </RadioGroup>
+              </div>
+            </FormControl>
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Season</FormLabel>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <RadioGroup
+                  aria-label="season"
+                  name="season"
+                  value={season}
+                  onChange={handleSeasonChange}
+                  style={{ display: 'flex', flexDirection: 'row' }}
+                >
+                  <FormControlLabel value="Summer" control={<Radio />} label="Summer" />
+                  <FormControlLabel value="Winter" control={<Radio />} label="Winter" />
+                  <FormControlLabel value="Autumn" control={<Radio />} label="Autumn" />
+                  <FormControlLabel value="Spring" control={<Radio />} label="Spring" />
+                </RadioGroup>
+              </div>
+            </FormControl>
+          </div>
+          <TextField
+            label="Material"
+            value={material}
+            onChange={(e) => setMaterial(e.target.value)}
+            fullWidth
+            sx={{ marginBottom: 1, width: '400px' }}
+          />
+          <br />
+          <TextField
+            label="Quantity"
+            value={quantity}
+            onChange={(e) => {
+              const value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+              setQuantity(value);
+            }}
+            fullWidth
+            type="number"
+            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
+            sx={{ marginBottom: 1, width: '400px' }}
+          />
+        </Box>
+      )}
           </div>
 
           <div>
             {showToysTextboxes && selectedCategory === 'Toys' && (
               <Box sx={{ marginTop: 2 }}>
-                <FormControl sx={{ minWidth: 200, marginBottom: 1 }}>
-                <InputLabel id="age-label">{age ? '' : 'Age'}</InputLabel>
-                  <TextField
-                    label="Age"
-                    value={age}
-                    onChange={(e) => {
-                      let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-                      value = Math.max(1, Math.min(100, value)); // Ensure value is between 1 and 100
-                      setAge(value);
-                  }}
-                    fullWidth
-                    type="number"
-                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Specify numeric input mode and pattern
-                    sx={{ marginBottom: 1, width:'400px' }}
-                    />
-                </FormControl>
+<FormControl sx={{ minWidth: 220 }}>
+        <InputLabel 
+          id="age-select-label" 
+          htmlFor="age-select" 
+          shrink={labelVisible}
+          focused={labelVisible}
+        >
+          Age Range
+        </InputLabel>
+        <Select
+          labelId="age-select-label"
+          id="age-select"
+          value={age}
+          onChange={handleChange}
+          onFocus={handleSelectFocus}
+          fullWidth
+          label="Age Range"
+          displayEmpty
+          inputProps={{
+            name: 'age',
+            id: 'age',
+          }}
+          variant="standard"
+        >
+          {!age && (
+            <MenuItem value="" disabled>
+            </MenuItem>
+          )}
+          <MenuItem value="0-6 months">0 - 6 months</MenuItem>
+          <MenuItem value="6-12 months">6 - 12 months</MenuItem>
+          <MenuItem value="1-2 years">1 - 2 years</MenuItem>
+          <MenuItem value="1-2 years">2 - 4 years</MenuItem>
+          <MenuItem value="1-2 years">4 - 6 years</MenuItem>
+          <MenuItem value="1-2 years">6 - 8 years</MenuItem>
+          <MenuItem value="1-2 years">8 - 10 years</MenuItem>
+          <MenuItem value="1-2 years">10 - 12 years</MenuItem>
+          <MenuItem value="1-2 years">12 - 14 years</MenuItem>
+          <MenuItem value="1-2 years">14 - 16 years</MenuItem>
+          <MenuItem value="1-2 years">16 - 18 years</MenuItem>
+          <MenuItem value="1-2 years">18 - 20 years</MenuItem>
+          {/* Add more age ranges as needed */}
+        </Select>
+      </FormControl>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <FormControl component="fieldset" style={{ marginBottom: 10 }}>
                         <FormLabel component="legend">Gender</FormLabel>
                         <div style={{ display: 'flex', flexDirection: 'row' }}>
-                        <FormControlLabel value="Male" control={<Radio />} label="Male" />
-                        <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                        <RadioGroup
+                  aria-label="gender"
+                  name="gender"
+                  value={gender}
+                  onChange={handleGenderChange}
+                  style={{ display: 'flex', flexDirection: 'row' }}
+                >
+                  <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                  <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                </RadioGroup>
                         </div>
                     </FormControl>
                     </div>
@@ -641,7 +957,7 @@ const Post = ({ addPost }) =>{
                         id="government-select"
                         value={selectedGovernment}
                         label="Government"
-                        onChange={handleChange}
+                        onChange={handleGovernmentChange}
                         sx={{ marginBottom: 1,width:'400px' }}
                     >
                         {governments.map((government) => (
@@ -690,10 +1006,18 @@ const Post = ({ addPost }) =>{
                   fullWidth
                   sx={{ marginBottom: 1,width:'400px' }}
                 />
-
                 <div>
-                    <GoogleMap />
-                </div>
+      <Button onClick={openMap}>Insert Location</Button>
+      <Dialog open={isMapOpen} onClose={closeMap}>
+        <DialogTitle>Insert Location</DialogTitle>
+        <DialogContent>
+          <GoogleMap />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeMap}>Done</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
 
               </Box>
             )}
@@ -701,8 +1025,8 @@ const Post = ({ addPost }) =>{
 
           <div>
             {showMedicalCasesTextboxes && selectedCategory === 'Medical Cases' && (
-              <Box sx={{ marginTop: 2 }}>
-                <TextField
+  <Box sx={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
+  <TextField
                   label="Patient Name"
                   value={patientName}
                   onChange={(e) => setPatientName(e.target.value)}
@@ -736,8 +1060,16 @@ const Post = ({ addPost }) =>{
                     <FormControl component="fieldset" style={{ marginBottom: 10 }}>
                         <FormLabel component="legend">Gender</FormLabel>
                         <div style={{ display: 'flex', flexDirection: 'row' }}>
-                        <FormControlLabel value="Male" control={<Radio />} label="Male" />
-                        <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                        <RadioGroup
+                  aria-label="gender"
+                  name="gender"
+                  value={gender}
+                  onChange={handleGenderChange}
+                  style={{ display: 'flex', flexDirection: 'row' }}
+                >
+                  <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                  <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                </RadioGroup>
                         </div>
                     </FormControl>
                     </div>
@@ -786,15 +1118,37 @@ const Post = ({ addPost }) =>{
                   sx={{ marginBottom: 1,width:'400px' }}
                 />
 
-                <div>
-                    <GoogleMap />
-                    
-                </div>
+<div>
+      <Button onClick={openMap}>Insert Location</Button>
+      <Dialog open={isMapOpen} onClose={closeMap}>
+        <DialogTitle>Insert Location</DialogTitle>
+        <DialogContent>
+          <GoogleMap />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeMap}>Done</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
 
 
               </Box>
             )}
           </div>
+          {selectedCategory && (
+            <Button onClick={() => handleSubmitButton(selectedCategory)}>Submit</Button>
+      )}
+
+<Dialog open={isSubmitted} onClose={handleClose}>
+        <DialogTitle>Post Submitted</DialogTitle>
+        <DialogContent>
+          Your post has been submitted successfully.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} component={Link} to="/">OK</Button>
+        </DialogActions>
+      </Dialog>
+
             
           
 

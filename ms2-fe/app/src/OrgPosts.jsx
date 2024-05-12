@@ -47,7 +47,7 @@ const OrgPosts = ({ posts }) =>{
 
     const [clothes, setClothes] = useState([
         // [type of clothes, age, gender, season, material, quantity]
-        ["T-shirt", "Teen", "Male", "Summer", "Cotton", 4]
+        ["T-shirt", "8-10", "Male", "Summer", "Cotton", 4]
     ]);
         
     const [food, setFood] = useState([
@@ -91,7 +91,6 @@ const OrgPosts = ({ posts }) =>{
     ]);
             
             
-
     
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -754,9 +753,4 @@ const OrgPosts = ({ posts }) =>{
 }
 
 export default OrgPosts;
-
-
-
-    
-
 

@@ -11,7 +11,7 @@ const AccountInfo = () => {
     const [password, setPassword] = useState("Hello@123");
     const [contactNumber, setContactNumber] = useState("0100-876-9261");
     const [organizationName, setOrganizationName] = useState("Resala");
-    const [organizationType, setOrganizationType] = useState("Non-profit");
+    const [organizationType, setOrganizationType] = useState("Charity");
     const [organizationAddress, setOrganizationAddress] = useState("Mostafa Kamel Axis");
     const [area, setArea] = useState("First Settlement");
     const [governorate, setGovernorate] = useState("Cairo");
