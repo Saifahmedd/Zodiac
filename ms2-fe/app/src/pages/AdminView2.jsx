@@ -27,12 +27,12 @@ import { Box } from "@mui/material";
 import Home from "./AdminHome"
 
 const donors = [
-    // [name, type, email, image]
-    ["John Doe", "Doctor", "john@example.com", doctor],
-    ["Jane Smith", "Teacher", "jane@example.com", teacher],
-    ["Michael Johnson", "Doctor", "michael@example.com", doctor2],
-    ["Emily Williams", "Teacher", "emily@example.com", teacher2],
-    ["David Brown", "Doctor", "david@example.com", doctor3]
+    // [name, type, email,number, image]
+    ["John Doe", "Doctor", "john@example.com","01004298392", doctor],
+    ["Jane Smith", "Teacher", "jane@example.com","01004298392", teacher],
+    ["Michael Johnson", "Doctor", "michael@example.com","01004298392", doctor2],
+    ["Emily Williams", "Teacher", "emily@example.com", "01004298392",teacher2],
+    ["David Brown", "Doctor", "david@example.com","01004298392", doctor3]
 ];
 
 const AdminView2 = () => {
@@ -58,7 +58,7 @@ const AdminView2 = () => {
                     <Card key={index} sx={{ margin: '10px', minWidth: '200px', maxWidth: '300px' }}>
                         <CardMedia
                             sx={{ height: 140 }}
-                            image={organization[3]}
+                            image={organization[4]}
                             title="Array Test"
                         />
                         <CardContent>
@@ -86,6 +86,7 @@ const AdminView2 = () => {
                                 <Typography variant="h6">{selectedOrganization[0]}</Typography>
                                 <Typography variant="body1">Email: {selectedOrganization[2]}</Typography>
                                 <Typography variant="body1">Type: {selectedOrganization[1]}</Typography>
+                                <Typography variant="body1">Number: {selectedOrganization[3]}</Typography>
                             </DialogContentText>
                         )}
                     </DialogContent>

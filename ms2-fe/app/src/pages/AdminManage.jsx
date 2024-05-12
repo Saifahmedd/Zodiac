@@ -25,6 +25,8 @@ const initialOrganizations = [
     ["Sewedy Electricity", "Non-profit", "654 Maple Ave, Beachside", "+5678901234", "Coastal", "City E", Ali]
 ];
 
+
+
 const AdminManage = () => {
     const [organizations, setOrganizations] = useState(initialOrganizations);
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -84,8 +86,8 @@ const AdminManage = () => {
                         <CardActions>
                             <Button
                                 component="a"
-                                href="/path/to/your/file"
-                                download="filename.txt"
+                                href="/Users/alihani/Desktop/CV.pdf"
+                                download="CV.pdf"
                                 role={undefined}
                                 variant="contained"
                                 tabIndex={-1}

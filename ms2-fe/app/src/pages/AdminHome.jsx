@@ -179,7 +179,7 @@ const AdminHome = () => {
                     <ListItem disablePadding>
                         <ListItemButton component={Link} to="/search" sx={{ color: 'inherit' }}>
                             <SearchIcon />
-                            <ListItemText primary="Search Organizations" />
+                            <ListItemText primary="Search Registered Organizations" />
                         </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>
