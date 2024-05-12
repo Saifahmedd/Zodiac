@@ -1,15 +1,15 @@
-import AdminHome from "./pages/AdminHome";
+import AdminHome from "./AdminPages/AdminHome";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AdminManage from "pages/AdminManage";
-import AdminDelete from "pages/AdminDelete";
-import AdminSearch from "pages/AdminSearch";
-import AdminPassword from "pages/AdminPassword";
-import AdminView from "pages/AdminView";
-import AdminProfile from "pages/AdminProfile";
-import AdminDelete2 from "pages/AdminDelete2";
-import AdminManage2 from "pages/AdminManage2";
-import AdminView2 from "pages/AdminView2";
+import AdminManage from "AdminPages/AdminManage";
+import AdminDelete from "AdminPages/AdminDelete";
+import AdminSearch from "AdminPages/AdminSearch";
+import AdminPassword from "AdminPages/AdminPassword";
+import AdminView from "AdminPages/AdminView";
+import AdminProfile from "AdminPages/AdminProfile";
+import AdminDelete2 from "AdminPages/AdminDelete2";
+import AdminManage2 from "AdminPages/AdminManage2";
+import AdminView2 from "AdminPages/AdminView2";
 
 
 

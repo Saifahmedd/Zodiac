@@ -14,25 +14,27 @@ import Ali from "AliElectricity.png";
 import hospital1 from "hospital.png";
 import hospital2 from "hospital2.png";
 import orphanage from "Orphanagee.png";
-import teacher from "teacher.png";
-import teacher2 from "teacher2.png";
-import doctor from "doctor.png";
-import doctor2 from "doctor2.png";
-import doctor3 from "doctor3.png";
+import abrar from "AdminPhotos/Abrar.png";
+import gawy from "AdminPhotos/gawy.png";
+import shifa from "AdminPhotos/shifa.png";
+import resala from "AdminPhotos/Resala.png";
+import summits from "AdminPhotos/summits.png";
 import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import Home from "./AdminHome"
 
-const donors = [
-    // [name, type, email, image]
-    ["John Doe", "Doctor", "john@example.com", doctor],
-    ["Jane Smith", "Teacher", "jane@example.com", teacher],
-    ["Michael Johnson", "Doctor", "michael@example.com", doctor2],
-    ["Emily Williams", "Teacher", "emily@example.com", teacher2],
-    ["David Brown", "Doctor", "david@example.com", doctor3]
+const organizations = [
+    // [name, type, address, contactNumber, area, governorate, image, location]
+    ["Shifa Hospital", "Hospital", "North 90 Tgamo3", "0228138618", "First Settlement", "Cairo", shifa, "https://www.google.com/maps/place/Shifa+Hospital/@30.0207462,31.4328091,17z/data=!3m1!4b1!4m6!3m5!1s0x14583d88cd9c546b:0xff07161aab2bc7db!8m2!3d30.0207462!4d31.435384!16s%2Fg%2F11fkvt_kgl?entry=ttu"],
+    ["Resala Organization", "Charity", "2 Zaki Rostom", "19450", "Nasr City", "Cairo", resala, "https://www.google.com/maps/place/%D8%AC%D9%85%D8%B9%D9%8A%D8%A9+%D8%B1%D8%B3%D8%A7%D9%84%D8%A9+%D9%84%D9%84%D8%A7%D8%B9%D9%85%D8%A7%D9%84+%D8%A7%D9%84%D8%AE%D9%8A%D8%B1%D9%8A%D8%A9+%D9%81%D8%B1%D8%B9+%D9%85%D8%AF%D9%8A%D9%86%D8%A9+%D9%86%D8%B5%D8%B1%E2%80%AD/@30.0607548,31.3416552,17z/data=!3m1!4b1!4m6!3m5!1s0x14583e6ee2ebc7ab:0x5523ad87156ef241!8m2!3d30.0607502!4d31.3390803!16s%2Fg%2F1v2sj8j2?entry=ttu"],
+    ["Dar elabrar Orphanage", "Orphanage", "Omar ebn abdelaziz rd tgamo3", "01033027069", "Fifth Settlement", "Cairo", abrar, "https://www.google.com/maps/place/Dar+Elabrar+Elseghar+Orphanage/@30.010883,31.4251407,17z/data=!3m1!4b1!4m6!3m5!1s0x14583cc39b47e167:0x33cd27f23c2dee3b!8m2!3d30.010883!4d31.4277156!16s%2Fg%2F11c46k99bx?entry=ttu"],
+    ["Air force Hospital", "Hospital", "South 90 Tgamo3", "0226176981", "Fifth Settlement", "Cairo", gawy, "https://www.google.com/maps/place/Air+Force+Specialized+Hospital/@30.0175187,31.4315697,17z/data=!3m1!4b1!4m6!3m5!1s0x14583cd75153e123:0xd6d98616e2c385f7!8m2!3d30.0175187!4d31.4341446!16s%2Fg%2F11b5wl4hdk?entry=ttu"],
+    ["Summits School", "School", "Ahmed Zewail Road", "01008027892", "Maadi", "Giza", summits, "https://www.google.com/maps/place/Summits+International+Schools/@29.9747537,31.3091968,17z/data=!3m1!4b1!4m6!3m5!1s0x145838ffbf323fab:0x3d1d263fd4c316ec!8m2!3d29.9747491!4d31.3066219!16s%2Fg%2F1q5bl5_c6?entry=ttu"]
 ];
 
-const AdminManage2 = () => {
-    const [organizations, setOrganizations] = useState(donors);
+
+
+const AdminManage = () => {
+    const [organization, setOrganizations] = useState(organizations);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [deleteIndex, setDeleteIndex] = useState(null);
 
@@ -53,7 +55,7 @@ const AdminManage2 = () => {
 
     const handleConfirmDelete = () => {
         if (deleteIndex !== null) {
-            const updatedOrganizations = [...organizations];
+            const updatedOrganizations = [...organization];
             updatedOrganizations.splice(deleteIndex, 1);
             setOrganizations(updatedOrganizations);
             handleCloseDialog();
@@ -63,14 +65,14 @@ const AdminManage2 = () => {
     return (
         <div>
             <Home/>
-        
+       
         <div>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-                {organizations.map((organization, index) => (
-                    <Card key={index} sx={{ margin: '10px', minWidth: '200px', maxWidth: '350px' }}>
+                {organization.map((organization, index) => (
+                    <Card key={index} sx={{ margin: '10px', fixedwidth: '200px', maxWidth: '350px' }}>
                         <CardMedia
-                            sx={{ height: 200 }}
-                            image={organization[3]}
+                            sx={{ height: 140 }}
+                            image={organization[6]}
                             title="Array Test"
                         />
                         <CardContent>
@@ -78,7 +80,10 @@ const AdminManage2 = () => {
                                 {organization[0]}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                Email: {organization[2]}
+                                Email: {organization[4]}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                Address: {organization[2]}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
                                 Type: {organization[1]}
@@ -87,8 +92,8 @@ const AdminManage2 = () => {
                         <CardActions>
                             <Button
                                 component="a"
-                                href="/path/to/your/file"
-                                download="filename.txt"
+                                href="/Users/alihani/Desktop/CV.pdf"
+                                download="CV.pdf"
                                 role={undefined}
                                 variant="contained"
                                 tabIndex={-1}
@@ -122,4 +127,4 @@ const AdminManage2 = () => {
     );
 }
 
-export default AdminManage2;
+export default AdminManage;

@@ -9,11 +9,11 @@ import DownloadIcon from '@mui/icons-material/Download';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/Delete';
-import teacher from "teacher.png";
-import teacher2 from "teacher2.png";
-import doctor from "doctor.png";
-import doctor2 from "doctor2.png";
-import doctor3 from "doctor3.png";
+import teacher from "AdminPhotos/teacher.png";
+import teacher2 from "AdminPhotos/teacher2.png";
+import doctor from "AdminPhotos/doctor.png";
+import doctor2 from "AdminPhotos/doctor2.png";
+import doctor3 from "AdminPhotos/doctor3.png";
 import { Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import Home from "./AdminHome"
 
