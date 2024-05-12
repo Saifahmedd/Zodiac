@@ -9,13 +9,14 @@ const AccountInfo = () => {
     const [gender, setGender] = useState("Female");
     const [email, setEmail] = useState("contact_us@resala.org");
     const [password, setPassword] = useState("Hello@123");
-    const [contactNumber, setContactNumber] = useState("0100-876-9261");
+    const [contactNumber, setContactNumber] = useState("19450");
     const [organizationName, setOrganizationName] = useState("Resala");
     const [organizationType, setOrganizationType] = useState("Charity");
-    const [organizationAddress, setOrganizationAddress] = useState("Mostafa Kamel Axis");
-    const [area, setArea] = useState("First Settlement");
+    const [organizationAddress, setOrganizationAddress] = useState("2 Zaki Rostom, Al Mintaqah as Sādisah");
+    const [area, setArea] = useState("Nasr City");
     const [governorate, setGovernorate] = useState("Cairo");
     const [isEditing, setIsEditing] = useState(false);
+   
 
     
     const handleFirstNameChange = (event) => {

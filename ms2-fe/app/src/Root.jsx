@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { Outlet } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -19,7 +19,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
+  TextField, Snackbar
 } from "@mui/material";
 import {
   AccessTime,
@@ -70,19 +70,46 @@ const Root = () => {
     setCategoryOpen(!categoryOpen);
   };
 
+
+  const [notifications, setNotifications] = useState([
+    { id: 1, message: "Saif Ahmed wants to donate 2 T-shirts " , details: "Clothes Post <br/> Type: T-Shirt <br/> Age: 8-10 <br/> Gender: Male <br/> Season: Summer <br/> Material: Cotton  <br/> Quantity: 4 "},
+    { id: 2, message: "Saif Ahmed wants to donate 10kg of Rice", details:"Food Post <br/> Type: Rice <br/> Quantity: 20kg" },
+    { id: 3, message: "Saif Ahmed wants to donate 200 Pens ", details:"Stationary Supplies Post <br/> Type: Pens <br/> Quantity: 500" },
+    { id: 4, message: "Mariam Dahy wants to donate Lego set ", details:"Toys Post <br/> Type: Toys <br/> Quantity: 500" },
+    { id: 5, message: "Ali Hani wants to donate 20 Thermometers ", details:"Medical Supplies Post <br/> Type: Thermomters <br/> Quantity: 50" },
+    { id: 6, message: "Malak Swar wants to donate Pride and Prejudice book ", details:"School Supplies Post <br/> Type: Books <br/> Author: Jane Austen<br/>Language: English <br/> Edition: Revised<br/> Short Summary: A romantic novel of manners set in early 19th-century England." },
+    { id: 7, message: "Shahd Fawzi wants to donate O+ Blood Bag ", details:"Blood Donation Post <br/> Name Of Patient: John Doe <br/> Blood Type: O+<br/>Hospital Name: City Hospital <br/> Hospital Area: Downtown <br/> Governorate: Cairo <br/> Address: 123 Main Street" },
+    { id: 8, message: "Saif Ahmed wants to volunteer as a Math Teacher", details:"Teaching Post <br/> Number of students: 30 <br/> Address: 123 Main St<br/> Location:  <br/>Subject: Mathematics" },
+    { id: 9, message: "Saif Ahmed wants to fulfill a Medical case ", details:"Medical Cases <br/> Name of Patient: Jane Smith <br/> Age: 30<br/> Gender: Female <br/> Weight: 60<br/> Location: <br/> Address: 456 Elm St <br/> Hospital Name: Community Hospital<br/> Speciallization: Orthopedics <br/> Short case summary: Patient sustained a fracture in the left arm after a fall." },
+  ]);
+
+  useEffect(() => {
+    const updatedNotifications = notifications.map(notification => {
+      let locationLink = "";
+      if (notification.id === 8) {
+        locationLink = "https://www.google.com/maps/search/?api=1&query=37.7749,-122.4194";
+      } else if (notification.id === 9) {
+        locationLink = "https://www.google.com.kw/maps/place/Children%E2%80%99s+Cancer+Hospital+Egypt+57357/@30.0229982,31.2352996,17z/data=!3m1!4b1!4m6!3m5!1s0x1458474801f2136f:0x5b7e6b7cbf39dd15!8m2!3d30.0229982!4d31.2378745!16s%2Fg%2F1tr6pks1?entry=ttu";
+      }
+      return {
+        ...notification,
+        details: notification.details.replace("Location:", `Location: <a href="${locationLink}" target="_blank">View on Google Maps</a>`)
+      };
+    });
+  
+    // Update state with the updated notifications
+    setNotifications(updatedNotifications);
+  }, []); 
+
+  
+
+    
+  const [selectedNotification, setSelectedNotification] = useState(notifications[0]);
+
   const [open1, setOpen1] = useState(false); //ba3d ma ados 3al Mail
   const [open2, setOpen2] = useState(false); //ba3d ma ados 3ala View Details
   const [open3, setOpen3] = useState(false);
 
-
-  const [notifications, setNotifications] = useState([
-    { id: 1, message: "Saif Ahmed wants to donate 2 T-shirts " , details: "Type: T-Shirt <br/> Age: 8-10 <br/> Gender: Male <br/> Season: Summer <br/> Material: Cotton  <br/> Quantity: 4 "},
-    { id: 2, message: "Ali Hani wants to donate 10kg of Rice", details:"Type: Rice <br/> Quantity: 20kg" },
-    { id: 3, message: "Jack Sparrow wants to donate 200 Pens ", details:"Type: Pens <br/> Quantity: 500" },
-  ]);
-
-  const [selectedNotification, setSelectedNotification] = useState(notifications[0]);
-  const [dropOffDateTime, setDropOffDateTime] = useState("");
 
   const handleClickOpen = () => {
     setOpen1(true);
@@ -107,7 +134,7 @@ const Root = () => {
     //close le view details
     setOpen3(false);
     setOpen1(true);
-    setOpen2(false)
+    setOpen2(true)
   };
 
 
@@ -136,16 +163,39 @@ const Root = () => {
     setOpen1(true);
   };
 
-  const handleScheduleDropOff = () => {
-    // Implement your logic to schedule drop-off
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const handleScheduleDropOff = (notificationId) => {
+    if (!dropOffDateTime) {
+      setDateTimeError(true); 
+      return;
+    }
+    setNotifications(
+      notifications.filter((notification) => notification.id !== notificationId)
+    );
     console.log(
       "Scheduled drop-off for:",
       selectedNotification,
       "Date and Time:",
       dropOffDateTime
     );
+    setOpen2(false);
     setOpen3(false);
+    setShowSnackbar(true);
   };  
+
+  const [dropOffDateTime, setDropOffDateTime] = useState("");
+  const [dateTimeError, setDateTimeError] = useState(false);
+
+  const handleDateTimeChange = (event) => {
+    setDropOffDateTime(event.target.value);
+    setDateTimeError(false); // Reset error when the input changes
+  };
+  
+
+
+
+
 
   return (
     <div>
@@ -201,7 +251,7 @@ const Root = () => {
             </Dialog>
 
             <Dialog open={open2} onClose={handleClose2}>
-              <DialogTitle>Details</DialogTitle>
+              <DialogTitle>Post Details</DialogTitle>
               <DialogContent>
               {selectedNotification && ( 
                   <div>
@@ -217,30 +267,41 @@ const Root = () => {
                   )}
               </DialogContent>
             </Dialog>
-
+            <Snackbar
+              open={showSnackbar}
+              autoHideDuration={6000} // 6 seconds
+              onClose={() => setShowSnackbar(false)}
+              message="The donation has been scheduled successfully"
+            />
             <Dialog open={open3} onClose={handleClose3}>
               <DialogTitle>Schedule Drop-off</DialogTitle>
               <DialogContent>
-                <Button onClick={handleScheduleDropOff}>
-                  Schedule Drop-off
+                <br/>
+                <TextField
+                  id="datetime-local"
+                  label="Pickup Date and Time"
+                  type="datetime-local"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  error={dateTimeError}
+                  helperText={dateTimeError ? "Please enter a valid date and time" : ""}
+                  value={dropOffDateTime}
+                  onChange={(e) => {
+                    setDropOffDateTime(e.target.value);
+                    setDateTimeError(false); // Reset the error state when the user types
+                  }}
+                />
+              <br/>
+              
+              <Button onClick={() => handleScheduleDropOff(selectedNotification.id)}>
+                  Submit
                 </Button>
                 <Button onClick={handleClose3}>Cancel</Button>
               </DialogContent>
             </Dialog>
           </Tooltip>
-
-          <Tooltip title="Likes">
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <FavoriteBorder />
-            </IconButton>
-          </Tooltip>
-
+          
           <Tooltip title="Profile">
             <IconButton
               size="large"
@@ -288,77 +349,6 @@ const Root = () => {
             </ListItemIcon>
             <ListItemText primary="Home" />
           </ListItem>
-          <ListItem button onClick={toggleCategory}>
-            <ListItemIcon>
-              <Category />
-            </ListItemIcon>
-            <ListItemText primary="Choose a Category" />
-            {categoryOpen ? <ExpandLess /> : <ExpandMore />}{" "}
-            {/* Render the expand icon based on sublist state */}
-          </ListItem>
-          <Collapse
-            in={categoryOpen}
-            timeout="auto"
-            unmountOnExit
-            sx={{ marginLeft: "20px" }}
-          >
-            <List component="div" disablePadding>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <Checkroom />
-                </ListItemIcon>
-                <ListItemText primary="Clothes" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <Toys />
-                </ListItemIcon>
-                <ListItemText primary="Toys" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <MenuBook />
-                </ListItemIcon>
-                <ListItemText primary="School Book" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <Edit />
-                </ListItemIcon>
-                <ListItemText primary="School Stationary" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <Fastfood />
-                </ListItemIcon>
-                <ListItemText primary="Food" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <Vaccines />
-                </ListItemIcon>
-                <ListItemText primary="Medical Supplies" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <Bloodtype />
-                </ListItemIcon>
-                <ListItemText primary="Blood Donations" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <School />
-                </ListItemIcon>
-                <ListItemText primary="Teaching" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <Masks />
-                </ListItemIcon>
-                <ListItemText primary="Medical Cases" />
-              </ListItem>
-            </List>
-          </Collapse>
           <ListItem
             button
             component={Link}
