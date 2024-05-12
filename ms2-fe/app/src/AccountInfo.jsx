@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Stack, Typography, Avatar, Divider, Button, TextField, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { Person, Email, Phone, Password } from '@mui/icons-material';
-import Logo from './Resala.png';
+import Logo from './OrgImages/Resala.png';
 
 const AccountInfo = () => {
     const [firstName, setFirstName] = useState("Malak");

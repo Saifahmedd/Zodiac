@@ -18,15 +18,15 @@ import SchoolIcon from "@mui/icons-material/School";
 import Diversity1Icon from "@mui/icons-material/Diversity1";
 import DrawIcon from "@mui/icons-material/Draw";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import Tshirt from "./tshirt.jpg";
-import Food from "./Food.jpg";
-import BloodDonation from "./Blood donation.jpg";
-import Book from "./Book.jpg";
-import Lego from "./Lego.jpg";
-import MedicalCases from "./Medical Cases.jpg";
-import MedicalSupplies from "./Medical Supplies.jpg";
-import Stationary from "./Stationary.jpg";
-import Teaching from "./Teaching.jpg";
+import Tshirt from "./OrgImages/tshirt.jpg";
+import Food from "./OrgImages/Food.jpg";
+import BloodDonation from "./OrgImages/Blood donation.jpg";
+import Book from "./OrgImages/Book.jpg";
+import Lego from "./OrgImages/Lego.jpg";
+import MedicalCases from "./OrgImages/Medical Cases.jpg";
+import MedicalSupplies from "./OrgImages/Medical Supplies.jpg";
+import Stationary from "./OrgImages/Stationary.jpg";
+import Teaching from "./OrgImages/Teaching.jpg";
 import GoogleMapMarkerDialog from "./Location";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Tooltip from "@mui/material/Tooltip";
@@ -573,7 +573,7 @@ const OrgPosts = ({ posts }) => {
                   width: "250px",
                   height: "250px",
                   marginRight: "10px",
-                  marginLeft: "40px",
+                  marginLeft: "20px",
                 }}
               />
               <CardContent>
@@ -1238,7 +1238,7 @@ const OrgPosts = ({ posts }) => {
               key={index}
               sx={{ maxWidth: 345, marginBottom: 2, marginLeft: 8 }}
             >
-              <CardHeader title="Medical Supply Post" />
+              <CardHeader title="Medical Supplies Post" />
               <Divider sx={{ mb: 2 }} />
               <img
                 src={medicalItem[2]}
@@ -1254,7 +1254,6 @@ const OrgPosts = ({ posts }) => {
                 <Typography variant="body2" color="black">
                   Post Details: <br />
                   Type: {medicalItem[0]} <br />
-                  Use: {medicalItem[1]} <br />
                   Quantity: {medicalItem[3]} <br />
                 </Typography>
               </CardContent>
@@ -1389,7 +1388,6 @@ const OrgPosts = ({ posts }) => {
               <CardContent>
                 <Typography variant="body2" color="black">
                   Number of Students: {teachingItem[0]} <br />
-                  Address: {teachingItem[1]} <br />
                   Subject: {teachingItem[3]}
                 </Typography>
               </CardContent>
@@ -1520,10 +1518,6 @@ const OrgPosts = ({ posts }) => {
                 <Typography variant="body2" color="black">
                   Patient: {bloodDonationItem[0]} <br />
                   Blood Type: {bloodDonationItem[1]} <br />
-                  Hospital: {bloodDonationItem[2]} <br />
-                  Area: {bloodDonationItem[3]} <br />
-                  Governorate: {bloodDonationItem[4]} <br />
-                  Address: {bloodDonationItem[5]}
                 </Typography>
               </CardContent>
               <CardActions disableSpacing>
@@ -1694,8 +1688,6 @@ const OrgPosts = ({ posts }) => {
                 <Typography variant="body2" color="black">
                   Patient: {medicalCaseItem[0]} <br />
                   Age: {medicalCaseItem[1]} <br />
-                  Gender: {medicalCaseItem[2]} <br />
-                  Weight: {medicalCaseItem[3]} <br />
                   {/* Add more details if needed */}
                 </Typography>
               </CardContent>

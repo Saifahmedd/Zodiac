@@ -19,6 +19,7 @@ import {
   RadioGroup,
   FormControlLabel,
   FormLabel,
+  Typography, // Import Typography from @mui/material
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
@@ -32,7 +33,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { Link } from "react-router-dom"; // Import Link component
+import { Link } from "react-router-dom";
 
 const governments = [
   "Cairo",
@@ -432,6 +433,20 @@ const Post = ({ addPost }) => {
     addPost(newPost);
   };
 
+  const [weight, setWeight] = useState("");
+
+  const handleWeightChange = (e) => {
+    let value = e.target.value;
+    // Validate the input to allow only numbers and one decimal point
+    if (/^\d*\.?\d{0,1}$/.test(value)) {
+      // Check if the value is within the allowed range (0 to 300)
+      const numericValue = parseFloat(value);
+      if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 300) {
+        setWeight(value);
+      }
+    }
+  };
+
   const newPost = {
     // Create a new post object with the data you want to submit
     // For example, if you have some state variables like age, gender, material, etc.
@@ -443,6 +458,15 @@ const Post = ({ addPost }) => {
 
   return (
     <div>
+      <Typography
+        variant="h4"
+        align="left"
+        gutterBottom
+        marginTop={3}
+        marginLeft={3}
+      >
+        Write a Post
+      </Typography>
       <div>
         <Box sx={{ marginTop: 2 }}>
           <FormControl sx={{ minWidth: 220 }}>
@@ -1169,25 +1193,14 @@ const Post = ({ addPost }) => {
                 </div>
               </FormControl>
             </div>
-            <TextField
-              label="Category"
-              value={material}
-              onChange={(e) => setMaterial(e.target.value)}
-              fullWidth
-              sx={{ marginBottom: 1, width: "400px" }}
-            />
             <br />
             <TextField
-              label="Quantity"
-              value={quantity}
-              onChange={(e) => {
-                const value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
-                setQuantity(value);
-              }}
+              label="Weight (up to 300kg)"
+              value={weight}
+              onChange={handleWeightChange}
               fullWidth
-              type="number"
-              inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }} // Specify numeric input mode and pattern
               sx={{ marginBottom: 1, width: "400px" }}
+              inputProps={{ inputMode: "numeric" }}
             />
             <br />
             <TextField
