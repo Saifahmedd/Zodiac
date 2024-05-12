@@ -31,7 +31,7 @@ const DonorTrackingOrder = () => {
             } else {
                 clearInterval(timer1);
             }
-        }, 8000); // Timer for track order 1
+        }, 5000); // Timer for track order 1
 
         const timer2 = setInterval(() => {
             if (activeStep2 < steps.length - 1) {
@@ -39,7 +39,7 @@ const DonorTrackingOrder = () => {
             } else {
                 clearInterval(timer2);
             }
-        }, 10000); // Timer for track order 2
+        }, 5000); // Timer for track order 2
 
         return () => {
             clearInterval(timer1);
@@ -77,6 +77,24 @@ const DonorTrackingOrder = () => {
                     id="panel2-header"
                 >
                     Track Order 2
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Stepper activeStep={activeStep2}>
+                        {steps.map((label, index) => (
+                            <Step key={label}>
+                                <StepLabel>{label}</StepLabel>
+                            </Step>
+                        ))}
+                    </Stepper>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel2-content"
+                    id="panel2-header"
+                >
+                    Track Order 3
                 </AccordionSummary>
                 <AccordionDetails>
                     <Stepper activeStep={activeStep2}>

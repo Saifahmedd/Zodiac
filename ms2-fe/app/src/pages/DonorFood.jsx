@@ -221,33 +221,6 @@ const DonorFood = ({ hideSearchFilter , hideRoot}) => {
             </div>
 
 
-            <Dialog
-    open={filterDialogOpen}
-    onClose={() => setFilterDialogOpen(false)}
-    aria-labelledby="filter-dialog-title"
->
-    <DialogTitle id="filter-dialog-title">Filter Food</DialogTitle>
-    <DialogContent>
-        <FormControl fullWidth>
-            <InputLabel id="filter-select-label">Filter</InputLabel>
-            <Select
-                labelId="filter-select-label"
-                id="filter-select"
-                value={selectedFilter}
-                onChange={(event) => handleFilterChange(event.target.value)}
-                label="Filter"
-            >
-                <MenuItem value="All">All</MenuItem>
-                <MenuItem value="Fruits and Vegetables">Fruits and Vegetables</MenuItem>
-                <MenuItem value="Canned Foods">Canned Foods</MenuItem>
-                <MenuItem value="Fresh Meals">Fresh Meals</MenuItem>
-                <MenuItem value="Baked Goods">Baked Goods</MenuItem>
-            </Select>
-        </FormControl>
-    </DialogContent>
-</Dialog>
-
-
 <Dialog
     open={successAlertOpen}
     TransitionComponent={Transition}
@@ -404,7 +377,7 @@ const DonorFood = ({ hideSearchFilter , hideRoot}) => {
 >
     <DialogTitle id="filter-dialog-title">Filter Food</DialogTitle>
     <DialogContent>
-        <FormControl fullWidth>
+        <FormControl fullWidth sx={{ minWidth: '200px' }}>
             <InputLabel id="filter-select-label">Filter</InputLabel>
             <Select
                 labelId="filter-select-label"

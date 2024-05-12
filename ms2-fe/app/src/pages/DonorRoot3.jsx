@@ -12,7 +12,7 @@ import { AccessTime, AccountCircle, Bloodtype, Category, Checkroom, Edit, EventN
 import Logo from './images/logo_Main.png';
 import MailIcon from '@mui/icons-material/Mail';
 
-const Root = () => {
+const DonorRoot3 = () => {
   const [drawerOpen, setDrawerOpen] = useState(false); // State to manage drawer open/close
   const [categoryOpen, setCategoryOpen] = useState(false); // State to manage category sublist open/close
 
@@ -234,6 +234,12 @@ const Root = () => {
                 </ListItemIcon>
                 <ListItemText primary="Blood Donations" />
               </ListItem>
+              <ListItem button onClick={toggleDrawer} component={Link} to="/medicalcases">
+                <ListItemIcon>
+                  <Masks />
+                </ListItemIcon>
+                <ListItemText primary="Medical Cases" />
+              </ListItem>
             </List>
           </Collapse>
           <ListItem button onClick={toggleDrawer} component={Link} to="/trackingorder">
@@ -256,4 +262,4 @@ const Root = () => {
   );
 };
 
-export default Root;
+export default DonorRoot3;

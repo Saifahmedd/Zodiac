@@ -378,28 +378,28 @@ const DonorSchoolSupplies = ({ hideSearchFilter , hideRoot}) => {
                 </DialogActions>
             </Dialog>
             <Dialog open={filterDialogOpen} onClose={handleFilterDialogClose}>
-                <DialogTitle>Choose Supply Type</DialogTitle>
-                <DialogContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '70px' }}>
-    <FormControl>
-        <InputLabel id="supply-type-label">Supply Type</InputLabel>
-        <Select
-            labelId="supply-type-label"
-            id="supply-type"
-            value={filterCategory}
-            onChange={handleFilterChange}
-            label="Supply Type"
-        >
-            <MenuItem value="">All</MenuItem>
-            <MenuItem value="books">Books</MenuItem>
-            <MenuItem value="stationary">Stationary</MenuItem>
-        </Select>
-    </FormControl>
-</DialogContent>
+    <DialogTitle>Choose Supply Type</DialogTitle>
+    <DialogContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '70px' }}>
+        <FormControl sx={{ minWidth: '200px' }}> {/* Adjust the width as needed */}
+            <InputLabel id="supply-type-label">Supply Type</InputLabel>
+            <Select
+                labelId="supply-type-label"
+                id="supply-type"
+                value={filterCategory}
+                onChange={handleFilterChange}
+                label="Supply Type"
+            >
+                <MenuItem value="">All</MenuItem>
+                <MenuItem value="books">Books</MenuItem>
+                <MenuItem value="stationary">Stationary</MenuItem>
+            </Select>
+        </FormControl>
+    </DialogContent>
+    <DialogActions>
+        <Button onClick={handleFilterDialogClose}>Close</Button>
+    </DialogActions>
+</Dialog>
 
-                <DialogActions>
-                    <Button onClick={handleFilterDialogClose}>Close</Button>
-                </DialogActions>
-            </Dialog>
 
 
         </div>

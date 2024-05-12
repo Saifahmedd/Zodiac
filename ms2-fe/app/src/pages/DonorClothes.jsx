@@ -77,6 +77,14 @@ const DonorClothes = ({ hideSearchFilter , hideRoot}) => {
         setDetailOpen(false);
     };
 
+    const handleReset = () => {
+        setFilterCriteria({
+            age: '',
+            gender: '',
+            season: ''
+        });
+    };
+
 
     const handleQuantityChange = (index, page) => {
         setSelectedQuantities(prevQuantities => {
@@ -197,51 +205,57 @@ const DonorClothes = ({ hideSearchFilter , hideRoot}) => {
                     </Tooltip>
                 </div>
             )}
-            <Dialog
-                open={filterDialogOpen}
-                onClose={handleFilterDialogClose}
-                aria-labelledby="form-dialog-title"
-            >
-                <DialogTitle id="form-dialog-title">Filter Clothes</DialogTitle>
-                <DialogContent>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="age"
-                        name="age"
-                        label="Age"
-                        type="text"
-                        fullWidth
-                        onChange={handleFilterChange}
-                    />
-                    <TextField
-                        margin="dense"
-                        id="gender"
-                        name="gender"
-                        label="Gender"
-                        type="text"
-                        fullWidth
-                        onChange={handleFilterChange}
-                    />
-                    <TextField
-                        margin="dense"
-                        id="season"
-                        name="season"
-                        label="Season"
-                        type="text"
-                        fullWidth
-                        onChange={handleFilterChange}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleFilterDialogClose} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={applyFilters} color="primary">
-                        Done
-                    </Button>
-                </DialogActions>
-            </Dialog>
+        <Dialog
+            open={filterDialogOpen}
+            onClose={handleFilterDialogClose}
+            aria-labelledby="form-dialog-title"
+        >
+            <DialogTitle id="form-dialog-title">Filter Clothes</DialogTitle>
+            <DialogContent>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    id="age"
+                    name="age"
+                    label="Age"
+                    type="text"
+                    fullWidth
+                    value={filterCriteria.age}
+                    onChange={handleFilterChange}
+                />
+                <TextField
+                    margin="dense"
+                    id="gender"
+                    name="gender"
+                    label="Gender"
+                    type="text"
+                    fullWidth
+                    value={filterCriteria.gender}
+                    onChange={handleFilterChange}
+                />
+                <TextField
+                    margin="dense"
+                    id="season"
+                    name="season"
+                    label="Season"
+                    type="text"
+                    fullWidth
+                    value={filterCriteria.season}
+                    onChange={handleFilterChange}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleReset} color="primary">
+                    Reset
+                </Button>
+                <Button onClick={handleFilterDialogClose} color="primary">
+                    Cancel
+                </Button>
+                <Button onClick={applyFilters} color="primary">
+                    Done
+                </Button>
+            </DialogActions>
+        </Dialog>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', width: '100%', marginTop: '30px' }}>
                 {filteredClothes.map((cloth, index) => (
                     <div key={index} style={{ margin: '10px' }}>

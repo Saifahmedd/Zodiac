@@ -12,7 +12,7 @@ import { AccessTime, AccountCircle, Bloodtype, Category, Checkroom, Edit, EventN
 import Logo from './images/logo_Main.png';
 import MailIcon from '@mui/icons-material/Mail';
 
-const Root = () => {
+const DonorRoot2 = () => {
   const [drawerOpen, setDrawerOpen] = useState(false); // State to manage drawer open/close
   const [categoryOpen, setCategoryOpen] = useState(false); // State to manage category sublist open/close
 
@@ -65,77 +65,77 @@ const Root = () => {
             Care Charity
           </Typography>
           <Tooltip title="Mail">
-  <IconButton
-    size="large"
-    edge="start"
-    color="inherit"
-    aria-label="menu"
-    sx={{ mr: 2 }}
-    onClick={handleClick2}
-  >
-    <Badge color="secondary" variant="dot">
-      <MailIcon />
-    </Badge>
-  </IconButton>
-</Tooltip>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={handleClick2}
+            >
+              <Badge color="secondary" variant="dot">
+                <MailIcon />
+              </Badge>
+            </IconButton>
+          </Tooltip>
 
 
           <Dialog
-  open={openDialog}
-  onClose={handleClose2}
-  fullWidth={true}
-  maxWidth="md"
-  sx={{
-    '& .MuiDialog-paper': {
-      maxWidth: '700px', // Adjust the maximum width as needed
-      minHeight: '500px',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between', // Aligns content to the bottom
-    },
-  }}
->
-  <DialogTitle>Mail</DialogTitle>
-  <DialogContent>
-  <ul>
-    <li>
-        <Typography variant="body1">
-            The donation of T-Shirts (Clothes category) with Quantity [2] is successfully accepted by Organization Resala. <strong>"Order 1"</strong>
-        </Typography>
-    </li>
-    <br/>
-    <li>
-        <Typography variant="body1">
-            The Fullfill of Teaching (Teaching category) is Rejected by Organization Resala. 
-        </Typography>
-    </li>
-    <br/>
-    <li>
-        <Typography variant="body1">
-            The Donation of Rice (Food Category) with Quantity [10 kg] is successfully accepted by Organization Resala. <strong>"Order 2"</strong>
-        </Typography>
-    </li>
-    <br/>
-    <li>
-        <Typography variant="body1">
-          The Fullfill of Viewing (Medical Cases category) is Rejected by Organization Resala.
-        </Typography>
-    </li>
-    <br/>
-    <li>
-        <Typography variant="body1">
-          The Donation of Pens (School Supplies Category) with Quantity [200] is successfully accepted by Organization Resala. <strong>"Order 3"</strong>
-        </Typography>
-    </li>
-</ul>
+            open={openDialog}
+            onClose={handleClose2}
+            fullWidth={true}
+            maxWidth="md"
+            sx={{
+              '& .MuiDialog-paper': {
+                maxWidth: '700px', // Adjust the maximum width as needed
+                minHeight: '500px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between', // Aligns content to the bottom
+              },
+            }}
+          >
+            <DialogTitle>Mail</DialogTitle>
+            <DialogContent>
+              <ul>
+                <li>
+                  <Typography variant="body1">
+                    The donation of T-Shirts (Clothes category) with Quantity [2] is successfully accepted by Organization Resala. <strong>"Order 1"</strong>
+                  </Typography>
+                </li>
+                <br/>
+                <li>
+                  <Typography variant="body1">
+                    The Fullfill of Teaching (Teaching category) is Rejected by Organization Resala. 
+                  </Typography>
+                </li>
+                <br/>
+                <li>
+                  <Typography variant="body1">
+                    The Donation of Rice (Food Category) with Quantity [10 kg] is successfully accepted by Organization Resala. <strong>"Order 2"</strong>
+                  </Typography>
+                </li>
+                <br/>
+                <li>
+                  <Typography variant="body1">
+                    The Fullfill of Viewing (Medical Cases category) is Rejected by Organization Resala.
+                  </Typography>
+                </li>
+                <br/>
+                <li>
+                  <Typography variant="body1">
+                    The Donation of Pens (School Supplies Category) with Quantity [200] is successfully accepted by Organization Resala. <strong>"Order 3"</strong>
+                  </Typography>
+                </li>
+              </ul>
 
-  </DialogContent>
-  <DialogActions sx={{ m: 2 }}>
-    <Button onClick={handleClose2} color="primary">
-      Close
-    </Button>
-  </DialogActions>
-</Dialog>
+            </DialogContent>
+            <DialogActions sx={{ m: 2 }}>
+              <Button onClick={handleClose2} color="primary">
+                Close
+              </Button>
+            </DialogActions>
+          </Dialog>
 
 
 
@@ -234,6 +234,12 @@ const Root = () => {
                 </ListItemIcon>
                 <ListItemText primary="Blood Donations" />
               </ListItem>
+              <ListItem button onClick={toggleDrawer} component={Link} to="/teaching">
+                <ListItemIcon>
+                  <School />
+                </ListItemIcon>
+                <ListItemText primary="Teaching" />
+              </ListItem>
             </List>
           </Collapse>
           <ListItem button onClick={toggleDrawer} component={Link} to="/trackingorder">
@@ -256,4 +262,4 @@ const Root = () => {
   );
 };
 
-export default Root;
+export default DonorRoot2;

@@ -17,11 +17,11 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { Tooltip } from '@mui/material';
-import hospital1 from './images/Hospital1.jpg';
-import hospital2 from './images/hospital2.jpg';
-import Reem from './images/Reem.jpg';
-import Ali from './images/Electricity.jpg';
-import orphanage from './images/orphanage.jpg';
+import abrar from './images/Abrar.jpg';
+import gawy from './images/gawy.jpg';
+import summits from './images/summits.jpg';
+import resala from './images/Resala.jpg';
+import shifa from './images/shifa.jpg';
 import GoogleMapMarkerDialog from './GoogleMap';
 import Root from './DonorRoot';
 
@@ -57,7 +57,9 @@ const OrganizationCard = ({ organization, onViewLocation }) => {
           </Typography>
         </CardContent>
         <CardActions>
-            <Button onClick={onViewLocation}>View Location</Button>
+            <Typography variant="body1">
+                <a href={organization[6]} target="_blank" rel="noopener noreferrer">View Location</a>
+            </Typography>
         </CardActions>
       </Card>
     </div>
@@ -105,13 +107,13 @@ const DonorViewOrg = () => {
 
   // Sample organizations array
   const organizations = [
-     // [name, type, address, contactNumber, email, area, governorate]
-    ["Care Hospital", "Non-profit", "123 Main St, Cityville", "+1234567890", "Central District", "City A", hospital1],
-    ["Canada Electricity", "Corporate", "456 Oak Ave, Townsville", "+2345678901", "Downtown", "City B", Reem],
-    ["Growth Orphanage", "Non-profit", "789 Elm St, Villagetown", "+3456789012", "Suburbia", "City C", orphanage],
-    ["Zodiac Hospital", "Non-profit", "321 Pine St, Countryside", "+4567890123", "Rural", "City D", hospital2],
-    ["Sewedy Electricity", "Non-profit", "654 Maple Ave, Beachside", "+5678901234", "Coastal", "City E", Ali]
-  ];
+    // [name, type, address, contactNumber, area, governorate, image, location]
+    ["Shifa Hospital", "Hospital", "North 90 Tgamo3", "0228138618", "First Settlement", "Cairo", shifa, "https://www.google.com/maps/place/Shifa+Hospital/@30.0207462,31.4328091,17z/data=!3m1!4b1!4m6!3m5!1s0x14583d88cd9c546b:0xff07161aab2bc7db!8m2!3d30.0207462!4d31.435384!16s%2Fg%2F11fkvt_kgl?entry=ttu"],
+    ["Resala Organization", "Charity", "2 Zaki Rostom", "19450", "Nasr City", "Cairo", resala, "https://www.google.com/maps/place/%D8%AC%D9%85%D8%B9%D9%8A%D8%A9+%D8%B1%D8%B3%D8%A7%D9%84%D8%A9+%D9%84%D9%84%D8%A7%D8%B9%D9%85%D8%A7%D9%84+%D8%A7%D9%84%D8%AE%D9%8A%D8%B1%D9%8A%D8%A9+%D9%81%D8%B1%D8%B9+%D9%85%D8%AF%D9%8A%D9%86%D8%A9+%D9%86%D8%B5%D8%B1%E2%80%AD/@30.0607548,31.3416552,17z/data=!3m1!4b1!4m6!3m5!1s0x14583e6ee2ebc7ab:0x5523ad87156ef241!8m2!3d30.0607502!4d31.3390803!16s%2Fg%2F1v2sj8j2?entry=ttu"],
+    ["Dar elabrar Orphanage", "Orphanage", "Tagamo3", "01033027069", "Fifth Settlement", "Cairo", abrar, "https://www.google.com/maps/place/Dar+Elabrar+Elseghar+Orphanage/@30.010883,31.4251407,17z/data=!3m1!4b1!4m6!3m5!1s0x14583cc39b47e167:0x33cd27f23c2dee3b!8m2!3d30.010883!4d31.4277156!16s%2Fg%2F11c46k99bx?entry=ttu"],
+    ["Air force Hospital", "Hospital", "South 90 Tgamo3", "0226176981", "Fifth Settlement", "Cairo", gawy, "https://www.google.com/maps/place/Air+Force+Specialized+Hospital/@30.0175187,31.4315697,17z/data=!3m1!4b1!4m6!3m5!1s0x14583cd75153e123:0xd6d98616e2c385f7!8m2!3d30.0175187!4d31.4341446!16s%2Fg%2F11b5wl4hdk?entry=ttu"],
+    ["Summits School", "School", "Ahmed Zewail Road", "01008027892", "Maadi", "Giza", summits, "https://www.google.com/maps/place/Summits+International+Schools/@29.9747537,31.3091968,17z/data=!3m1!4b1!4m6!3m5!1s0x145838ffbf323fab:0x3d1d263fd4c316ec!8m2!3d29.9747491!4d31.3066219!16s%2Fg%2F1q5bl5_c6?entry=ttu"]
+];
 
   // Filtering organizations based on search input and filter criteria
   const filteredOrganizations = organizations.filter(org =>
@@ -142,50 +144,47 @@ const DonorViewOrg = () => {
           <FormControl fullWidth sx={{ marginBottom: '10px' }}>
             <InputLabel id="area-label">Area</InputLabel>
             <Select
-              labelId="area-label"
-              id="area"
-              name="area"
-              value={filterCriteria.area}
-              onChange={handleFilterChange}
-            >
-              <MenuItem value="">All</MenuItem>
-              <MenuItem value="central district">Central District</MenuItem>
-              <MenuItem value="downtown">Downtown</MenuItem>
-              <MenuItem value="suburbia">Suburbia</MenuItem>
-              <MenuItem value="rural">Rural</MenuItem>
-              <MenuItem value="coastal">Coastal</MenuItem>
-            </Select>
+  labelId="area-label"
+  id="area"
+  name="area"
+  value={filterCriteria.area}
+  onChange={handleFilterChange}
+>
+  <MenuItem value="">All</MenuItem>
+  {Array.from(new Set(organizations.map(org => org[4]))).map((area, index) => (
+    <MenuItem key={index} value={area}>{area}</MenuItem>
+  ))}
+</Select>
           </FormControl>
           <FormControl fullWidth sx={{ marginBottom: '10px' }}>
             <InputLabel id="governorate-label">Governorate</InputLabel>
             <Select
-              labelId="governorate-label"
-              id="governorate"
-              name="governorate"
-              value={filterCriteria.governorate}
-              onChange={handleFilterChange}
-            >
-              <MenuItem value="">All</MenuItem>
-              <MenuItem value="city a">City A</MenuItem>
-              <MenuItem value="city b">City B</MenuItem>
-              <MenuItem value="city c">City C</MenuItem>
-              <MenuItem value="city d">City D</MenuItem>
-              <MenuItem value="city e">City E</MenuItem>
-            </Select>
+  labelId="governorate-label"
+  id="governorate"
+  name="governorate"
+  value={filterCriteria.governorate}
+  onChange={handleFilterChange}
+>
+  <MenuItem value="">All</MenuItem>
+  {Array.from(new Set(organizations.map(org => org[5]))).map((governorate, index) => (
+    <MenuItem key={index} value={governorate}>{governorate}</MenuItem>
+  ))}
+</Select>
           </FormControl>
           <FormControl fullWidth sx={{ marginBottom: '10px' }}>
             <InputLabel id="type-label">Type</InputLabel>
             <Select
-              labelId="type-label"
-              id="type"
-              name="type"
-              value={filterCriteria.type}
-              onChange={handleFilterChange}
-            >
-              <MenuItem value="">All</MenuItem>
-              <MenuItem value="non-profit">Non-profit</MenuItem>
-              <MenuItem value="corporate">Corporate</MenuItem>
-            </Select>
+  labelId="type-label"
+  id="type"
+  name="type"
+  value={filterCriteria.type}
+  onChange={handleFilterChange}
+>
+  <MenuItem value="">All</MenuItem>
+  {Array.from(new Set(organizations.map(org => org[1]))).map((type, index) => (
+    <MenuItem key={index} value={type}>{type}</MenuItem>
+  ))}
+</Select>
           </FormControl>
         </DialogContent>
         <DialogActions>

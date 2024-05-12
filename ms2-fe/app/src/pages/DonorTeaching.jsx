@@ -56,11 +56,11 @@ const DonorTeaching = ({ hideSearchFilter , hideRoot}) => {
     };
 
     const [teaching, setTeaching] = useState([
-        [30, "123 Main St", "google marker url", "Mathematics"],
-        [25, "456 Elm St", "google marker url", "Science"],
-        [20, "789 Oak St", "google marker url", "English"],
-        [35, "101 Pine St", "google marker url", "History"],
-        [40, "202 Maple St", "google marker url", "Art"]
+        [30, "123 Main St", "https://www.google.com.kw/maps/place/El-Salam+Hospital,+El-Salam+Sharkeya,+Al+Salam+First,+Cairo+Governorate/@30.1665509,31.4150359,17z/data=!3m1!4b1!4m6!3m5!1s0x145810c6afa74605:0xfdaf8765f0166659!8m2!3d30.1665509!4d31.4176108!16s%2Fg%2F1th84drb?entry=ttu", "Mathematics"],
+        [25, "456 Elm St", "https://www.google.com.kw/maps/place/Children%E2%80%99s+Cancer+Hospital+Egypt+57357/@30.0229982,31.2352996,17z/data=!3m1!4b1!4m6!3m5!1s0x1458474801f2136f:0x5b7e6b7cbf39dd15!8m2!3d30.0229982!4d31.2378745!16s%2Fg%2F1tr6pks1?entry=ttu", "Science"],
+        [20, "789 Oak St", "https://www.google.com.kw/maps/place/Abu+El+Reesh+pediatric+hospital/@30.0295991,31.2320941,17z/data=!3m1!4b1!4m6!3m5!1s0x145847340c2eaedf:0xec8a9d758ecabbf1!8m2!3d30.0295991!4d31.234669!16s%2Fg%2F11h3d6kwlw?entry=ttu", "English"],
+        [35, "101 Pine St", "https://www.google.com.kw/maps/place/Kasr+Al-Aini+Hospital/@30.0313402,31.2260537,17z/data=!3m1!4b1!4m6!3m5!1s0x14584732119e2793:0x453fe76754c0176c!8m2!3d30.0313402!4d31.2286286!16s%2Fg%2F11cn6gwfwv?entry=ttu", "History"],
+        [40, "202 Maple St", "https://www.google.com.kw/maps/place/Al+Bank+Al+Ahly+Hospital+for+Integrated+Care/@29.9821587,31.3435137,17z/data=!3m1!4b1!4m6!3m5!1s0x145839670cb783d5:0x7392f222f506dc3a!8m2!3d29.9821587!4d31.3460886!16s%2Fg%2F1jkvvyd0_?entry=ttu", "Art"]
     ]);
 
     const TeachingArray =[
@@ -104,8 +104,11 @@ const DonorTeaching = ({ hideSearchFilter , hideRoot}) => {
         setSelectedDateTime(event.target.value);
     };
 
-    const handleViewDetails = (teaching) => {
+    const [selectedPatientIndex, setSelectedPatientIndex] = useState(null);
+
+    const handleViewDetails = (teaching, index) => {
         setSelectedTeachingDetails(teaching);
+        setSelectedPatientIndex(index);
         setOpen(true);
     };
 
@@ -175,8 +178,7 @@ const DonorTeaching = ({ hideSearchFilter , hideRoot}) => {
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button onClick={handleViewLocation}>View Location</Button>
-                                <Button size="small" onClick={() => handleViewDetails(teach)}>Details</Button>
+                                <Button size="small" onClick={() => handleViewDetails(teach, index)}>Details</Button>
                                 <Button size="small" onClick={() => handleDonationOpen(teach)}>Teach</Button>
                             </CardActions>
                         </Card>
@@ -200,6 +202,10 @@ const DonorTeaching = ({ hideSearchFilter , hideRoot}) => {
                                 <Typography variant="body1">Subject: {selectedTeachingDetails[3]}</Typography>
                                 <Typography variant="body1">Number of Students: {selectedTeachingDetails[0]}</Typography>
                                 <Typography variant="body1">Address: {selectedTeachingDetails[1]}</Typography>
+                                <Typography>
+                                Location: 
+                                    <a href={teaching[selectedPatientIndex][2]} target="_blank" rel="noopener noreferrer">View Location</a>
+                                </Typography>
                             </div>
                         )}
                     </DialogContentText>

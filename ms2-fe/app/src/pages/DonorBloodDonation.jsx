@@ -20,12 +20,14 @@ import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import GoogleMapMarkerDialog from './GoogleMap'; // Assuming you have a component for displaying Google Map markers
 import Root from './DonorRoot';
+import { Select,FormControl } from '@mui/material';
 
 import Apositive from './images/bloodDonation/A+.jpg';
 import ABpositive from './images/bloodDonation/AB+.jpg';
 import Bpositive from './images/bloodDonation/B+.jpg';
 import Onegative from './images/bloodDonation/O-.jpg';
 import Opositive from './images/bloodDonation/O+.jpg';
+import { InputLabel, MenuItem } from '@mui/material';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -39,11 +41,11 @@ const DonorBloodDonation = ({ hideSearchFilter , hideRoot}) => {
     const [successAlertOpen, setSuccessAlertOpen] = useState(false);
     const [searchInput, setSearchInput] = useState('');
     const [patients, setPatients] = useState([
-        ["John Doe", "O+", "City Hospital", "Downtown", "Cairo", "123 Main Street"],
-        ["Jane Smith", "AB+", "Community Hospital", "Suburb", "Alexandria", "456 Elm Street"],
-        ["Michael Johnson", "A+", "Regional Hospital", "Rural Area", "Helwan", "789 Oak Street"],
-        ["Emily Brown", "B+", "University Hospital", "Urban Area", "Ain Sokhna", "101 Pine Street"],
-        ["David Wilson", "O-", "Children's Hospital", "Industrial Area", "Sharkeya", "202 Maple Street"]
+        ["John Doe", "O+", "Salam Hospital", "Downtown", "Cairo", "123 Main Street"],
+        ["Jane Smith", "AB+", "57357 Hospital", "Suburb", "Cairo", "456 Elm Street"],
+        ["Michael Johnson", "A+", "Abo el Resh Hospital", "Cairo", "Helwan", "789 Oak Street"],
+        ["Emily Brown", "B+", "Asr el Ainy Hospital", "Cairo", "Ain Sokhna", "101 Pine Street"],
+        ["David Wilson", "O-", "Bank Ahly Hospital", "Cairo", "Sharkeya", "202 Maple Street"]
     ]);
 
     const bloodArray =[
@@ -54,10 +56,19 @@ const DonorBloodDonation = ({ hideSearchFilter , hideRoot}) => {
         Onegative
     ];
 
+    const location =[
+        "https://www.google.com.kw/maps/place/El-Salam+Hospital,+El-Salam+Sharkeya,+Al+Salam+First,+Cairo+Governorate/@30.1665509,31.4150359,17z/data=!3m1!4b1!4m6!3m5!1s0x145810c6afa74605:0xfdaf8765f0166659!8m2!3d30.1665509!4d31.4176108!16s%2Fg%2F1th84drb?entry=ttu",
+        "https://www.google.com.kw/maps/place/Children%E2%80%99s+Cancer+Hospital+Egypt+57357/@30.0229982,31.2352996,17z/data=!3m1!4b1!4m6!3m5!1s0x1458474801f2136f:0x5b7e6b7cbf39dd15!8m2!3d30.0229982!4d31.2378745!16s%2Fg%2F1tr6pks1?entry=ttu",
+        "https://www.google.com.kw/maps/place/Abu+El+Reesh+pediatric+hospital/@30.0295991,31.2320941,17z/data=!3m1!4b1!4m6!3m5!1s0x145847340c2eaedf:0xec8a9d758ecabbf1!8m2!3d30.0295991!4d31.234669!16s%2Fg%2F11h3d6kwlw?entry=ttu",
+        "https://www.google.com.kw/maps/place/Kasr+Al-Aini+Hospital/@30.0313402,31.2260537,17z/data=!3m1!4b1!4m6!3m5!1s0x14584732119e2793:0x453fe76754c0176c!8m2!3d30.0313402!4d31.2286286!16s%2Fg%2F11cn6gwfwv?entry=ttu",
+        "https://www.google.com.kw/maps/place/Al+Bank+Al+Ahly+Hospital+for+Integrated+Care/@29.9821587,31.3435137,17z/data=!3m1!4b1!4m6!3m5!1s0x145839670cb783d5:0x7392f222f506dc3a!8m2!3d29.9821587!4d31.3460886!16s%2Fg%2F1jkvvyd0_?entry=ttu"
+    ];
+
     const [selectedQuantities, setSelectedQuantities] = useState([]);
     const [detailOpen, setDetailOpen] = useState(false);
     const [selectedPatientDetails, setSelectedPatientDetails] = useState(null);
     const [mapDialogOpen, setMapDialogOpen] = useState(false);
+    const [selectedPatientIndex, setSelectedPatientIndex] = useState(null);
 
     const handleViewLocation = () => {
         setMapDialogOpen(true);
@@ -70,10 +81,12 @@ const DonorBloodDonation = ({ hideSearchFilter , hideRoot}) => {
         setSelectedQuantities(new Array(patients.length).fill(1));
     }, [patients]);
 
-    const handleDetailOpen = (patient) => {
+    const handleDetailOpen = (patient, index) => {
         setSelectedPatientDetails(patient);
+        setSelectedPatientIndex(index);
         setDetailOpen(true);
     };
+    
 
     const handleDetailClose = () => {
         setDetailOpen(false);
@@ -217,31 +230,55 @@ const filteredPatients = patients.filter(patient => {
     <DialogContent>
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <TextField
-                    id="hospital-filter"
-                    label="Hospital"
-                    variant="outlined"
-                    value={filterOptions.hospital}
-                    onChange={(e) => handleFilterChange('hospital', e.target.value)}
-                />
+                <FormControl fullWidth variant="outlined">
+                    <InputLabel id="hospital-filter-label">Hospital</InputLabel>
+                    <Select
+                        labelId="hospital-filter-label"
+                        id="hospital-filter"
+                        value={filterOptions.hospital}
+                        onChange={(e) => handleFilterChange('hospital', e.target.value)}
+                        label="Hospital"
+                    >
+                        <MenuItem value="">All</MenuItem>
+                        {patients.map(patient => patient[2]).filter((value, index, self) => self.indexOf(value) === index).map((hospital, index) => (
+                            <MenuItem key={index} value={hospital}>{hospital}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
             </Grid>
             <Grid item xs={12}>
-                <TextField
-                    id="governorate-filter"
-                    label="Governorate"
-                    variant="outlined"
-                    value={filterOptions.governorate}
-                    onChange={(e) => handleFilterChange('governorate', e.target.value)}
-                />
+                <FormControl fullWidth variant="outlined">
+                    <InputLabel id="governorate-filter-label">Governorate</InputLabel>
+                    <Select
+                        labelId="governorate-filter-label"
+                        id="governorate-filter"
+                        value={filterOptions.governorate}
+                        onChange={(e) => handleFilterChange('governorate', e.target.value)}
+                        label="Governorate"
+                    >
+                        <MenuItem value="">All</MenuItem>
+                        {patients.map(patient => patient[4]).filter((value, index, self) => self.indexOf(value) === index).map((governorate, index) => (
+                            <MenuItem key={index} value={governorate}>{governorate}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
             </Grid>
             <Grid item xs={12}>
-                <TextField
-                    id="area-filter"
-                    label="Area"
-                    variant="outlined"
-                    value={filterOptions.area}
-                    onChange={(e) => handleFilterChange('area', e.target.value)}
-                />
+                <FormControl fullWidth variant="outlined">
+                    <InputLabel id="area-filter-label">Area</InputLabel>
+                    <Select
+                        labelId="area-filter-label"
+                        id="area-filter"
+                        value={filterOptions.area}
+                        onChange={(e) => handleFilterChange('area', e.target.value)}
+                        label="Area"
+                    >
+                        <MenuItem value="">All</MenuItem>
+                        {patients.map(patient => patient[3]).filter((value, index, self) => self.indexOf(value) === index).map((area, index) => (
+                            <MenuItem key={index} value={area}>{area}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
             </Grid>
         </Grid>
     </DialogContent>
@@ -252,6 +289,12 @@ const filteredPatients = patients.filter(patient => {
         </Button>
     </DialogActions>
 </Dialog>
+
+
+
+
+
+
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', width: '100%', marginTop: '30px' }}>
                 {filteredPatients.map((patient, index) => (
                     <div key={index} style={{ margin: '10px' }}>
@@ -274,8 +317,7 @@ const filteredPatients = patients.filter(patient => {
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button size="small" onClick={handleViewLocation}>View Location</Button>
-                                <Button size="small" onClick={() => handleDetailOpen(patient)}>Details</Button>
+                                <Button size="small" onClick={() => handleDetailOpen(patient, index)}>Details</Button>
                                 <Button size="small" onClick={() => handleDonationOpen(patient)}>Donate</Button>
                             </CardActions>
                         </Card>
@@ -388,8 +430,11 @@ const filteredPatients = patients.filter(patient => {
                             <Typography variant="body1">Name: {selectedPatientDetails[0]}</Typography>
                             <Typography variant="body1">Blood Type: {selectedPatientDetails[1]}</Typography>
                             <Typography variant="body1">Hospital: {selectedPatientDetails[2]}</Typography>
-                            <Typography variant="body1">Location: {selectedPatientDetails[3]}, {selectedPatientDetails[4]}</Typography>
                             <Typography variant="body1">Address: {selectedPatientDetails[5]}</Typography>
+                            <Typography>
+                                Location: 
+                                <a href={location[selectedPatientIndex]} target="_blank" rel="noopener noreferrer">View Location</a>
+                            </Typography>
                         </div>
                     )}
                 </DialogContent>

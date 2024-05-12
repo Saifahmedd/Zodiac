@@ -18,6 +18,8 @@ import Tooltip from '@mui/material/Tooltip';
 import Grid from '@mui/material/Grid';
 import GoogleMapMarkerDialog from './GoogleMap'; // Assuming you have a component for displaying Google Map markers
 import Root from './DonorRoot';
+import {Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+
 
 import Female1 from './images/medicalcases/Female1.jpg';
 import Female2 from './images/medicalcases/Female2.jpg';
@@ -46,12 +48,13 @@ const DonorMedicalCases = ({ hideSearchFilter , hideRoot}) => {
     });
 
     const [medicalCases, setMedicalCases] = useState([
-        ["John Doe", 45, "Male", 70, "google marker url", "123 Main St", "City Hospital", "Cardiology", "Patient complains of chest pain and shortness of breath."],
-        ["Jane Smith", 30, "Female", 60, "google marker url", "456 Elm St", "Community Hospital", "Orthopedics", "Patient sustained a fracture in the left arm after a fall."],
-        ["Michael Johnson", 60, "Male", 80, "google marker url", "789 Oak St", "Regional Hospital", "Oncology", "Patient diagnosed with stage 3 lung cancer."],
-        ["Emily Brown", 20, "Female", 55, "google marker url", "101 Pine St", "University Hospital", "Neurology", "Patient presents with symptoms of migraine headaches."],
-        ["David Wilson", 55, "Male", 90, "google marker url", "202 Maple St", "Children's Hospital", "Pediatrics", "Patient brought in for routine checkup and immunization."],
+        ["John Doe", 45, "Male", 70, "https://www.google.com.kw/maps/place/El-Salam+Hospital,+El-Salam+Sharkeya,+Al+Salam+First,+Cairo+Governorate/@30.1665509,31.4150359,17z/data=!3m1!4b1!4m6!3m5!1s0x145810c6afa74605:0xfdaf8765f0166659!8m2!3d30.1665509!4d31.4176108!16s%2Fg%2F1th84drb?entry=ttu", "Tagamo3", "City Hospital", "Cardiology", "Patient complains of chest pain and shortness of breath.", "Cairo"],
+        ["Jane Smith", 30, "Female", 60, "https://www.google.com.kw/maps/place/Children%E2%80%99s+Cancer+Hospital+Egypt+57357/@30.0229982,31.2352996,17z/data=!3m1!4b1!4m6!3m5!1s0x1458474801f2136f:0x5b7e6b7cbf39dd15!8m2!3d30.0229982!4d31.2378745!16s%2Fg%2F1tr6pks1?entry=ttu", "Maadi", "Community Hospital", "Orthopedics", "Patient sustained a fracture in the left arm after a fall.", "Luxor"],
+        ["Michael Johnson", 60, "Male", 80, "https://www.google.com.kw/maps/place/Abu+El+Reesh+pediatric+hospital/@30.0295991,31.2320941,17z/data=!3m1!4b1!4m6!3m5!1s0x145847340c2eaedf:0xec8a9d758ecabbf1!8m2!3d30.0295991!4d31.234669!16s%2Fg%2F11h3d6kwlw?entry=ttu", "Nasr", "Regional Hospital", "Oncology", "Patient diagnosed with stage 3 lung cancer.", "Cairo"],
+        ["Emily Brown", 20, "Female", 55, "https://www.google.com.kw/maps/place/Kasr+Al-Aini+Hospital/@30.0313402,31.2260537,17z/data=!3m1!4b1!4m6!3m5!1s0x14584732119e2793:0x453fe76754c0176c!8m2!3d30.0313402!4d31.2286286!16s%2Fg%2F11cn6gwfwv?entry=ttu", "Helwan", "University Hospital", "Neurology", "Patient presents with symptoms of migraine headaches.", "Alexandria"],
+        ["David Wilson", 55, "Male", 90, "https://www.google.com.kw/maps/place/Al+Bank+Al+Ahly+Hospital+for+Integrated+Care/@29.9821587,31.3435137,17z/data=!3m1!4b1!4m6!3m5!1s0x145839670cb783d5:0x7392f222f506dc3a!8m2!3d29.9821587!4d31.3460886!16s%2Fg%2F1jkvvyd0_?entry=ttu", "Saqr", "Children's Hospital", "Pediatrics", "Patient brought in for routine checkup and immunization.", "Sharkeya", ],
     ]);
+
 
     const medicalcasesArray =[
         Male1,
@@ -79,8 +82,9 @@ const DonorMedicalCases = ({ hideSearchFilter , hideRoot}) => {
         setSelectedCase(medicalCase);
         setDateTimeOpen(true);
     };
-
-    const handleViewDetails = (medicalCase) => {
+    const [selectedPatientIndex, setSelectedPatientIndex] = useState(null);
+    const handleViewDetails = (medicalCase, index) => {
+        setSelectedPatientIndex(index);
         setSelectedCaseDetails(medicalCase);
         setOpen(true);
     };
@@ -104,6 +108,18 @@ const DonorMedicalCases = ({ hideSearchFilter , hideRoot}) => {
         setDateTimeOpen(false);
         setSuccessAlertOpen(true);
     };
+
+    const initialFilterCriteria = {
+        medicalSpecialty: '',
+        organization: '',
+        area: '',
+        governorate: ''
+    };
+    
+    const resetFilters = () => {
+        setFilterCriteria(initialFilterCriteria);
+    };
+    
 
     const handleDateTimeChange = (event) => {
         setSelectedDateTime(event.target.value);
@@ -172,8 +188,7 @@ const DonorMedicalCases = ({ hideSearchFilter , hideRoot}) => {
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                            <Button onClick={handleViewLocation}>View Location</Button>
-                                <Button size="small" onClick={() => handleViewDetails(medicalCase)}>View Details</Button>
+                                <Button size="small" onClick={() => handleViewDetails(medicalCase, index)}>View Details</Button>
                                 <Button size="small" onClick={() => handleViewCase(medicalCase)}>Fulfill</Button>
                             </CardActions>
                         </Card>
@@ -199,6 +214,10 @@ const DonorMedicalCases = ({ hideSearchFilter , hideRoot}) => {
                                 <Typography variant="body1">Organization: {selectedCaseDetails[6]}</Typography>
                                 <Typography variant="body1">Medical Specialty: {selectedCaseDetails[7]}</Typography>
                                 <Typography variant="body1">Case Description: {selectedCaseDetails[8]}</Typography>
+                                <Typography>
+                                Location: 
+                                    <a href={medicalCases[selectedPatientIndex][4]} target="_blank" rel="noopener noreferrer">View Location</a>
+                                </Typography>
                             </div>
                         )}
                     </DialogContentText>
@@ -262,63 +281,86 @@ const DonorMedicalCases = ({ hideSearchFilter , hideRoot}) => {
                 </DialogActions>
             </Dialog>
             <Dialog
-                open={filterDialogOpen}
-                onClose={handleFilterClose}
-                aria-labelledby="form-dialog-title"
-            >
-                <DialogTitle id="form-dialog-title">Filter Medical Cases</DialogTitle>
-                <DialogContent>
-                    <TextField
-                        autoFocus
-                        margin="dense"
+            open={filterDialogOpen}
+            onClose={handleFilterClose}
+            aria-labelledby="form-dialog-title"
+        >
+            <DialogTitle id="form-dialog-title">Filter Medical Cases</DialogTitle>
+            <DialogContent>
+                <FormControl fullWidth>
+                    <InputLabel id="medicalSpecialty-label">Medical Specialty</InputLabel>
+                    <Select
+                        labelId="medicalSpecialty-label"
                         id="medicalSpecialty"
                         name="medicalSpecialty"
-                        label="Medical Specialty"
-                        type="text"
-                        fullWidth
                         value={filterCriteria.medicalSpecialty}
                         onChange={handleFilterChange}
-                    />
-                    <TextField
-                        margin="dense"
+                    >
+                        <MenuItem value="Cardiology">Cardiology</MenuItem>
+                        <MenuItem value="Orthopedics">Orthopedics</MenuItem>
+                        <MenuItem value="Oncology">Oncology</MenuItem>
+                        <MenuItem value="Neurology">Neurology</MenuItem>
+                        <MenuItem value="Pediatrics">Pediatrics</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl fullWidth>
+                    <InputLabel id="organization-label">Organization Name</InputLabel>
+                    <Select
+                        labelId="organization-label"
                         id="organization"
                         name="organization"
-                        label="Organization Name"
-                        type="text"
-                        fullWidth
                         value={filterCriteria.organization}
                         onChange={handleFilterChange}
-                    />
-                    <TextField
-                        margin="dense"
+                    >
+                        <MenuItem value="El-Salam Hospital">El-Salam Hospital</MenuItem>
+                        <MenuItem value="Community Hospital">Community Hospital</MenuItem>
+                        <MenuItem value="Regional Hospital">Regional Hospital</MenuItem>
+                        <MenuItem value="University Hospital">University Hospital</MenuItem>
+                        <MenuItem value="Children's Hospital">Children's Hospital</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl fullWidth>
+                    <InputLabel id="area-label">Area</InputLabel>
+                    <Select
+                        labelId="area-label"
                         id="area"
                         name="area"
-                        label="Area"
-                        type="text"
-                        fullWidth
                         value={filterCriteria.area}
                         onChange={handleFilterChange}
-                    />
-                    <TextField
-                        margin="dense"
+                    >
+                        {medicalCases.map((caseItem, index) => (
+                            <MenuItem key={index} value={caseItem[5]}>{caseItem[5]}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                <FormControl fullWidth>
+                    <InputLabel id="governorate-label">Governorate</InputLabel>
+                    <Select
+                        labelId="governorate-label"
                         id="governorate"
                         name="governorate"
-                        label="Governorate"
-                        type="text"
-                        fullWidth
                         value={filterCriteria.governorate}
                         onChange={handleFilterChange}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleFilterClose} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={handleFilterClose} color="primary">
-                        Apply Filters
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                    >
+                        {medicalCases.map((caseItem, index) => (
+                            <MenuItem key={index} value={caseItem[6]}>{caseItem[6]}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={resetFilters} color="secondary">
+                    Reset
+                </Button>
+                <Button onClick={handleFilterClose} color="primary">
+                    Cancel
+                </Button>
+                <Button onClick={handleFilterClose} color="primary">
+                    Apply Filters
+                </Button>
+            </DialogActions>
+        </Dialog>
+
             <Dialog
                 open={mapDialogOpen}
                 onClose={handleCloseMapDialog}
